@@ -1,4 +1,4 @@
-import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, PreviewTraversalResult, DropdownTraversalResult } from '../../../../../../../interfaces/componentTraversal';
+import { DropdownStructureTraversalState, DropdownTraversalResult, PreviewTraversalResult, ComponentPreviewTraversalState, TargetDetails } from '../../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { AutoSyncedSiblingContainerComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { DecrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/decrementChildComponentCountLimitsState';
@@ -7,22 +7,22 @@ import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComp
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignmentSectionToComponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
-import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SetActiveComponentUtils } from '../../utils/setActiveComponentUtils';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 
-type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean };
+type TargetRemovalDetails = TargetDetails & { isRemovingActiveComponent?: boolean };
 
 export class RemoveAnyChildComponent {
 
-  private static asyncUpdateComponentThatTriggerThis(removedSubcomponent: Subcomponent): void {
+  private static asyncUpdateComponentThatTriggerThis(removedComponent: WorkshopComponent): void {
     setTimeout(() => {
-      SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(removedSubcomponent);
+      SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(removedComponent.baseSubcomponent);
     });
   }
 
@@ -35,14 +35,14 @@ export class RemoveAnyChildComponent {
   }
 
   private static updateDropdownItemNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
-      removedSubcomponentDropdownIndex: number, alignedSectionToComponents: AlignmentSectionToComponents, dropdownItems: string[]): void {
+      removedComponentDropdownIndex: number, alignedSectionToComponents: AlignmentSectionToComponents, dropdownItems: string[]): void {
     if (dropdownItems.length === 1) return;
-    const { masterComponent, targetSubcomponent: { subcomponentType } } = targetDetails;
-    if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
+    const { masterComponent, targetComponent } = targetDetails;
+    if (targetComponent.type !== COMPONENT_TYPES.LAYER) {
       UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure,
         alignedSectionToComponents);
     } else {
-      UpdateLayerDropdownItemNames.update(masterComponent, removedSubcomponentDropdownIndex);
+      UpdateLayerDropdownItemNames.update(masterComponent, removedComponentDropdownIndex);
     }
   }
 
@@ -77,8 +77,8 @@ export class RemoveAnyChildComponent {
   private static removeDropdownStructure(traversalState: DropdownStructureTraversalState, targetDetails: TargetRemovalDetails,
       dropdownItems: string[]): void {
     const { dropdownItemName, subcomponentDropdownStructure, dropdownItemDetailsStack } = traversalState;
-    const { masterComponent, isRemovingActiveSubcomponent } = targetDetails;
-    if (isRemovingActiveSubcomponent) {
+    const { masterComponent, isRemovingActiveComponent } = targetDetails;
+    if (isRemovingActiveComponent) {
       const parentSubcomponentName = RemoveAnyChildComponent.getParentSubcomponentName(masterComponent, dropdownItemDetailsStack);
       RemoveAnyChildComponent.selectNewActiveSubcomponent(traversalState, masterComponent, parentSubcomponentName, dropdownItems);
     }
@@ -90,9 +90,9 @@ export class RemoveAnyChildComponent {
     const targetDetails = this as any as TargetRemovalDetails;
     if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
       const dropdownItems = RemoveAnyChildComponent.getDropdownItemNames(subcomponentDropdownStructure);
-      const removedSubcomponentDropdownIndex = dropdownItems.indexOf(targetDetails.targetDropdownItemName);
+      const removedComponentDropdownIndex = dropdownItems.indexOf(targetDetails.targetDropdownItemName);
       RemoveAnyChildComponent.removeDropdownStructure(traversalState, targetDetails, dropdownItems);
-      RemoveAnyChildComponent.updateDropdownItemNames(targetDetails, subcomponentDropdownStructure, removedSubcomponentDropdownIndex,
+      RemoveAnyChildComponent.updateDropdownItemNames(targetDetails, subcomponentDropdownStructure, removedComponentDropdownIndex,
         targetDetails.parentLayerAlignmentSectionToComponents, dropdownItems);
       return { stopTraversal: true };
     }
@@ -123,9 +123,9 @@ export class RemoveAnyChildComponent {
     const { alignmentSectionToComponents } = layer;
     if (alignmentSectionToComponents) {
       Object.keys(alignmentSectionToComponents).forEach((sectionName) => {
-        const baseSubcomponents: WorkshopComponent[] = alignmentSectionToComponents[sectionName];
-        baseSubcomponents.forEach((baseSubcomponent) => {
-          RemoveAnyChildComponent.removeAlignedComponents(baseSubcomponent, masterComponent, containerComponent);
+        const components: WorkshopComponent[] = alignmentSectionToComponents[sectionName];
+        components.forEach((component) => {
+          RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent, containerComponent);
         });
       });
       const layerName = layer.subcomponent.name;
@@ -134,12 +134,12 @@ export class RemoveAnyChildComponent {
     }
   }
 
-  private static removeAlignedSubcomponent(alignedSubcomponents: WorkshopComponent[], subcomponent: Subcomponent,
+  private static removeAlignedComponent(alignedComponents: WorkshopComponent[], component: WorkshopComponent,
       masterComponent: WorkshopComponent, containerComponent: WorkshopComponent, index: number): void {
-    RemoveAnyChildComponent.removeAlignedComponents(subcomponent.seedComponent, masterComponent, containerComponent);
-    alignedSubcomponents.splice(index, 1);
-    InterconnectedSettings.update(false, containerComponent, subcomponent);
-    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(subcomponent.seedComponent.parentLayer, subcomponent.seedComponent);
+    RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent, containerComponent);
+    alignedComponents.splice(index, 1);
+    InterconnectedSettings.update(false, containerComponent, component.baseSubcomponent);
+    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(component.parentLayer, component);
   }
 
   private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
@@ -147,29 +147,28 @@ export class RemoveAnyChildComponent {
     layers.splice(index, 1);
   }
 
-  protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
-    const { subcomponent, layers, alignedComponents: alignedSubcomponents, index } = traversalState;
-    const { targetSubcomponent, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
-    if (targetSubcomponent === subcomponent) {
+  protected static removeChildComponentInPreviewStructureIfFound(traversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
+    const { component, layers, alignedComponents, index } = traversalState;
+    const { targetComponent, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
+    if (targetComponent === component) {
       // containerComponent variable is not always the actual container component (set as masterComponent by the remove method below)
       // when actual container component not available (when temp), the seed component master is usuall the container
-      const deletedSubcomponentContainerComponent = subcomponent.seedComponent.containerComponent
-        || subcomponent.seedComponent.masterComponent;
+      const deletedComponentContainerComponent = component.containerComponent || component.masterComponent;
       if (layers) RemoveAnyChildComponent.removeLayer(layers, index, masterComponent, containerComponent);
-      if (alignedSubcomponents) RemoveAnyChildComponent.removeAlignedSubcomponent(alignedSubcomponents, subcomponent, masterComponent,
+      if (alignedComponents) RemoveAnyChildComponent.removeAlignedComponent(alignedComponents, component, masterComponent,
         containerComponent, index);
       // the reason why the container is getting passed along seed component is because the containerComponent may not exist because of temp removal
-      deletedSubcomponentContainerComponent?.onChildComponentRemovalFunc?.(subcomponent.seedComponent, deletedSubcomponentContainerComponent);
+      deletedComponentContainerComponent?.onChildComponentRemovalFunc?.(component, deletedComponentContainerComponent);
       return { stopTraversal: true, traversalState };
     }
     return {};
   }
 
-  public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
+  public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveComponent = false): void {
     const { higherActiveComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
-    targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
+    targetDetails.isRemovingActiveComponent = isRemovingActiveComponent;
     const { traversalState } = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
       higherActiveComponentContainer);
@@ -177,7 +176,7 @@ export class RemoveAnyChildComponent {
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
-    RemoveAnyChildComponent.removeSyncableComponent(parentComponent, targetDetails.targetSubcomponent.seedComponent);
-    RemoveAnyChildComponent.asyncUpdateComponentThatTriggerThis(targetDetails.targetSubcomponent);
+    RemoveAnyChildComponent.removeSyncableComponent(parentComponent, targetDetails.targetComponent);
+    RemoveAnyChildComponent.asyncUpdateComponentThatTriggerThis(targetDetails.targetComponent);
   }
 }

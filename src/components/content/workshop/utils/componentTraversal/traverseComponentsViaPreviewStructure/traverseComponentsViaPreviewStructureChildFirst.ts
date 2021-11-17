@@ -30,7 +30,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
         TraverseComponentViaPreviewStructureChildFirst.traverseAlignedComponents);
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = callback(...layersArr.map((layers) => {
-        return { subcomponent: layers[i].subcomponent, layers, index: i }}));
+        return { component: layers[i].subcomponent.seedComponent, layers, index: i }; }));
       if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;
@@ -40,8 +40,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
     const traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverseLayers(
       callback, [...componentsArr.map((component) => component.componentPreviewStructure.layers)]);
     if (traversalResult.stopTraversal) return traversalResult;
-    return callback(...componentsArr.map((activeComponent) => {
-      return { subcomponent: activeComponent.baseSubcomponent }}));
+    return callback(...componentsArr.map((component) => { return { component }; }));
   }
   
   private static traversePaddingComponentChild(callback: PreviewTraversalCallback, paddingChildrenArr: WorkshopComponent[]): PreviewTraversalResult {

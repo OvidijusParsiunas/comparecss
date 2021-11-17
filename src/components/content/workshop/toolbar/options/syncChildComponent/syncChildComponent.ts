@@ -24,7 +24,7 @@ export class SyncChildComponent {
     };
   }
 
-  private static syncAllCustomProperties(syncableSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
+  private static syncAllCustomProperties(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent): void {
     Object.assign(syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
     Object.assign(syncableSubcomponent.customCss, subcomponentToBeSyncedTo.customCss);
     const componentToBeSyncedCustomCss = subcomponentToBeSyncedTo.customCss;
@@ -33,14 +33,14 @@ export class SyncChildComponent {
     }
   }
 
-  private static syncPropertiesThatOnlyExistInActiveComponent(syncableSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
+  private static syncPropertiesThatOnlyExistInActiveComponent(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent): void {
     syncableSubcomponent.customCss = subcomponentToBeSyncedTo.customCss;
     // need to create a new object as otherwise tempOriginalCustomProperties would be overwritten by a normal traversal
     syncableSubcomponent.customFeatures = JSONUtils.createObjectUsingObject1AndSameObject2Properties(
       syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
   }
 
-  public static syncSubcomponent(syncableSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent, addTemporaryProperties: boolean): boolean {
+  public static syncBaseSubcomponent(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent, addTemporaryProperties: boolean): boolean {
     if (addTemporaryProperties && !syncableSubcomponent.tempOriginalCustomProperties) {
       SyncChildComponent.moveCustomPropertiesToTempProperties(syncableSubcomponent);
     }
@@ -48,14 +48,14 @@ export class SyncChildComponent {
     // this is a naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent
     // all features from being traversed all the time (used for components like drodpown button)
     if (Object.keys(subcomponentToBeSyncedTo.customFeatures).length !== Object.keys(syncableSubcomponent.customFeatures).length) {
-      SyncChildComponent.syncPropertiesThatOnlyExistInActiveComponent(syncableSubcomponent, subcomponentToBeSyncedTo);
+      SyncChildComponent.syncPropertiesThatOnlyExistInActiveComponent(subcomponentToBeSyncedTo, syncableSubcomponent);
     } else {
-      SyncChildComponent.syncAllCustomProperties(syncableSubcomponent, subcomponentToBeSyncedTo);
+      SyncChildComponent.syncAllCustomProperties(subcomponentToBeSyncedTo, syncableSubcomponent);
     }
   }
 
   // if a subcomponent does not exist in the componentToBeSyncedTo, but does in its siblings - add it
-  private static addMissingSiblingComponentProperties(componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
+  private static setMissingSiblingComponentProperties(componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
       siblingComponentTypes: SiblingComponentTypes, componentType: COMPONENT_TYPES): void {
     const subcomponentToBeSyncedTo = componentToBeSyncedTo?.sync.syncables.onCopy.uniqueComponents[componentType].baseSubcomponent;
     // when neither the component to be synced to nor the exact sibling component has a particular subcomponent
@@ -73,12 +73,12 @@ export class SyncChildComponent {
     Object.keys(uniqueComponents).forEach((componentType: COMPONENT_TYPES) => {
       const syncableSubcomponent = uniqueComponents[componentType]?.baseSubcomponent;
       if (!syncableSubcomponent) {
-        if (siblingComponentTypes) SyncChildComponent.addMissingSiblingComponentProperties(
+        if (siblingComponentTypes) SyncChildComponent.setMissingSiblingComponentProperties(
           componentToBeSyncedTo, isTemporary, siblingComponentTypes, componentType);
         return;
       }
-      const WasAComponentToBeSyncedToMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
-        componentToBeSyncedTo?.sync.syncables.onCopy.uniqueComponents[componentType]?.baseSubcomponent, isTemporary);
+      const WasAComponentToBeSyncedToMissing = !!SyncChildComponent.syncBaseSubcomponent(
+        componentToBeSyncedTo?.sync.syncables.onCopy.uniqueComponents[componentType]?.baseSubcomponent, syncableSubcomponent, isTemporary);
       if (!wasAComponentToBeSyncedToMissing && WasAComponentToBeSyncedToMissing) wasAComponentToBeSyncedToMissing = true;
     });
     return wasAComponentToBeSyncedToMissing;

@@ -1,5 +1,5 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
-import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
+import { ComponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 
@@ -35,12 +35,12 @@ export class JsClassesUtils {
   }
 
   private static assign(overwriteDefaultProperties: boolean, jsClasses: Set<JAVASCRIPT_CLASSES>, staticJsClasses: Set<JAVASCRIPT_CLASSES>,
-      componentTraversalState: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
-    const { subcomponent } = componentTraversalState;
-    if (!subcomponent.customFeatures) {
-      JsClassesUtils.addCustomFeaturesObjects(subcomponent, overwriteDefaultProperties);
+      componentTraversalState: ComponentPreviewTraversalState): ComponentPreviewTraversalState {
+    const { component: { baseSubcomponent } } = componentTraversalState;
+    if (!baseSubcomponent.customFeatures) {
+      JsClassesUtils.addCustomFeaturesObjects(baseSubcomponent, overwriteDefaultProperties);
     }
-    JsClassesUtils.addJsClasses(subcomponent, overwriteDefaultProperties, jsClasses, staticJsClasses);
+    JsClassesUtils.addJsClasses(baseSubcomponent, overwriteDefaultProperties, jsClasses, staticJsClasses);
     return componentTraversalState;
   }
 

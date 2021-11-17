@@ -1,15 +1,14 @@
-import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
+import { AlignedComponentWithMeta, PreviewTraversalCallback, ComponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { AlignmentSectionToComponents } from '../../../../../../interfaces/componentPreviewStructure';
 
 type TraverseAlignedComponentsCallback = (callback: PreviewTraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]) => PreviewTraversalResult;
 
 export class TraverseComponentViaPreviewStructureShared {
 
-  protected static createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): SubcomponentPreviewTraversalState {
+  protected static createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): ComponentPreviewTraversalState {
     const [alignedComponents, alignmentSectionToComponents] = alignedComponentWithMeta;
     return {
-      // WORK 4 - refactor
-      subcomponent: alignedComponents[index].baseSubcomponent,
+      component: alignedComponents[index],
       alignedComponents,
       alignmentSectionToComponents,
       index,

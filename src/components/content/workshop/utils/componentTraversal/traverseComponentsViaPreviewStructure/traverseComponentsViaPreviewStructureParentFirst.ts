@@ -26,7 +26,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
     let traversalResult: PreviewTraversalResult = {};
     for (let i = 0; i < layersArr[0].length; i += 1) {
       traversalResult = callback(...layersArr.map((layers) => {
-        return { subcomponent: layers[i].subcomponent, layers, index: i }}));
+        return { component: layers[i].subcomponent.seedComponent, layers, index: i }; }));
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = TraverseComponentViaPreviewStructureShared.traverseAlignmentSections(
         callback, [...layersArr.map((activeLayers) => activeLayers[i].alignmentSectionToComponents)],
@@ -37,8 +37,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
   }
 
   private static traverseComponent(callback: PreviewTraversalCallback, componentsArr: WorkshopComponent[]): PreviewTraversalResult {
-    const traversalResult = callback(...componentsArr.map((activeComponent) => {
-      return { subcomponent: activeComponent.baseSubcomponent }}));
+    const traversalResult = callback(...componentsArr.map((component) => { return { component }; }));
     if (traversalResult.stopTraversal) return traversalResult;
     return TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
       callback, componentsArr.map((components) => components.componentPreviewStructure.layers));
@@ -123,7 +122,7 @@ initial implementation of traversal made specifically for two components or trav
 1 component:
 
   private static inspectAlignedChildComponent(alignedSubcomponents: Subcomponent[], index: number, alignmentTypeToSubcomponents: AlignmentTypeToSubcomponents,
-      callback: PreviewTraversalCallback): SubcomponentPreviewTraversalState {
+      callback: PreviewTraversalCallback): ComponentPreviewTraversalState {
     const subcomponent = alignedSubcomponents[index];
     const callbackResult = callback({subcomponent, alignedSubcomponents, alignmentTypeToSubcomponents, index});
     if (callbackResult) return callbackResult;
@@ -133,7 +132,7 @@ initial implementation of traversal made specifically for two components or trav
     return null;
   }
 
-  private static iterateAlignmentSections(callback: PreviewTraversalCallback, alignmentTypeToSubcomponents: AlignmentTypeToSubcomponents): SubcomponentPreviewTraversalState {
+  private static iterateAlignmentSections(callback: PreviewTraversalCallback, alignmentTypeToSubcomponents: AlignmentTypeToSubcomponents): ComponentPreviewTraversalState {
     const alignmentSections = Object.keys(alignmentTypeToSubcomponents);
     for (let i = 0; i < alignmentSections.length; i += 1) {
       const alignedSubcomponents = alignmentTypeToSubcomponents[alignmentSections[i]];
@@ -145,7 +144,7 @@ initial implementation of traversal made specifically for two components or trav
     return null;
   }
 
-  public static traverse(callback: PreviewTraversalCallback, previewStructure: ComponentPreviewStructure): SubcomponentPreviewTraversalState {
+  public static traverse(callback: PreviewTraversalCallback, previewStructure: ComponentPreviewStructure): ComponentPreviewTraversalState {
     const { layers } = previewStructure;
     for (let i = 0; i < layers.length; i += 1) {
       const { sections: { alignmentTypeToSubcomponents }, subcomponent } = layers[i];
