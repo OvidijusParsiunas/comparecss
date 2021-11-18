@@ -51,7 +51,7 @@ export class SyncedComponent {
       SyncedComponent.dereferenceSiblingChildComponents(siblingComponentTypes);
       SyncedComponent.removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent, siblingComponentTypes);
     } else {
-      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
+      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, null, inSyncComponent);
     }
   }
 

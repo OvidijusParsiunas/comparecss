@@ -49,6 +49,6 @@ export class JsClassesUtils {
     const jsClasses = component.baseSubcomponent.customFeatures.jsClasses || defaultJsClasses;
     const jsStaticClasses = component.baseSubcomponent.customStaticFeatures.jsClasses || defaultStaticJsClasses;
     TraverseComponentViaPreviewStructureParentFirst.traverse(
-      JsClassesUtils.assign.bind(this, overwriteDefaultProperties, jsClasses, jsStaticClasses), component);
+      JsClassesUtils.assign.bind(this, overwriteDefaultProperties, jsClasses, jsStaticClasses), null, component);
   }
 }

@@ -94,6 +94,7 @@ export class ChangeChildComponentOrder {
     targetDetails.isLowerOrderDirection = direction === CHANGE_COMPONENT_ORDER_DIRECTIONS.LEFT || direction === CHANGE_COMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
+      null,
       masterComponent) as TraversalResultForChangeChildOrder;
     if (!traversalResult.childComponentOrderChanged) return;
     if (traversalResult.traversalState) targetDetails.parentLayerAlignmentSectionToComponents = traversalResult.traversalState.alignmentSectionToComponents;

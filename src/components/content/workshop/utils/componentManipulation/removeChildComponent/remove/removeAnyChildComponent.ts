@@ -171,6 +171,7 @@ export class RemoveAnyChildComponent {
     targetDetails.isRemovingActiveComponent = isRemovingActiveComponent;
     const { traversalState } = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
+      null,
       higherActiveComponentContainer);
     if (traversalState) targetDetails.parentLayerAlignmentSectionToComponents = traversalState.alignmentSectionToComponents;
     TraverseComponentViaDropdownStructure.traverse(

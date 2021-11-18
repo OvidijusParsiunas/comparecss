@@ -1,4 +1,4 @@
-import { AlignedComponentWithMeta, PreviewTraversalCallback, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
+import { AlignedComponentWithMeta, ComponentPreviewTraversalState, PreviewTraversalCallback, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureShared } from './traverseComponentViaPreviewStructureShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
@@ -10,13 +10,9 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
   private static traverseAlignedComponents(callback: PreviewTraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]): PreviewTraversalResult {
     let traversalResult: PreviewTraversalResult = {};
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
-      const availableComponents = alignedComponentsWithMetaArr.filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i]);
-      traversalResult = callback(
-        ...availableComponents.map((alignedComponentWithMeta) => TraverseComponentViaPreviewStructureShared.createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta, i)));
-      if (traversalResult.stopTraversal) return traversalResult;
-      traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
-        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i])
-      );
+      const { traversalStateArr, containerComponents,
+        } = TraverseComponentViaPreviewStructureShared.assembleTraversalArgs(alignedComponentsWithMetaArr, i);
+      traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(callback, traversalStateArr, ...containerComponents);
       if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;
@@ -36,27 +32,29 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
     return traversalResult;
   }
 
-  private static traverseComponent(callback: PreviewTraversalCallback, componentsArr: WorkshopComponent[]): PreviewTraversalResult {
-    const traversalResult = callback(...componentsArr.map((component) => { return { component }; }));
+  private static traverseComponent(callback: PreviewTraversalCallback, existingTraversalStateArr: ComponentPreviewTraversalState[],
+      componentsArr: WorkshopComponent[]): PreviewTraversalResult {
+    const traversalState = existingTraversalStateArr || componentsArr.map((component) => { return { component }; });
+    const traversalResult = callback(...traversalState);
     if (traversalResult.stopTraversal) return traversalResult;
     return TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
       callback, componentsArr.map((components) => components.componentPreviewStructure.layers));
   }
   
   private static traversePaddingComponentChild(callback: PreviewTraversalCallback, paddingChildrenArr: WorkshopComponent[]): PreviewTraversalResult {
-    let traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(callback, paddingChildrenArr);
+    let traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(callback, null, paddingChildrenArr);
     if (traversalResult.stopTraversal) return traversalResult;
     for (let i = 0; i < paddingChildrenArr[0].linkedComponents.auxiliary.length; i += 1) {
       traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(
-        callback, [...paddingChildrenArr.map((paddingChildren) => paddingChildren.linkedComponents.auxiliary[i])]);
+        callback, null, [...paddingChildrenArr.map((paddingChildren) => paddingChildren.linkedComponents.auxiliary[i])]);
       if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;
   }
 
-  // WORK 2 - child components get called twice when syncing button to dropdown
-  public static traverse(callback: PreviewTraversalCallback, ...componentsArr: WorkshopComponent[]): PreviewTraversalResult {
-    let traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(callback, componentsArr);
+  public static traverse(callback: PreviewTraversalCallback, existingTraversalStateArr: ComponentPreviewTraversalState[],
+      ...componentsArr: WorkshopComponent[]): PreviewTraversalResult {
+    let traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(callback, existingTraversalStateArr, componentsArr);
     if (traversalResult.stopTraversal) return traversalResult;
     if (componentsArr[0].paddingComponentChild) {
       traversalResult = TraverseComponentViaPreviewStructureParentFirst.traversePaddingComponentChild(
