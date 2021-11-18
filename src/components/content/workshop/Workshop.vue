@@ -51,8 +51,8 @@
               @toggle-sync-child-component-mode="toggleSyncChildComponentMode($event)"
               @add-child-component="addChildComponent(this, $event)"
               @remove-child-component="removeChildComponent(this, $event)"
-              @change-subcomponent-order="changeSubcomponentOrder(this, $event)"
-              @change-subcomponent-alignment="changeSubcomponentAlignment(this, $event)"
+              @change-child-component-order="changeChildComponentOrder(this, $event)"
+              @change-child-component-alignment="changeChildComponentAlignment(this, $event)"
               @display-syncable-component-card-overlays="displaySyncableComponentCardOverlays($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"

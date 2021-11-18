@@ -1,7 +1,7 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { childComponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveChildComponent/childComponentAlignmentDropdownState';
-import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
-import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
+import { ChangeChildComponentAlignmentEvent, ChangeChildComponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
+import { CHANGE_COMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/changeComponentOrderDirections.enum';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -11,28 +11,28 @@ import { ComponentOptions } from 'vue';
 
 // leaving the functions in here instead of the shared settings folder as this is a very generic function and should only be moved if everything else is
 // being moved
-function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
-  settingsComponent.$emit('change-subcomponent-order', [direction, masterComponent] as ChangeSubcomponentOrderEvent);
+function changeChildComponentOrder(settingsComponent: ComponentOptions, direction: CHANGE_COMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
+  settingsComponent.$emit('change-child-component-order', [direction, masterComponent] as ChangeChildComponentOrderEvent);
 }
 
-function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {
+function changeChildComponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {
   const { settingsComponent, previousItemName, triggeredItemName, subcomponent, isCustomFeatureResetTriggered } = event;
   if (isCustomFeatureResetTriggered) return;
-  settingsComponent.$emit('change-subcomponent-alignment',
-    [previousItemName, triggeredItemName, subcomponent.seedComponent, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
+  settingsComponent.$emit('change-child-component-alignment',
+    [previousItemName, triggeredItemName, subcomponent.seedComponent, shouldSubcomponentNamesBeUpdated] as ChangeChildComponentAlignmentEvent);
 }
 
-function changeSubcomponentAlignmentItemSelect(event: ActionsDropdownMouseEventCallbackEvent): void {
+function changeChildComponentAlignmentItemSelect(event: ActionsDropdownMouseEventCallbackEvent): void {
   const isItemSelected = this as any as boolean;
-  changeSubcomponentAlignment(event, isItemSelected);
+  changeChildComponentAlignment(event, isItemSelected);
   if ((isItemSelected || event.isDropdownHidden) && !event.isCustomFeatureResetTriggered) childComponentAlignmentDropdownState.reset();
 }
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
   return {
-    mouseClickItemCallback: changeSubcomponentAlignmentItemSelect.bind(true),
-    mouseEnterItemCallback: changeSubcomponentAlignment,
-    mouseLeaveDropdownCallback: changeSubcomponentAlignmentItemSelect,
+    mouseClickItemCallback: changeChildComponentAlignmentItemSelect.bind(true),
+    mouseEnterItemCallback: changeChildComponentAlignment,
+    mouseLeaveDropdownCallback: changeChildComponentAlignmentItemSelect,
   };
 }
 
@@ -53,8 +53,8 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: SETTING_NAMES.ORDER,
-        options: DropdownUtils.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
-        itemAction: changeSubcomponentOrder,
+        options: DropdownUtils.generateDropdownStructure([CHANGE_COMPONENT_ORDER_DIRECTIONS.LEFT, CHANGE_COMPONENT_ORDER_DIRECTIONS.RIGHT]),
+        itemAction: changeChildComponentOrder,
       },
     },
   ]

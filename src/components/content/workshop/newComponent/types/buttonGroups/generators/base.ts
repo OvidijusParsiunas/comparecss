@@ -131,7 +131,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   public static setChildComponentsItems(buttonGroupBaseComponent: WorkshopComponent): void {
     const baseComponentItems = [BUTTON_COMPONENTS_BASE_NAMES.BUTTON];
-    // WORK 2 - creat a min and have a minimum number of buttonas as 1
+    // WORK 2 - create a min and have a minimum number of buttonas as 1
     // const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.BUTTON]: 1 }};
     ComponentBuilder.setNewChildComponentsItemsProperties(buttonGroupBaseComponent,
       baseComponentItems, baseComponentItems);

@@ -24,8 +24,8 @@
         @play-animation-preview="$emit('play-animation-preview', $event)"
         @stop-animation-preview="$emit('stop-animation-preview')"
         @remove-insync-option-button="$refs.options.toggleInSyncToOff($event)"
-        @change-subcomponent-order="$emit('change-subcomponent-order', $event)"
-        @change-subcomponent-alignment="$emit('change-subcomponent-alignment', $event)"/>
+        @change-child-component-order="$emit('change-child-component-order', $event)"
+        @change-child-component-alignment="$emit('change-child-component-alignment', $event)"/>
     </div>
   </div>
 </template>

@@ -3,8 +3,8 @@ import { TraverseComponentViaPreviewStructureParentFirst } from '../../component
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
+import { CHANGE_COMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/changeComponentOrderDirections.enum';
 import { Layer, SubcomponentNameToDropdownItemName } from '../../../../../../interfaces/componentPreviewStructure';
-import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -89,9 +89,9 @@ export class ChangeChildComponentOrder {
     return {};
   }
 
-  public static change(direction: SUBCOMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
+  public static change(direction: CHANGE_COMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
     const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
-    targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
+    targetDetails.isLowerOrderDirection = direction === CHANGE_COMPONENT_ORDER_DIRECTIONS.LEFT || direction === CHANGE_COMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
       masterComponent) as TraversalResultForChangeChildOrder;

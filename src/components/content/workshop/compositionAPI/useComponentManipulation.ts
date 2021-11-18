@@ -1,4 +1,4 @@
-import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent, RemoveChildComponentEvent } from '../../../../interfaces/settingsComponentEvents';
+import { ChangeChildComponentAlignmentEvent, ChangeChildComponentOrderEvent, RemoveChildComponentEvent } from '../../../../interfaces/settingsComponentEvents';
 import { AddTemporaryAddPreviewComponent } from '../utils/componentManipulation/addChildComponent/addTemporaryAddPreviewComponent';
 import { ChangeChildComponentAlignment } from '../utils/componentManipulation/moveChildComponent/changeChildComponentAlignment';
 import { ChangeChildComponentOrder } from '../utils/componentManipulation/moveChildComponent/changeChildComponentOrder';
@@ -38,15 +38,14 @@ export default function useComponentManipulation(): UseComponentManipulation {
     if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
-  // WORK 2 - refactor
-  const changeSubcomponentOrder = (workshopComponent: ComponentOptions, moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void => {
+  const changeChildComponentOrder = (workshopComponent: ComponentOptions, moveSubcomponentEvent: ChangeChildComponentOrderEvent): void => {
     ChangeChildComponentOrder.change(...moveSubcomponentEvent);
     workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
-  const changeSubcomponentAlignment = (workshopComponent: ComponentOptions, changeSubcomponentAlignmentEvent: ChangeSubcomponentAlignmentEvent): void => {
-    ChangeChildComponentAlignment.change(workshopComponent.currentlySelectedComponent, ...changeSubcomponentAlignmentEvent);
-    const shouldSubcomponentNamesBeUpdated = changeSubcomponentAlignmentEvent[3];
+  const changeChildComponentAlignment = (workshopComponent: ComponentOptions, changeChildComponentAlignmentEvent: ChangeChildComponentAlignmentEvent): void => {
+    ChangeChildComponentAlignment.change(workshopComponent.currentlySelectedComponent, ...changeChildComponentAlignmentEvent);
+    const shouldSubcomponentNamesBeUpdated = changeChildComponentAlignmentEvent[3];
     if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
@@ -60,8 +59,8 @@ export default function useComponentManipulation(): UseComponentManipulation {
     addChildComponent,
     removeComponent,
     removeChildComponent,
-    changeSubcomponentOrder,
-    changeSubcomponentAlignment,
+    changeChildComponentOrder,
+    changeChildComponentAlignment,
     copyComponent,
   };
 }

@@ -20,7 +20,7 @@ export class MenuIndexAlignment {
     subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].zIndex = newZIndex;
   }
 
-  private static changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, newMenuAlignment: string,
+  private static changeChildComponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, newMenuAlignment: string,
       menuSubcomponent: Subcomponent, otherSubcomponent: Subcomponent): void {
     const { triggeredItemName, subcomponent: currentSubcomponent, isCustomFeatureResetTriggered } = event;
     const newSubcomponentAlignment = triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT;
@@ -29,25 +29,25 @@ export class MenuIndexAlignment {
     if (isCustomFeatureResetTriggered) currentSubcomponent.customFeatures.dropdown.indexAlignment = newSubcomponentAlignment;
   }
 
-  private static changeFromMenuSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
+  private static changeFromMenuComponent(event: ActionsDropdownMouseEventCallbackEvent): void {
     const menuSubcomponent = event.subcomponent;
     const buttonSubcomponent = menuSubcomponent.seedComponent.linkedComponents.base.baseSubcomponent;
-    MenuIndexAlignment.changeSubcomponentAlignment(event, event.triggeredItemName, menuSubcomponent, buttonSubcomponent);
+    MenuIndexAlignment.changeChildComponentAlignment(event, event.triggeredItemName, menuSubcomponent, buttonSubcomponent);
   }
 
-  private static changeFromButtonSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
+  private static changeFromButtonComponent(event: ActionsDropdownMouseEventCallbackEvent): void {
     const buttonSubcomponent = event.subcomponent;
     const menuSubcomponent = buttonSubcomponent.seedComponent.linkedComponents.auxiliary[0].baseSubcomponent;
     const newMenuAlignment = MenuIndexAlignment.getCounterAlignment(event.triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT);
-    MenuIndexAlignment.changeSubcomponentAlignment(event, newMenuAlignment, menuSubcomponent, menuSubcomponent);
+    MenuIndexAlignment.changeChildComponentAlignment(event, newMenuAlignment, menuSubcomponent, menuSubcomponent);
   }
 
   public static change(event: ActionsDropdownMouseEventCallbackEvent): void {
     const currentComponent = event.subcomponent.seedComponent;
     if (currentComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-      MenuIndexAlignment.changeFromMenuSubcomponent(event);
+      MenuIndexAlignment.changeFromMenuComponent(event);
     } else {
-      MenuIndexAlignment.changeFromButtonSubcomponent(event);
+      MenuIndexAlignment.changeFromButtonComponent(event);
     }
   }
 }
