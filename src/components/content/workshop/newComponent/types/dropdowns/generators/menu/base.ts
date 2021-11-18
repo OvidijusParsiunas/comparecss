@@ -2,7 +2,7 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, Workshop
 import { LAYER_COMPONENTS_BASE_NAMES, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
-import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
+import { DROPDOWN_MENU_Z_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { DropdownUtils } from '../../../../../utils/componentManipulation/utils/dropdownUtils';
@@ -143,7 +143,7 @@ export class DropdownMenuBase extends ComponentBuilder {
 
   private static createDefaultDropdownProperties(): DropdownFeatures {
     return {
-      indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE,
+      zIndexAlignment: DROPDOWN_MENU_Z_INDEX_ALIGNMENT.ABOVE,
       menuPosition: DropdownMenuBase.createDefaultMenuPosition(),
     };
   }

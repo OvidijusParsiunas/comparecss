@@ -1,4 +1,4 @@
-import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../consts/dropdownMenuAlignment.enum';
+import { DROPDOWN_MENU_Z_INDEX_ALIGNMENT } from '../consts/dropdownMenuAlignment.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
 import { Subcomponent } from './workshopComponent';
 
@@ -24,5 +24,5 @@ export type SelectDropdown = {
 export interface DropdownFeatures {
   select?: SelectDropdown;
   menuPosition?: DropdownMenuPosition;
-  indexAlignment?: DROPDOWN_MENU_INDEX_ALIGNMENT;
+  zIndexAlignment?: DROPDOWN_MENU_Z_INDEX_ALIGNMENT;
 }

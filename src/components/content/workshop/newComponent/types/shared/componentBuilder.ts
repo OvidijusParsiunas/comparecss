@@ -3,8 +3,8 @@ import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDis
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { ChildComponentCountLimitsState } from '../../../../../../interfaces/childComponentCountLimitsState';
+import { DROPDOWN_MENU_Z_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
-import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { ComponentTypeToProperties } from '../../../../../../interfaces/componentTypeToProperties';
 import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
@@ -182,10 +182,10 @@ export class ComponentBuilder {
     };
   }
 
-  protected static createDopdownFeatures(selectDropdown: SelectDropdown, indexAlignment?: DROPDOWN_MENU_INDEX_ALIGNMENT): DropdownFeatures {
+  protected static createDopdownFeatures(selectDropdown: SelectDropdown, zIndexAlignment?: DROPDOWN_MENU_Z_INDEX_ALIGNMENT): DropdownFeatures {
     return {
       select: selectDropdown || ComponentBuilder.createSelectDropdownProperties(),
-      indexAlignment,
+      zIndexAlignment,
     };
   }
 

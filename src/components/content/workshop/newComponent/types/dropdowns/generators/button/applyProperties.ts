@@ -1,4 +1,4 @@
-import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
+import { DROPDOWN_MENU_Z_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { LinkedComponentsUtils } from '../../../shared/linkedComponents/linkedComponentsUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
@@ -33,9 +33,9 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
 
   private static overwriteButtonBaseDropdownProperties(paddingBaseSubcomponent: Subcomponent, buttonBaseSubcomponent: Subcomponent): void {
     buttonBaseSubcomponent.customFeatures.dropdown = ComponentBuilder.createDopdownFeatures(
-      paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW);
+      paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_Z_INDEX_ALIGNMENT.BELOW);
     buttonBaseSubcomponent.defaultCustomFeatures.dropdown = ComponentBuilder.createDopdownFeatures(
-      paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW);
+      paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_Z_INDEX_ALIGNMENT.BELOW);
     buttonBaseSubcomponent.customStaticFeatures.selectDropdownText = paddingBaseSubcomponent.customStaticFeatures.selectDropdownText;
     buttonBaseSubcomponent.defaultCustomStaticFeatures.selectDropdownText = paddingBaseSubcomponent.defaultCustomStaticFeatures.selectDropdownText;
   }
