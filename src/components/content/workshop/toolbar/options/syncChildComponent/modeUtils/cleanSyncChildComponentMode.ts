@@ -41,7 +41,7 @@ export class CleanSyncChildComponentMode {
   public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetBaseSubcomponent = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     TraverseComponentViaPreviewStructureParentFirst.traverse(
-      CleanSyncChildComponentMode.resetBaseSubcomponent.bind(resetBaseSubcomponent), null, activeComponent);
+      CleanSyncChildComponentMode.resetBaseSubcomponent.bind(resetBaseSubcomponent), activeComponent);
     CleanSyncChildComponentMode.unsetSiblingComponentPropertiesThatWereMissing(activeComponent);
   }
   

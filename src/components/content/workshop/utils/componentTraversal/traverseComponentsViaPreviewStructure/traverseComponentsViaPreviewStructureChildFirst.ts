@@ -12,7 +12,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
       const { traversalStateArr, containerComponents,
         } = TraverseComponentViaPreviewStructureShared.assembleTraversalArgs(alignedComponentsWithMetaArr, i);
-      traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverse(callback, traversalStateArr, ...containerComponents);
+      traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverse.bind(traversalStateArr)(callback, ...containerComponents);
       if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;
@@ -50,8 +50,9 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
     return TraverseComponentViaPreviewStructureChildFirst.traverseComponent(callback, null, paddingChildrenArr);
   }
 
-  public static traverse(callback: PreviewTraversalCallback, existingTraversalStateArr: ComponentPreviewTraversalState[],
-      ...componentsArr: WorkshopComponent[]): PreviewTraversalResult {
+  public static traverse(callback: PreviewTraversalCallback, ...componentsArr: WorkshopComponent[]): PreviewTraversalResult {
+    const context = this as any as ComponentPreviewTraversalState[];
+    const existingTraversalStateArr = context[0] ? context : null;
     if (componentsArr[0].paddingComponentChild) {
       const traversalResult = TraverseComponentViaPreviewStructureChildFirst.traversePaddingComponentChild(
         callback, [...componentsArr.map((components) => components.paddingComponentChild)]);
