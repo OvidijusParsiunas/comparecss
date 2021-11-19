@@ -25,9 +25,9 @@ export class SyncChildComponent {
   }
 
   private static syncAllCustomProperties(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent): void {
-    Object.assign(syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
-    Object.assign(syncableSubcomponent.customCss, subcomponentToBeSyncedTo.customCss);
+    syncableSubcomponent.customFeatures = subcomponentToBeSyncedTo.customFeatures;
     const componentToBeSyncedCustomCss = subcomponentToBeSyncedTo.customCss;
+    syncableSubcomponent.customCss = componentToBeSyncedCustomCss;
     if (!componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top && subcomponentToBeSyncedTo.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddContainerComponent.DEFAULT_TOP_PROPERTY;
     }
