@@ -4,6 +4,7 @@ import { Option } from '../../../../../../interfaces/componentOptions';
 export class ComponentOptionsUtils {
 
   // can replace original options and additionally append entirely new options to the end
+  // this is used for option replacement in order to maintain the original option order
   public static overwriteOptions(oldOptions: Option[], newOptions: Option[]): Option[] {
     let resultOptions: Option[] = [];
     const newArrayOptionsCp = [...newOptions];

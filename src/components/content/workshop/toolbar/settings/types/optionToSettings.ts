@@ -2,6 +2,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshop
 import childComponentPositionVerticalOffset from './childComponentPositionVerticalOffset';
 import childComponentPositionNoAlign from './childComponentPositionNoAlign';
 import buttonGroupButtonBorder from './buttonGroupButtonBorder';
+import buttonGroupButtonShadow from './buttonGroupButtonShadow';
 import dropdownButtonPosition from './dropdownButtonPosition';
 import childComponentPosition from './childComponentPosition';
 import selectDropdownButtonSize from './dropdownButtonSize';
@@ -93,4 +94,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: icon,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_BORDER]: buttonGroupButtonBorder,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_SHADOW]: buttonGroupButtonShadow,
 };

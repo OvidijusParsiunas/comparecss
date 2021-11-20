@@ -19,6 +19,10 @@ const buttonGroupButtonSpecificActiveOptions = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_COLOR,
   },
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_SHADOW,
+  },
 ];
 
 export const buttonGroupButtonOptions: SubcomponentOptions<ButtonGroupButtonOptionsModes> = {
@@ -28,11 +32,9 @@ export const buttonGroupButtonOptions: SubcomponentOptions<ButtonGroupButtonOpti
       buttonGroupButtonSpecificOptions),
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [
-    ...buttonGroupButtonSpecificActiveOptions,
-    ...childButtonOptions[CSS_PSEUDO_CLASSES.HOVER],
+    ...ComponentOptionsUtils.overwriteOptions(childButtonOptions[CSS_PSEUDO_CLASSES.HOVER], buttonGroupButtonSpecificActiveOptions),
   ],
   [CSS_PSEUDO_CLASSES.CLICK]: [
-    ...buttonGroupButtonSpecificActiveOptions,
-    ...childButtonOptions[CSS_PSEUDO_CLASSES.CLICK],
+    ...ComponentOptionsUtils.overwriteOptions(childButtonOptions[CSS_PSEUDO_CLASSES.CLICK], buttonGroupButtonSpecificActiveOptions),
   ],
 };
