@@ -7,9 +7,8 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 
 export class CleanSyncChildComponentMode {
 
-  // WORK 2 - should this work
   private static unsetSiblingComponentPropertiesThatWereMissing(activeComponent: WorkshopComponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent.parentLayer);
     if (!siblingComponentTypes) return;
     Object.keys(siblingComponentTypes).forEach((componentType: COMPONENT_TYPES) => {
       const subcomponent = (siblingComponentTypes[componentType] as SiblingComponentState).customDynamicProperties;
@@ -20,10 +19,21 @@ export class CleanSyncChildComponentMode {
     });
   }
 
-  private static resetOriginalCss(baseSubcomponent: Subcomponent): void {
+  private static resetOriginalCustomProperties(baseSubcomponent: Subcomponent): void {
     if (!baseSubcomponent.tempOriginalCustomProperties) return;
-    baseSubcomponent.customCss = baseSubcomponent.tempOriginalCustomProperties.customCss;
-    baseSubcomponent.customFeatures = baseSubcomponent.tempOriginalCustomProperties.customFeatures;
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(baseSubcomponent.seedComponent.parentLayer);
+    if (siblingComponentTypes) {
+      // this is used to unsync custom properties for synced auto synced components like buttons in a button group
+      Object.assign(baseSubcomponent.customCss, baseSubcomponent.tempOriginalCustomProperties.customCss);
+      Object.assign(baseSubcomponent.customFeatures, baseSubcomponent.tempOriginalCustomProperties.customFeatures);
+    } else {
+      // this is the default way for unsyncing custom properties for child components as the one above causes the following issue:
+      // upon viewing a syncable component (by hovering over its card with the mouse) and then blurring would edit the actual
+      // syncable component as Object.assign edits that component's referecne instead of overwriting it. This can be reproduced
+      // by hovering over sync button card and blurring it when in a dropdown component, switch to see that button's properties
+      baseSubcomponent.customCss = baseSubcomponent.tempOriginalCustomProperties.customCss;
+      baseSubcomponent.customFeatures = baseSubcomponent.tempOriginalCustomProperties.customFeatures;
+    }
   }
 
   private static resetBaseSubcomponent(activeComponentTraversal: ComponentPreviewTraversalState): ComponentPreviewTraversalState {
@@ -31,7 +41,7 @@ export class CleanSyncChildComponentMode {
     const { component } = activeComponentTraversal;
     const { baseSubcomponent, sync: { temporarySyncExecutables } } = component;
     if (resetBaseSubcomponent) {
-      CleanSyncChildComponentMode.resetOriginalCss(baseSubcomponent);
+      CleanSyncChildComponentMode.resetOriginalCustomProperties(baseSubcomponent);
       temporarySyncExecutables?.off?.(component);
     }
     delete baseSubcomponent.tempOriginalCustomProperties;

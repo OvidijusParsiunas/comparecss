@@ -16,7 +16,7 @@ interface SynSyncablesResult {
 }
 
 export class SyncChildComponent {
-  
+
   private static moveCustomPropertiesToTempProperties(syncableSubcomponent: CustomDynamicProperties): void {
     syncableSubcomponent.tempOriginalCustomProperties = {
       customCss: JSONUtils.deepCopy(syncableSubcomponent.customCss),
@@ -25,9 +25,24 @@ export class SyncChildComponent {
   }
 
   private static syncAllCustomProperties(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent): void {
-    syncableSubcomponent.customFeatures = subcomponentToBeSyncedTo.customFeatures;
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(syncableSubcomponent.seedComponent.parentLayer, 2);
+    if (siblingComponentTypes) {
+      // this is used to sync custom properties for auto synced components like buttons in a button group
+      Object.assign(syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
+      Object.assign(syncableSubcomponent.customCss, subcomponentToBeSyncedTo.customCss); 
+    } else {
+      // this is the default way for syncing custom properties for child components as the one above causes the following issue:
+      // upon adding a child dropdown to card then syncing the dropdown button and syncing the whole dropdown after that still
+      // keeps the synced to button custom properties reference
+      // hence the above implementation restricts auto synced components to be in a component that can be a syncable child
+      syncableSubcomponent.customFeatures = subcomponentToBeSyncedTo.customFeatures;
+      syncableSubcomponent.customCss = subcomponentToBeSyncedTo.customCss;
+    }
+  }
+
+  private static syncAllCustomPropertiesAndAddTop(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent): void {
+    SyncChildComponent.syncAllCustomProperties(subcomponentToBeSyncedTo, syncableSubcomponent);
     const componentToBeSyncedCustomCss = subcomponentToBeSyncedTo.customCss;
-    syncableSubcomponent.customCss = componentToBeSyncedCustomCss;
     if (!componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top && subcomponentToBeSyncedTo.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddContainerComponent.DEFAULT_TOP_PROPERTY;
     }
@@ -50,14 +65,14 @@ export class SyncChildComponent {
     if (Object.keys(subcomponentToBeSyncedTo.customFeatures).length !== Object.keys(syncableSubcomponent.customFeatures).length) {
       SyncChildComponent.syncPropertiesThatOnlyExistInActiveComponent(subcomponentToBeSyncedTo, syncableSubcomponent);
     } else {
-      SyncChildComponent.syncAllCustomProperties(subcomponentToBeSyncedTo, syncableSubcomponent);
+      SyncChildComponent.syncAllCustomPropertiesAndAddTop(subcomponentToBeSyncedTo, syncableSubcomponent);
     }
   }
 
   // if a subcomponent does not exist in the componentToBeSyncedTo, but does in its siblings - add it
   private static setMissingSiblingComponentProperties(componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
       siblingComponentTypes: SiblingComponentTypes, componentType: COMPONENT_TYPES): void {
-    const subcomponentToBeSyncedTo = componentToBeSyncedTo?.sync.syncables.onCopy.uniqueComponents[componentType].baseSubcomponent;
+    const subcomponentToBeSyncedTo = componentToBeSyncedTo?.sync.syncables.onCopy.uniqueComponents[componentType]?.baseSubcomponent;
     // when neither the component to be synced to nor the exact sibling component has a particular subcomponent
     // (if sibling component does have the subcomponent it is added by the normal syncSubcomponent process)
     if (!subcomponentToBeSyncedTo || !siblingComponentTypes[componentType]) return;
@@ -133,7 +148,7 @@ export class SyncChildComponent {
 
   public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent.parentLayer);
     SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true, siblingComponentTypes);
     activeComponent.sync.temporarySyncExecutables?.on?.(activeComponent);
   }
@@ -145,7 +160,7 @@ export class SyncChildComponent {
   }
 
   public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(currentlySelectedComponent);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(currentlySelectedComponent.parentLayer);
     if (!siblingComponentTypes) return;
     const { alignmentSectionToComponents } = currentlySelectedComponent.parentLayer;
     Object.keys(alignmentSectionToComponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {

@@ -1,8 +1,8 @@
 import { SyncableComponentTraversalCallback, SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SyncChildComponent } from '../../../toolbar/options/syncChildComponent/syncChildComponent';
-import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
 // note that this only works if the child container type that can be added is the same - e.g. only buttons
@@ -10,23 +10,21 @@ import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 // type to abstract siblingComponentTypes property
 export class AutoSyncedSiblingContainerComponentUtils {
 
-  // only goes as far as 2 parent layer levels
-  private static getAutoSyncedSiblingComponents(parentLayer: Layer): SiblingComponentTypes {
-    const parentLayerComponent = parentLayer.subcomponent.seedComponent;
+  // passing parentLayer instead ofn the actual component because temporary components do not have parentLayer
+  public static getSiblingComponentTypes(parentLayer: Layer, numberOfLevels = 1): SiblingComponentTypes {
+    if (numberOfLevels === 0) return null;
+    const parentLayerComponent = parentLayer?.subcomponent.seedComponent;
+    if (!parentLayerComponent) return null;
     if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
       return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingComponentTypes;
     }
-    const parentParentSiblingChildComponentsAutoSynced = parentLayerComponent.containerComponent
-      ?.parentLayer?.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
-    if (parentParentSiblingChildComponentsAutoSynced) {
-      return parentParentSiblingChildComponentsAutoSynced.siblingComponentTypes;
-    }
-    return null;
+    return AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(parentLayerComponent.containerComponent.parentLayer,
+      numberOfLevels -= 1);
   }
 
   private static callCountManipulationCallbackOnSubcomponents(parentLayer: Layer, childComponent: WorkshopComponent,
       callback: SyncableComponentTraversalCallback): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getAutoSyncedSiblingComponents(parentLayer);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(parentLayer, 2);
     if (siblingComponentTypes) {
       SyncChildComponentUtils.callFuncOnSyncableComponents(callback, childComponent, siblingComponentTypes);
     }
@@ -59,10 +57,6 @@ export class AutoSyncedSiblingContainerComponentUtils {
   public static decrementSiblingComponentCount(parentLayer: Layer, childComponent: WorkshopComponent): void {
     AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
-  }
-
-  public static getSiblingComponentTypes(component: WorkshopComponent): SiblingComponentTypes {
-    return component.parentLayer?.subcomponent.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingComponentTypes;
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {

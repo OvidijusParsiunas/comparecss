@@ -46,7 +46,7 @@ export class SyncedComponent {
   }
 
   private static unsyncFromComponentCurrentlySyncedTo(inSyncComponent: WorkshopComponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(inSyncComponent);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(inSyncComponent.parentLayer);
     if (siblingComponentTypes) {
       SyncedComponent.dereferenceSiblingChildComponents(siblingComponentTypes);
       SyncedComponent.removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent, siblingComponentTypes);

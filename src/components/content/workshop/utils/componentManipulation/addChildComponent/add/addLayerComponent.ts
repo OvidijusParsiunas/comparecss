@@ -138,7 +138,7 @@ export class AddLayerComponent extends AddComponentShared {
     AddComponentShared.addNewSubcomponentNameInContainerDropdownItemNameMap(masterComponent, newComponent, isEditable);
     AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
     IncrementChildComponentCountLimitsState.increment(higherComponentContainer, layerName);
-    AddComponentShared.cleanSubcomponent(newComponent);
+    AddComponentShared.cleanComponent(newComponent);
     // needs to be done after dropdown items have been updated as property overwritables can add new components
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');
     AddLayerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
