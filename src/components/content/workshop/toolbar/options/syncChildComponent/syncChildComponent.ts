@@ -25,7 +25,7 @@ export class SyncChildComponent {
   }
 
   private static syncAllCustomProperties(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(syncableSubcomponent.seedComponent.parentLayer, 2);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(syncableSubcomponent.seedComponent, 2);
     if (siblingComponentTypes) {
       // this is used to sync custom properties for auto synced components like buttons in a button group
       Object.assign(syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
@@ -148,7 +148,7 @@ export class SyncChildComponent {
 
   public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent.parentLayer);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
     SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true, siblingComponentTypes);
     activeComponent.sync.temporarySyncExecutables?.on?.(activeComponent);
   }
@@ -160,7 +160,7 @@ export class SyncChildComponent {
   }
 
   public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(currentlySelectedComponent.parentLayer);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(currentlySelectedComponent);
     if (!siblingComponentTypes) return;
     const { alignmentSectionToComponents } = currentlySelectedComponent.parentLayer;
     Object.keys(alignmentSectionToComponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {

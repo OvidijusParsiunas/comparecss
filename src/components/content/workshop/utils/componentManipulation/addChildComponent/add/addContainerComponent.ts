@@ -143,7 +143,7 @@ export class AddContainerComponent extends AddComponentShared {
     IncrementChildComponentCountLimitsState.increment(containerComponent, baseNamePrefix);
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanComponent(newComponent);
-    AddComponentShared.executeOverwritables(newComponent, containerComponent, 'container', parentLayer);
+    AddComponentShared.executeOverwritables(newComponent, containerComponent, 'container');
     AutoSyncedSiblingContainerComponentUtils.setComponentToBeInSyncIfSiblingsSynced(parentLayer, newComponent);
     AddContainerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;

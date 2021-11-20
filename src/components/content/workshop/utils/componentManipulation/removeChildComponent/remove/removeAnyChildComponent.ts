@@ -139,7 +139,7 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent, containerComponent);
     alignedComponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, component.baseSubcomponent);
-    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(component.parentLayer, component);
+    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(component);
   }
 
   private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {

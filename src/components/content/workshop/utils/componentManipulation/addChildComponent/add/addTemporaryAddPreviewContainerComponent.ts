@@ -15,7 +15,7 @@ export class AddTemporaryAddPreviewContainerComponent extends AddContainerCompon
     AddChildComponentOverlay.display(newComponent);
     Object.assign(containerComponent.subcomponents, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
-    AddContainerComponent.executeOverwritables(newComponent, activeComponent, 'container', parentLayer);
+    AddContainerComponent.executeOverwritables(newComponent, activeComponent, 'container');
     return newComponent;
   }
 }

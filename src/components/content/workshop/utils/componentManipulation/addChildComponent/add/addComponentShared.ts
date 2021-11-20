@@ -79,8 +79,8 @@ export class AddComponentShared {
   }
 
   protected static executeOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
-      sharingFuncType: keyof ReferenceSharingFuncType, parentLayer: Layer): void {
+      sharingFuncType: keyof ReferenceSharingFuncType): void {
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, sharingFuncType);
-    AutoSyncedSiblingContainerComponentUtils.copySiblingIfAutoSynced(parentLayer, newComponent);
+    AutoSyncedSiblingContainerComponentUtils.copySiblingIfAutoSynced(newComponent);
   }
 }

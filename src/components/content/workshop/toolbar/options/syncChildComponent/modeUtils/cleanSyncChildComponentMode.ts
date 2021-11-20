@@ -8,7 +8,7 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 export class CleanSyncChildComponentMode {
 
   private static unsetSiblingComponentPropertiesThatWereMissing(activeComponent: WorkshopComponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent.parentLayer);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
     if (!siblingComponentTypes) return;
     Object.keys(siblingComponentTypes).forEach((componentType: COMPONENT_TYPES) => {
       const subcomponent = (siblingComponentTypes[componentType] as SiblingComponentState).customDynamicProperties;
@@ -21,7 +21,7 @@ export class CleanSyncChildComponentMode {
 
   private static resetOriginalCustomProperties(baseSubcomponent: Subcomponent): void {
     if (!baseSubcomponent.tempOriginalCustomProperties) return;
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(baseSubcomponent.seedComponent.parentLayer);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(baseSubcomponent.seedComponent);
     if (siblingComponentTypes) {
       // this is used to unsync custom properties for synced auto synced components like buttons in a button group
       Object.assign(baseSubcomponent.customCss, baseSubcomponent.tempOriginalCustomProperties.customCss);

@@ -10,21 +10,19 @@ import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 // type to abstract siblingComponentTypes property
 export class AutoSyncedSiblingContainerComponentUtils {
 
-  // passing parentLayer instead ofn the actual component because temporary components do not have parentLayer
-  public static getSiblingComponentTypes(parentLayer: Layer, numberOfLevels = 1): SiblingComponentTypes {
+  public static getSiblingComponentTypes(component: WorkshopComponent, numberOfLevels = 1): SiblingComponentTypes {
     if (numberOfLevels === 0) return null;
-    const parentLayerComponent = parentLayer?.subcomponent.seedComponent;
+    const parentLayerComponent = component?.parentLayer?.subcomponent.seedComponent;
     if (!parentLayerComponent) return null;
     if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
       return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingComponentTypes;
     }
-    return AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(parentLayerComponent.containerComponent.parentLayer,
-      numberOfLevels -= 1);
+    return AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(component.containerComponent, numberOfLevels -= 1);
   }
 
-  private static callCountManipulationCallbackOnSubcomponents(parentLayer: Layer, childComponent: WorkshopComponent,
+  private static callCountManipulationCallbackOnSubcomponents(childComponent: WorkshopComponent,
       callback: SyncableComponentTraversalCallback): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(parentLayer, 2);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(childComponent, 2);
     if (siblingComponentTypes) {
       SyncChildComponentUtils.callFuncOnSyncableComponents(callback, childComponent, siblingComponentTypes);
     }
@@ -40,9 +38,9 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  public static copySiblingIfAutoSynced(parentLayer: Layer, childComponent: WorkshopComponent): void {
-    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
-      parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
+  public static copySiblingIfAutoSynced(childComponent: WorkshopComponent): void {
+    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(childComponent,
+      AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
   }
 
   private static decrementAndRemoveIfNoneLeft(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
@@ -54,9 +52,9 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  public static decrementSiblingComponentCount(parentLayer: Layer, childComponent: WorkshopComponent): void {
-    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
-      parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
+  public static decrementSiblingComponentCount(childComponent: WorkshopComponent): void {
+    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(childComponent,
+      AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {
