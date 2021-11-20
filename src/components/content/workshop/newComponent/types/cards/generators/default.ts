@@ -26,14 +26,14 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
-    const { baseSubcomponent } = cancelButton.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    const { baseSubcomponent } = cancelButton.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
     baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
     baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
     DefaultCard.setComponentToRemovable(cancelButton);
   }
 
   private static overwriteSubmitButtonProperties(submitButtonComponent: WorkshopComponent): void {
-    const { baseSubcomponent } = submitButtonComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    const { baseSubcomponent } = submitButtonComponent.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
     baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
     baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
     DefaultCard.setComponentToRemovable(submitButtonComponent);

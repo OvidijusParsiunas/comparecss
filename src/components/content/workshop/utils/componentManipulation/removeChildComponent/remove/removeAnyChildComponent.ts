@@ -27,10 +27,10 @@ export class RemoveAnyChildComponent {
   }
 
   private static removeSyncableComponent(parentComponent: WorkshopComponent, removedComponent: WorkshopComponent): void {
-    const { onCopy } = parentComponent.sync.syncables;
-    if (onCopy) {
+    const { onSyncComponents } = parentComponent.sync.syncables;
+    if (onSyncComponents) {
       const { type } = removedComponent;
-      if (onCopy.uniqueComponents[type]) onCopy.uniqueComponents[type] = null;
+      if (onSyncComponents.uniqueComponents[type]) onSyncComponents.uniqueComponents[type] = null;
     }
   }
 

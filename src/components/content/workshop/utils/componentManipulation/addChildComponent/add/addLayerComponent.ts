@@ -53,7 +53,7 @@ export class AddLayerComponent extends AddComponentShared {
   }
 
   private static getMatchingComponentFromAnotherContainerSyncables(targetComponent: WorkshopComponent, anotherContainer: WorkshopComponent): WorkshopComponent {
-    return anotherContainer.sync.syncables.onCopy.repeatedComponents.find((component) => component.type === targetComponent.type);
+    return anotherContainer.sync.syncables.onSyncComponents.repeatedComponents.find((component) => component.type === targetComponent.type);
   }
 
   private static copySyncedComponent(syncedComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayerProperties: Subcomponent): void {

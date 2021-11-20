@@ -12,7 +12,7 @@ import { DropdownPaddingBase } from './base';
 class DefaultDropdownPadding extends ComponentBuilder {
 
   private static overwriteButtonTextCustomStaticFeatures(buttonComponent: WorkshopComponent): void {
-    const textSubcomponent = buttonComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT].baseSubcomponent;
+    const textSubcomponent = buttonComponent.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT].baseSubcomponent;
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
   }

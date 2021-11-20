@@ -27,14 +27,14 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
-    const { baseSubcomponent } = cancelButton.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    const { baseSubcomponent } = cancelButton.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
     baseSubcomponent.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
     baseSubcomponent.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
     DefaultModal.setComponentToRemovable(cancelButton);
   }
 
   private static overwriteSubmitButtonProperties(submitButtonComponent: WorkshopComponent): void {
-    const { baseSubcomponent } = submitButtonComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    const { baseSubcomponent } = submitButtonComponent.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
     baseSubcomponent.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
     baseSubcomponent.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
     DefaultModal.setComponentToRemovable(submitButtonComponent);

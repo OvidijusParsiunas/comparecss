@@ -52,7 +52,7 @@ export class SyncChildComponentUtils {
 
   public static callFuncOnSyncableComponents(callback: SyncableComponentTraversalCallback, childComponent: WorkshopComponent,
       siblingComponentTypes?: SiblingComponentTypes): void {
-    const { uniqueComponents } = childComponent.sync.syncables.onCopy || {};
+    const { uniqueComponents } = childComponent.sync.syncables.onSyncComponents || {};
     if (uniqueComponents) {
       Object.keys(uniqueComponents).forEach((componentType) => {
         const component: WorkshopComponent = uniqueComponents[componentType];

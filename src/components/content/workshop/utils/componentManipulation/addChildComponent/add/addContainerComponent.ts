@@ -52,7 +52,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const { baseSubcomponent, parentLayer } = newComponent;
-    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onCopy?.uniqueComponents, newComponent.type, newComponent);
+    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onSyncComponents?.uniqueComponents, newComponent.type, newComponent);
     SubcomponentTriggers.set(containerComponent, parentLayer.subcomponent, baseSubcomponent, baseSubcomponent.subcomponentType);
   }
 

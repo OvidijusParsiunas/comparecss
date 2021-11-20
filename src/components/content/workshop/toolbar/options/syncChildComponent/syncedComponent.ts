@@ -72,13 +72,13 @@ export class SyncedComponent {
 
   public static findChildComponentToSync(targetChildComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,
       containerType: COMPONENT_TYPES): WorkshopComponent {
-    const { sync: { syncables: { onCopy: { uniqueComponents, repeatedComponents } } } } = componentThisIsSyncedTo;
+    const { sync: { syncables: { onSyncComponents: { uniqueComponents, repeatedComponents } } } } = componentThisIsSyncedTo;
     if (componentThisIsSyncedTo.type === containerType) {
       return uniqueComponents[targetChildComponent.type];
     }
     // WORK 2 - each text is called twice
     const repeatedComponentMatchingContainerType = repeatedComponents.find((repeatedComponent) => repeatedComponent.type === containerType);
-    return repeatedComponentMatchingContainerType.sync.syncables.onCopy.uniqueComponents[targetChildComponent.type];
+    return repeatedComponentMatchingContainerType.sync.syncables.onSyncComponents.uniqueComponents[targetChildComponent.type];
   }
 
   public static copyChildPropertiesFromInSyncContainerComponent(targetChildComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,

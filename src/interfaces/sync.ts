@@ -9,7 +9,7 @@ interface TemporarySyncExecutables {
   off?: (componentToBeSynced: WorkshopComponent) => void;
 }
 
-interface OnCopy {
+interface OnSyncComponents {
   // this stores syncable components that are unique and not repeated - e.g button text and icon
   // the map structure is used to overcome the problem of differently aligned components with
   // different orders - as we would originally run into problems on copying a button that has
@@ -28,9 +28,8 @@ export interface Syncables {
   // this is mostly used to find component if any container or parent is in sync and if other
   // components are synced to them so they can be updated accordingly
   containerComponents: WorkshopComponent[];
-  // properties which would be synced if current component was synced to another component
-  // WORK 2 - onSync?
-  onCopy?: OnCopy;
+  // component that would be synced if current component was synced to another component
+  onSyncComponents?: OnSyncComponents;
 }
 
 export interface Sync {

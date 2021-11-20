@@ -137,7 +137,7 @@ export class ComponentBuilder {
   protected static createSyncablesObjectUsingSubcomponents(uniqueComponents: ComponentTypeToProperties,
       repeatedComponents: WorkshopComponent[] = [], componentThatCanBeSynced?: WorkshopComponent): Syncables {
     const syncables: Syncables = {
-      onCopy: {
+      onSyncComponents: {
         uniqueComponents,
         repeatedComponents, 
       },

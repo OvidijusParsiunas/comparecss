@@ -40,7 +40,7 @@ export class DropdownMenuAutoWidthUtils {
   }
 
   private static calculateNewButtonWidth(buttonComponent: WorkshopComponent, longestMenuText: string): string {
-    const uniqueComponents = buttonComponent.sync.syncables.onCopy.uniqueComponents;
+    const uniqueComponents = buttonComponent.sync.syncables.onSyncComponents.uniqueComponents;
     const textSubcomponent = uniqueComponents[COMPONENT_TYPES.TEXT].baseSubcomponent;
     const textWidth = textSubcomponent ? DropdownMenuAutoWidthUtils.calculateTextWidth(textSubcomponent, longestMenuText) : 0;
     const iconSubcomponent = uniqueComponents[COMPONENT_TYPES.ICON].baseSubcomponent;
