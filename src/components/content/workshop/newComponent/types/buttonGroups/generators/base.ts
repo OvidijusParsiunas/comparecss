@@ -105,17 +105,10 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.isRemovable = true;
   }
 
-  private static setShadowProperties(buttonComponent: WorkshopComponent): void {
-    const { baseSubcomponent } = buttonComponent;
-    ComponentBuilder.setCustomAndDefaultCssProperty(baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER, 'boxShadow', CSS_PROPERTY_VALUES.UNSET);
-    ComponentBuilder.setCustomAndDefaultCssProperty(baseSubcomponent, CSS_PSEUDO_CLASSES.CLICK, 'boxShadow', CSS_PROPERTY_VALUES.INHERIT);
-  }
-
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.newChildComponents.propertyOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
-          ButtonGroupBase.setShadowProperties,
           ButtonGroupBase.setComponentToRemovable,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,

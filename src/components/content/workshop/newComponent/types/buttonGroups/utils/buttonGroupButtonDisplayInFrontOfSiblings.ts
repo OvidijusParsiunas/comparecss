@@ -33,8 +33,13 @@ export class ButtonGroupButtonDisplayInFrontOfSiblings {
       || ButtonGroupButtonDisplayInFrontOfSiblings.areBorderPropertiesDifferent(subcomponent, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
   }
 
+  private static areShadowPropertiesDifferentDuringHover(subcomponent: Subcomponent): boolean {
+    return subcomponent.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow !== CSS_PROPERTY_VALUES.UNSET
+      && ButtonGroupButtonDisplayInFrontOfSiblings.isShadowSpreadMoreThanZero(subcomponent, CSS_PSEUDO_CLASSES.HOVER);
+  }
+
   private static shouldComponentBeInFrontDuringHover(subcomponent: Subcomponent): boolean {
-    return ButtonGroupButtonDisplayInFrontOfSiblings.isShadowSpreadMoreThanZero(subcomponent, CSS_PSEUDO_CLASSES.HOVER)
+    return ButtonGroupButtonDisplayInFrontOfSiblings.areShadowPropertiesDifferentDuringHover(subcomponent)
       || ButtonGroupButtonDisplayInFrontOfSiblings.areBorderPropertiesDifferent(subcomponent, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
   }
 

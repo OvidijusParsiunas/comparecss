@@ -61,7 +61,7 @@ export class SyncChildComponent {
     }
     if (!subcomponentToBeSyncedTo) return true;
     // this is a naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent
-    // all features from being traversed all the time (used for components like drodpown button)
+    // all features from being traversed all the time (used for components like dropdown button)
     if (Object.keys(subcomponentToBeSyncedTo.customFeatures).length !== Object.keys(syncableSubcomponent.customFeatures).length) {
       SyncChildComponent.syncPropertiesThatOnlyExistInActiveComponent(subcomponentToBeSyncedTo, syncableSubcomponent);
     } else {
