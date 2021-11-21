@@ -1,6 +1,7 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { DisplayInFrontOfSiblings } from '../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SubcomponentTypeToPropertiesUtils } from '../../utils/subcomponentTypeToProperties/subcomponentTypeToPropertiesUtils';
+import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { subcomponentAndOverlayElementIdsState } from '../utils/elements/subcomponentAndOverlayElementIdsState';
@@ -11,6 +12,7 @@ import { StationaryAnimations, FadeAnimation } from '../../../../../interfaces/a
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { animationState } from '../utils/animations/state';
 
@@ -96,6 +98,9 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
       borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'borderColor'),
       boxShadow: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow'),
     };
+    if (subcomponent.seedComponent.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP) {
+      ButtonGroupCompositionAPIUtils.setSyncedComponentShadowProperties(subcomponent, activeCssPseudoClass, newDefaultProperties);
+    }
     subcomponent.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
 

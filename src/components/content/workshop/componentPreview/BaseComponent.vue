@@ -110,7 +110,7 @@ export default {
       const subcomponentCss = {
         ...this.component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
         ...this.getBaseContainerCss(this.component),
-        ...this.getButtonGroupBorderCss(this.component),
+        ...this.getButtonGroupButtonOverwrittenCss(this.component),
       };
       if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
       if (this.component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 

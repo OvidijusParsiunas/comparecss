@@ -1,4 +1,5 @@
 import { DisplayInFrontOfSiblings } from '../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
+import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
@@ -57,16 +58,9 @@ export default function useBaseComponent(): UseBaseComponent {
     return buttonPaddingSubstitutedToWidth;
   }
 
-  function getButtonGroupBorderCss(component: WorkshopComponent): WorkshopComponentCss {
-    const { buttonGroupSideBorders } = component.baseSubcomponent.customStaticFeatures || {};
-    if (buttonGroupSideBorders) {
-      if (buttonGroupSideBorders.left) {
-        return { borderLeftWidth: component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth };
-      } else if (buttonGroupSideBorders.right) {
-        return { borderRightWidth: component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth };
-      }
-    }
-    return {};
+  function getButtonGroupButtonOverwrittenCss(component: WorkshopComponent): WorkshopComponentCss {
+    return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
+      ? ButtonGroupCompositionAPIUtils.getButtonGroupCss(component) : {};
   }
 
   function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
@@ -79,7 +73,7 @@ export default function useBaseComponent(): UseBaseComponent {
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
-    const buttonGroupButtonBorderCss = getButtonGroupBorderCss(component);
+    const buttonGroupOverwrittenCss = getButtonGroupButtonOverwrittenCss(component);
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
       inheritedCss || {},
@@ -90,7 +84,7 @@ export default function useBaseComponent(): UseBaseComponent {
       isIcon(component) ? { pointerEvents: 'none' } : {},
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
-      buttonGroupButtonBorderCss,
+      buttonGroupOverwrittenCss,
       overflowHiddenCss,
     ];
   };
@@ -111,6 +105,6 @@ export default function useBaseComponent(): UseBaseComponent {
     getStyleProperties,
     getSubcomponentText,
     getBaseContainerCss,
-    getButtonGroupBorderCss,
+    getButtonGroupButtonOverwrittenCss,
   };
 }

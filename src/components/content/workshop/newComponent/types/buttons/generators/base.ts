@@ -12,12 +12,31 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
+  // WORK 2 - create button component, increase its border and switch back to button group - the base height and width will be bigger
+  // this is set for the purposes of button group button
+  private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
+    if (cssProperty === 'borderWidth') {
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderWidth;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderWidth;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderWidth;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderWidth;
+    }
+  }
+
+  public static setTriggerFuncOnSettingChange(buttonComponent: WorkshopComponent): void {
+    buttonComponent.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.RANGE]: ButtonBase.setWidthViaRange,
+    };
+  }
+
+  // border width should set border left, border right, border top, border bottom
   public static setSyncableComponents(buttonComponent: WorkshopComponent): void {
     const uniqueComponents = {
       [COMPONENT_TYPES.BUTTON]: buttonComponent,
@@ -75,14 +94,21 @@ class ButtonBase extends ComponentBuilder {
         fontSize: '14px',
         fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
         transition: CSS_PROPERTY_VALUES.UNSET,
+        // this is set for the purposes of button group button
+        borderBottomWidth: '0px',
+        borderRightWidth: '0px',
+        borderTopWidth: '0px',
+        borderLeftWidth: '0px',
       },
       [CSS_PSEUDO_CLASSES.HOVER]: {
         backgroundColor: '#ff0000',
-        boxShadow: CSS_PROPERTY_VALUES.UNSET,
+        boxShadow: CSS_PROPERTY_VALUES.INHERIT,
+        borderColor: CSS_PROPERTY_VALUES.INHERIT,
       },
       [CSS_PSEUDO_CLASSES.CLICK]: {
         backgroundColor: '#409441',
         boxShadow: CSS_PROPERTY_VALUES.INHERIT,
+        borderColor: CSS_PROPERTY_VALUES.INHERIT,
       },
     };
   }
@@ -127,6 +153,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyReferenceSharingFuncs(buttonBaseComponent);
     ButtonBase.setSyncableComponents(buttonBaseComponent);
+    ButtonBase.setTriggerFuncOnSettingChange(buttonBaseComponent);
     if (presetProperties.paddingComponent) SyncedComponent.addParentComponentSyncableContainerComponentsToChild(
       buttonBaseComponent, presetProperties.paddingComponent);
     return buttonBaseComponent;

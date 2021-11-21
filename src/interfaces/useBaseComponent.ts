@@ -6,5 +6,5 @@ export interface UseBaseComponent {
   getStyleProperties: (component: WorkshopComponent) => WorkshopComponentCss[];
   getSubcomponentText: (component: WorkshopComponent) => string;
   getBaseContainerCss(component: WorkshopComponent): WorkshopComponentCss;
-  getButtonGroupBorderCss: (component: WorkshopComponent) => WorkshopComponentCss;
+  getButtonGroupButtonOverwrittenCss: (component: WorkshopComponent) => WorkshopComponentCss;
 }

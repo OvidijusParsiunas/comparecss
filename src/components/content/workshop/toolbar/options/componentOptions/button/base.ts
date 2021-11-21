@@ -42,6 +42,10 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
@@ -50,6 +54,10 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR,
+    },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,

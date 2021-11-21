@@ -34,7 +34,7 @@ export class ButtonGroupButtonDisplayInFrontOfSiblings {
   }
 
   private static areShadowPropertiesDifferentDuringHover(subcomponent: Subcomponent): boolean {
-    return subcomponent.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow !== CSS_PROPERTY_VALUES.UNSET
+    return subcomponent.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow !== CSS_PROPERTY_VALUES.INHERIT
       && ButtonGroupButtonDisplayInFrontOfSiblings.isShadowSpreadMoreThanZero(subcomponent, CSS_PSEUDO_CLASSES.HOVER);
   }
 

@@ -5,6 +5,7 @@ import { ButtonGroupButtonDisplayInFrontOfSiblings } from '../utils/buttonGroupB
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { ButtonGroupButtonSpecificSettings } from '../settings/buttonGroupButtonSpecificSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -20,6 +21,8 @@ import { ButtonGroupHeightUtils } from '../utils/buttonGroupHeightUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
+
+  private static readonly DEFAULT_MARGIN_LEFT = '-2px';
 
   public static setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent: WorkshopComponent): void {
     buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures = {
@@ -98,23 +101,29 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.sync.temporarySyncExecutables = {
       on: ButtonGroupBase.onTemporarySyncExecutableFunc,
       off: ButtonGroupBase.onTemporarySyncExecutableFunc,
-    }
+    };
   }
 
   private static setComponentToRemovable(buttonComponent: WorkshopComponent): void {
     buttonComponent.baseSubcomponent.isRemovable = true;
   }
 
+  private static setMarginLeft(buttonComponent: WorkshopComponent): void {
+    ComponentBuilder.setCustomAndDefaultCssProperty(buttonComponent.baseSubcomponent, CSS_PSEUDO_CLASSES.DEFAULT, 'marginLeft', ButtonGroupBase.DEFAULT_MARGIN_LEFT);
+  }
+
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.newChildComponents.propertyOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
+          ButtonGroupBase.setMarginLeft,
           ButtonGroupBase.setComponentToRemovable,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
           ButtonGroupBorderUtils.setBorderClasses,
-          ButtonGroupBorderUtils.setDefaultBorderProperties,],
+          ButtonGroupButtonSpecificSettings.set,
+        ],
       },
       onBuildProperties: {
         [COMPONENT_TYPES.BUTTON]: { horizontalSection: ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION },

@@ -5,7 +5,7 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class ButtonGroupButtonSpecificSettings {
 
-  public static readonly BUTTON_GENERIC_COMPONENTS: SubcomponentSpecificSettings = {
+  private static readonly BUTTON_GENERIC_COMPONENTS: SubcomponentSpecificSettings = {
     [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_BORDER]: {
       [SETTING_NAMES.DIVIDER_WIDTH]: {
         scale: [0, 8],
