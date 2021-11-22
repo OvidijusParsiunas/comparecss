@@ -21,6 +21,7 @@ class ButtonBase extends ComponentBuilder {
 
   // WORK 2 - create button component, increase its border and switch back to button group - the base height and width will be bigger
   // this is set for the purposes of button group button
+  // WORK 2 - fix base (also overlay)
   private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
     if (cssProperty === 'borderWidth') {
       subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderWidth;

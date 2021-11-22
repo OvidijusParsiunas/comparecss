@@ -17,6 +17,11 @@ interface SynSyncablesResult {
 
 export class SyncChildComponent {
 
+  private static setAreChildrenComponentsTemporarilySynced(syncableSubcomponent: Subcomponent): void {
+    const { siblingChildComponentsAutoSynced } = syncableSubcomponent.seedComponent.parentLayer.subcomponent.seedComponent.sync;
+    if (siblingChildComponentsAutoSynced) siblingChildComponentsAutoSynced.areChildrenComponentsTemporarilySynced = true;
+  }
+
   private static moveCustomPropertiesToTempProperties(syncableSubcomponent: CustomDynamicProperties): void {
     syncableSubcomponent.tempOriginalCustomProperties = {
       customCss: JSONUtils.deepCopy(syncableSubcomponent.customCss),
@@ -55,9 +60,12 @@ export class SyncChildComponent {
       syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
   }
 
+  // WORK 2 - subcomponentToBeSyncedTo and syncableSubcomponent are mixed up, change syncableSubcomponent to targetSubcomponent and move to start
+  // and move subcomponentToBeSyncedTo to the second parameter
   public static syncBaseSubcomponent(subcomponentToBeSyncedTo: Subcomponent, syncableSubcomponent: Subcomponent, addTemporaryProperties: boolean): boolean {
     if (addTemporaryProperties && !syncableSubcomponent.tempOriginalCustomProperties) {
       SyncChildComponent.moveCustomPropertiesToTempProperties(syncableSubcomponent);
+      SyncChildComponent.setAreChildrenComponentsTemporarilySynced(syncableSubcomponent);
     }
     if (!subcomponentToBeSyncedTo) return true;
     // this is a naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent

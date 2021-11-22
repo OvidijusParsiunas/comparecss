@@ -37,8 +37,8 @@ export interface Sync {
   componentsSyncedToThis: Set<WorkshopComponent>;
   syncables: Syncables;
   lastSelectedComponentToSync?: WorkshopComponent;
-  // when sibling child components are auto synced - the sync button is not displayed, however
-  // it is displayed when the child components are synced to components outside
+  // when sibling child components are auto synced between themselves - the sync button is not displayed, however
+  // it is displayed when the child components are synced to components outside of the current component
   siblingChildComponentsAutoSynced?: SiblingChildComponentsAutoSynced;
   temporarySyncExecutables?: TemporarySyncExecutables;
 }
