@@ -1,5 +1,5 @@
+import { SiblingChildComponentsAutoSynced, SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { CustomDynamicProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import JSONUtils from '../../generic/jsonUtils';
 
 export class AutoSyncedSiblingComponentUtils {
@@ -24,5 +24,9 @@ export class AutoSyncedSiblingComponentUtils {
       siblingComponentTypes: SiblingComponentTypes): void {
     AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
       targetComponent.baseSubcomponent, siblingComponentTypes[targetComponent.type].customDynamicProperties);
+  }
+
+  public static getParentLayerSiblingChildComponentsAutoSyncedObject(component: WorkshopComponent): SiblingChildComponentsAutoSynced {
+    return component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
   }
 }
