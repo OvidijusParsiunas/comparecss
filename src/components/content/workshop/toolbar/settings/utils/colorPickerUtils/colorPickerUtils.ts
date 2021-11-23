@@ -8,12 +8,12 @@ export class ColorPickerUtils {
 
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponent: Subcomponent): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
-    const { customCss, activeCssPseudoClass } = subcomponent;
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     if (partialCss !== undefined) {
       if (cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowColorValue(hexColor, updatedSettingSpec, subcomponent);
     } else {
-      customCss[activeCssPseudoClass][cssProperty] = hexColor;
-      UpdateOtherColorsUtils.updateOtherCssProperties(updatedSettingSpec.updateOtherCssProperties, activeCssPseudoClass, hexColor);
+      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = hexColor;
+      UpdateOtherColorsUtils.updateOtherCssProperties(updatedSettingSpec.updateOtherCssProperties, activeCssPseudoClassesDropdownItem, hexColor);
     }
   }
 
@@ -45,13 +45,13 @@ export class ColorPickerUtils {
   }
 
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdatedSpec.cssProperty);
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, settingToBeUpdatedSpec.cssProperty);
     if (settingToBeUpdatedSpec.cssProperty === 'boxShadow') {
       BoxShadowUtils.setBoxShadowSettingsColorValue(cssPropertyValue, settingToBeUpdatedSpec, subcomponent);
     } else {
       settingToBeUpdatedSpec.default = cssPropertyValue;
-      UpdateOtherColorsUtils.updateOtherCssProperties(settingToBeUpdatedSpec.updateOtherCssProperties, activeCssPseudoClass, cssPropertyValue);
+      UpdateOtherColorsUtils.updateOtherCssProperties(settingToBeUpdatedSpec.updateOtherCssProperties, activeCssPseudoClassesDropdownItem, cssPropertyValue);
     }
   }
 
@@ -73,11 +73,11 @@ export class ColorPickerUtils {
   private static setCustomCssColorToInherit(updatedSettingSpec: any, subcomponent: Subcomponent): void {
     const { cssProperty } = updatedSettingSpec;
     updatedSettingSpec.default = '';
-    if (!subcomponent.customCss[subcomponent.activeCssPseudoClass]) {
-      subcomponent.customCss[subcomponent.activeCssPseudoClass] = {
+    if (!subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem]) {
+      subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem] = {
         [cssProperty]: CSS_PROPERTY_VALUES.INHERIT };
     } else {
-      subcomponent.customCss[subcomponent.activeCssPseudoClass]
+      subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem]
         [cssProperty] = CSS_PROPERTY_VALUES.INHERIT;
     }
   }

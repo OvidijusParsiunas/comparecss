@@ -9,34 +9,34 @@ import SharedUtils from './sharedUtils';
 export default class SettingsUtils {
 
   private static removeAuxiliaryPartialCss(subcomponent: Subcomponent, cssProperty: string): void {
-    const { auxiliaryPartialCss, activeCssPseudoClass } = subcomponent;
-    if (auxiliaryPartialCss && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass][cssProperty]) {
-      delete auxiliaryPartialCss[activeCssPseudoClass][cssProperty];
+    const { auxiliaryPartialCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    if (auxiliaryPartialCss && auxiliaryPartialCss[activeCssPseudoClassesDropdownItem] && auxiliaryPartialCss[activeCssPseudoClassesDropdownItem][cssProperty]) {
+      delete auxiliaryPartialCss[activeCssPseudoClassesDropdownItem][cssProperty];
     }
   }
 
   private static resetCssProperties(subcomponent: Subcomponent, cssProperty: string): void {
-    const { customCss, defaultCss, activeCssPseudoClass } = subcomponent;
-    if (defaultCss[activeCssPseudoClass]?.[cssProperty]) {
-      const cssValue = defaultCss[activeCssPseudoClass][cssProperty];
+    const { customCss, defaultCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    if (defaultCss[activeCssPseudoClassesDropdownItem]?.[cssProperty]) {
+      const cssValue = defaultCss[activeCssPseudoClassesDropdownItem][cssProperty];
       SettingsUtils.setCssProperty(subcomponent, cssProperty, cssValue)
-    } else if (customCss[activeCssPseudoClass]) {
-      delete customCss[activeCssPseudoClass][cssProperty];
+    } else if (customCss[activeCssPseudoClassesDropdownItem]) {
+      delete customCss[activeCssPseudoClassesDropdownItem][cssProperty];
     }
   }
   
   private static setCssProperty(subcomponent: Subcomponent, cssProperty: string, cssValue: string): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    if (!customCss[activeCssPseudoClass]) {
-      customCss[activeCssPseudoClass] = { [cssProperty]: cssValue };
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    if (!customCss[activeCssPseudoClassesDropdownItem]) {
+      customCss[activeCssPseudoClassesDropdownItem] = { [cssProperty]: cssValue };
     } else {
-      customCss[activeCssPseudoClass][cssProperty] = cssValue;
+      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = cssValue;
     }
   }
 
   private static resetCustomCss(subcomponent: Subcomponent, cssProperty: string): void {
-    const { defaultCss, activeCssPseudoClass } = subcomponent;
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
+    const { defaultCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT) {
       if (defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] !== undefined) {
         const cssValue = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
         SettingsUtils.setCssProperty(subcomponent, cssProperty, cssValue);

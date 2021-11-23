@@ -71,12 +71,12 @@ export default class SharedUtils {
   }
 
   public static addDefaultValueIfCssModeMissing(cssPropertyName: string, subcomponent: Subcomponent): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponent.customCss, activeCssPseudoClass, cssPropertyName);
-    if (!customCss[activeCssPseudoClass]) {
-      customCss[activeCssPseudoClass] = { [cssPropertyName]: cssPropertyValue };
-    } else if (!customCss[activeCssPseudoClass][cssPropertyName]) {
-      customCss[activeCssPseudoClass][cssPropertyName] = cssPropertyValue;
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponent.customCss, activeCssPseudoClassesDropdownItem, cssPropertyName);
+    if (!customCss[activeCssPseudoClassesDropdownItem]) {
+      customCss[activeCssPseudoClassesDropdownItem] = { [cssPropertyName]: cssPropertyValue };
+    } else if (!customCss[activeCssPseudoClassesDropdownItem][cssPropertyName]) {
+      customCss[activeCssPseudoClassesDropdownItem][cssPropertyName] = cssPropertyValue;
     }
   }
 }

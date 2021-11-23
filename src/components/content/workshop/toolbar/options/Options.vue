@@ -113,12 +113,12 @@
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
             :dropdownItems="componentTypeToOptions[component.type](component.subcomponents[component.activeSubcomponentName].subcomponentType, component)"
             :objectContainingActiveItem="component.subcomponents[component.activeSubcomponentName]"
-            :activeItemPropertyKeyName="'activeCssPseudoClass'"
+            :activeItemPropertyKeyName="'activeCssPseudoClassesDropdownItem'"
             :fontAwesomeIcon="'angle-down'"
             :timeoutFunc="executeCallbackAfterTimeout"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @mouse-click-new-item="selectNewCssPseudoClass($event)"/>
-          <div v-for="option in getOptionsForActiveCssPseudoClass()" :key="option" class="option-component-button-container"
+          <div v-for="option in getOptionsForActiveCssPseudoClassesDropdownItem()" :key="option" class="option-component-button-container"
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
               type="button"
@@ -314,10 +314,10 @@ export default {
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
     },
-    getOptionsForActiveCssPseudoClass(): Option[] {
+    getOptionsForActiveCssPseudoClassesDropdownItem(): Option[] {
       const subcomponent: Subcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       return componentTypeToOptions[this.component.type](subcomponent.subcomponentType, this.component)
-        [subcomponent.activeCssPseudoClass];
+        [subcomponent.activeCssPseudoClassesDropdownItem];
     },
     findOptionButtonElementViaName(optionName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES): HTMLElement {
       const buttonElements = document.getElementsByClassName(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER);
@@ -397,7 +397,7 @@ export default {
     selectNewSubcomponent(subcomponentName: string): void {
       // reset css state of the previous subcomponent to the first one
       const oldActiveSubcomponent: Subcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
+      oldActiveSubcomponent.activeCssPseudoClassesDropdownItem = oldActiveSubcomponent.defaultCssPseudoClassesDropdownItem;
       SetActiveComponentUtils.setActiveSubcomponent(this.component, subcomponentName);
       this.setNewOptionOnNewDropdownItemSelect();
     },
@@ -408,7 +408,7 @@ export default {
     },
     selectNewCssPseudoClass(mouseClickNewItemEvent: MouseClickNewItemEvent): void {
       const [newCssPseudoClass] = mouseClickNewItemEvent;
-      this.component.subcomponents[this.component.activeSubcomponentName].activeCssPseudoClass = newCssPseudoClass;
+      this.component.subcomponents[this.component.activeSubcomponentName].activeCssPseudoClassesDropdownItem = newCssPseudoClass;
       this.setNewOptionOnNewDropdownItemSelect();
     },
     updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: Option): void {
@@ -557,8 +557,8 @@ export default {
     },
     getActiveOptions(): Option[] {
       const { subcomponents, activeSubcomponentName, type } = this.component;
-      const { subcomponentType, activeCssPseudoClass } = subcomponents[activeSubcomponentName];
-      return componentTypeToOptions[type](subcomponentType, this.component)[activeCssPseudoClass];
+      const { subcomponentType, activeCssPseudoClassesDropdownItem } = subcomponents[activeSubcomponentName];
+      return componentTypeToOptions[type](subcomponentType, this.component)[activeCssPseudoClassesDropdownItem];
     },
     hideSettings(): void {
       this.$emit('hide-settings');

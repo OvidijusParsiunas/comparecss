@@ -16,7 +16,7 @@ export class SetActiveComponentUtils {
     SetActiveComponentUtils.setActiveSubcomponent(previousComponent, previousComponent.defaultSubcomponentName, true);
     Object.keys(previousComponent.subcomponents).forEach((key) => {
       const subcomponent: Subcomponent = previousComponent.subcomponents[key];
-      subcomponent.activeCssPseudoClass = subcomponent.defaultCssPseudoClass;
+      subcomponent.activeCssPseudoClassesDropdownItem = subcomponent.defaultCssPseudoClassesDropdownItem;
     });
   }
 

@@ -29,16 +29,16 @@ export default function useLayerComponent(): UseLayerComponent {
   }
 
   const getStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
-    const { subcomponent: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
-    SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
+    const { subcomponent: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClassesDropdownItem } } = layer;
+    SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     const selectedDropdownMenuItemCss = getSelectedDropdownMenuItemCss(layer, subcomponentCss);
     const buttonPaddingCss = getButtonPadding(layer.subcomponent.seedComponent.containerComponent);
     return [
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
-      subcomponentCss[activeCssPseudoClass],
+      subcomponentCss[activeCssPseudoClassesDropdownItem],
       { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : '' },
-      { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
+      { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponentCss, 'backgroundColor') },
       { boxShadow: CSS_PROPERTY_VALUES.UNSET },
       isLastLayer ? { borderBottomWidth: '0px' } : {}, // can alternatively use nth class
       selectedDropdownMenuItemCss,

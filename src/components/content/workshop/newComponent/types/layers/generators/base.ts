@@ -31,9 +31,9 @@ class LayerBase extends ComponentBuilder {
       subcomponentType: SUBCOMPONENT_TYPES.LAYER,
       customCss: LayerBase.createDefaultBaseCss(),
       defaultCss: LayerBase.createDefaultBaseCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES.DEFAULT,
+      activeCssPseudoClassViaUserAction: CSS_PSEUDO_CLASSES.DEFAULT,
     };
   }
 }

@@ -66,11 +66,11 @@ export class ButtonGroupCompositionAPIUtils {
 
   private static getOverwrittenCss(subcomponent: Subcomponent, overwrittenCss: CustomCss): WorkshopComponentCss {
     if (!overwrittenCss) return;
-    if (subcomponent.userSelectedPseudoClass !== CSS_PSEUDO_CLASSES.DEFAULT) {
-      return overwrittenCss[subcomponent.userSelectedPseudoClass];
+    if (subcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT) {
+      return overwrittenCss[subcomponent.activeCssPseudoClassViaUserAction];
     }
-    if (subcomponent.activeCssPseudoClass !== CSS_PSEUDO_CLASSES.DEFAULT) {
-      return overwrittenCss[subcomponent.activeCssPseudoClass];
+    if (subcomponent.activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
+      return overwrittenCss[subcomponent.activeCssPseudoClassesDropdownItem];
     }
     return overwrittenCss[CSS_PSEUDO_CLASSES.DEFAULT];
   }
@@ -92,15 +92,15 @@ export class ButtonGroupCompositionAPIUtils {
     return cssToOverwrite;
   }
 
-  private static getBoxShadowValue(subcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES): string {
-    return subcomponent.customCss[activeCssPseudoClass].boxShadow === CSS_PROPERTY_VALUES.INHERIT
-      ? ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponent.customCss, 'boxShadow')
-      : subcomponent.customCss[activeCssPseudoClass].boxShadow;
+  private static getBoxShadowValue(subcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): string {
+    return subcomponent.customCss[activeCssPseudoClassesDropdownItem].boxShadow === CSS_PROPERTY_VALUES.INHERIT
+      ? ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponent.customCss, 'boxShadow')
+      : subcomponent.customCss[activeCssPseudoClassesDropdownItem].boxShadow;
   }
 
-  private static setBoxShadowWithoutOffsetAndBlur(subcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
+  private static setBoxShadowWithoutOffsetAndBlur(subcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES,
       newDefaultProperties: WorkshopComponentCss): void {
-    const boxShadowPropertyVal = ButtonGroupCompositionAPIUtils.getBoxShadowValue(subcomponent, activeCssPseudoClass);
+    const boxShadowPropertyVal = ButtonGroupCompositionAPIUtils.getBoxShadowValue(subcomponent, activeCssPseudoClassesDropdownItem);
     if (boxShadowPropertyVal !== CSS_PROPERTY_VALUES.UNSET) {
       const boxShadowProps = boxShadowPropertyVal.split(' ');
       const shadowSpread = boxShadowProps[3];

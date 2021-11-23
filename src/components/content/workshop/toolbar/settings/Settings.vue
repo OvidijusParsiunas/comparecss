@@ -20,9 +20,9 @@
                     </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
                     <div v-else-if="isCssPropertyNotEquals(setting, UNSET)">
-                      {{setting.spec.partialCss !== undefined && subcomponent.customCss[subcomponent.activeCssPseudoClass][setting.spec.cssProperty]
-                        ? subcomponent.customCss[subcomponent.activeCssPseudoClass][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
-                        : subcomponent.customCss[subcomponent.activeCssPseudoClass][setting.spec.cssProperty]}}
+                      {{setting.spec.partialCss !== undefined && subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem][setting.spec.cssProperty]
+                        ? subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
+                        : subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem][setting.spec.cssProperty]}}
                     </div>
                     <div v-else-if="isCssPropertyEquals(setting, UNSET)">
                       0px
@@ -90,7 +90,7 @@
                   <input type="text"
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
-                    v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponent.customCss[subcomponent.activeCssPseudoClass][setting.spec.cssProperty]"
+                    v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem][setting.spec.cssProperty]"
                     @mousedown="selectSetting()"
                     @input="changeSetting(inputEventForDropdownInput.bind(this, $event, setting.spec.cssProperty))"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
@@ -252,7 +252,7 @@ export default {
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
           this.subcomponent.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
-          const { customCss, activeCssPseudoClass } = this.subcomponent;
+          const { customCss, activeCssPseudoClassesDropdownItem } = this.subcomponent;
           this.imageNames = {};
           this.inputsValues = {};
           this.inputDropdownsValues = {};
@@ -268,7 +268,7 @@ export default {
               this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
               if (!newSettings) SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponent)
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
-              const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
+              const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
               const objectContainingActiveItem = this.getObjectContainingActiveOption(setting.spec, this.subcomponent);
@@ -286,7 +286,7 @@ export default {
           this.settingsVisible = false;
           this.settingsVisible = true;
           // if using this.settingsVisible flag to re-render settings is slow/stuttery, use the following to trigger a rerender
-          // this.subcomponent.customCss[activeCssPseudoClass] = { ...this.subcomponent.customCss[activeCssPseudoClass] };
+          // this.subcomponent.customCss[activeCssPseudoClassesDropdownItem] = { ...this.subcomponent.customCss[activeCssPseudoClassesDropdownItem] };
         });
       },
       ...useActionsDropdown(),
@@ -311,7 +311,7 @@ export default {
       itemAction(this, actionName, this.component);
     },
     getCurrentCssProperty(setting: any): boolean {
-      return this.subcomponent.customCss[this.subcomponent.activeCssPseudoClass]?.[setting.spec.cssProperty];
+      return this.subcomponent.customCss[this.subcomponent.activeCssPseudoClassesDropdownItem]?.[setting.spec.cssProperty];
     },
     isCssPropertyEquals(setting: any, propertyValue: string): boolean {
       const cssProperty = this.getCurrentCssProperty(setting);
@@ -350,22 +350,22 @@ export default {
       event.preventDefault();
     },
     openDropdown(cssProperty: string): void {
-      this.inputDropdownsValues[cssProperty] = this.subcomponent.customCss[this.subcomponent.activeCssPseudoClass][cssProperty];
+      this.inputDropdownsValues[cssProperty] = this.subcomponent.customCss[this.subcomponent.activeCssPseudoClassesDropdownItem][cssProperty];
     },
     inputDropdownItemClick(option: string, cssProperty: string): void {
-      this.subcomponent.customCss[this.subcomponent.activeCssPseudoClass][cssProperty] = option;
+      this.subcomponent.customCss[this.subcomponent.activeCssPseudoClassesDropdownItem][cssProperty] = option;
       this.inputDropdownsValues[cssProperty] = '';
     },
     inputDropdownItemMouseOver(option: string, cssProperty: string): void {
-      this.subcomponent.customCss[this.subcomponent.activeCssPseudoClass][cssProperty] = option;
+      this.subcomponent.customCss[this.subcomponent.activeCssPseudoClassesDropdownItem][cssProperty] = option;
     },
     inputDropdownItemMouseLeave(cssProperty: string): void {
       if (this.inputDropdownsValues[cssProperty]) {
-        this.subcomponent.customCss[this.subcomponent.activeCssPseudoClass][cssProperty] = this.inputDropdownsValues[cssProperty];
+        this.subcomponent.customCss[this.subcomponent.activeCssPseudoClassesDropdownItem][cssProperty] = this.inputDropdownsValues[cssProperty];
       }
     },
     inputEventForDropdownInput(event: KeyboardEvent, cssProperty: string): void {
-      this.subcomponent.customCss[this.subcomponent.activeCssPseudoClass][cssProperty] = (event.target as HTMLInputElement).value;
+      this.subcomponent.customCss[this.subcomponent.activeCssPseudoClassesDropdownItem][cssProperty] = (event.target as HTMLInputElement).value;
     },
     inputEventForInput(event: KeyboardEvent, customFeatureObjectKeys: string[]): void {
       SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponent);

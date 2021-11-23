@@ -73,9 +73,9 @@ export class DisplayInFrontOfSiblings {
   }
 
   public static setZIndexOnComponentCss(baseSubcomponent: Subcomponent, baseContainerCss: WorkshopComponentCss): void {
-    const { customStaticFeatures, activeCssPseudoClass } = baseSubcomponent || {};
+    const { customStaticFeatures, activeCssPseudoClassesDropdownItem } = baseSubcomponent || {};
     if (customStaticFeatures?.displayInFrontOfSiblingsState) {
-      if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
+      if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK) {
         baseContainerCss.zIndex = DisplayInFrontOfSiblings.MAX_Z_INDEX;
       } else {
         baseContainerCss.zIndex = customStaticFeatures.displayInFrontOfSiblingsState.zIndex;

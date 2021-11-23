@@ -26,9 +26,9 @@ export class UpdateRange {
 
   protected static updateCustomCss(rangeValue: string, spec: any, subcomponent: Subcomponent): number {
     const { cssProperty, smoothingDivisible, postfix } = spec;
-    const { customCss, activeCssPseudoClass } = subcomponent;
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     const realRangeValue = Math.round(rangeValue as unknown as number / smoothingDivisible);
-    customCss[activeCssPseudoClass][cssProperty] = `${realRangeValue}${postfix}`;
+    customCss[activeCssPseudoClassesDropdownItem][cssProperty] = `${realRangeValue}${postfix}`;
     return realRangeValue;
   }
 

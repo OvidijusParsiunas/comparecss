@@ -23,10 +23,10 @@ export default class RangeUtils extends UpdateRange {
 
   private static activeTriggersForCustomCss(trigger: any, subcomponent: Subcomponent,
       actionsDropdownsObjects: unknown): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, CSS_PSEUDO_CLASSES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
-      customCss[activeCssPseudoClass][trigger.cssProperty] = trigger.defaultValue;
+      customCss[activeCssPseudoClassesDropdownItem][trigger.cssProperty] = trigger.defaultValue;
       actionsDropdownsObjects[trigger.cssProperty] = trigger.defaultValue;
     }
   }
@@ -94,8 +94,8 @@ export default class RangeUtils extends UpdateRange {
   }
 
   public static updateSettings(settingToBeUpdated: any, subcomponent: Subcomponent): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdated.spec.cssProperty);
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue,
         settingToBeUpdated.spec);

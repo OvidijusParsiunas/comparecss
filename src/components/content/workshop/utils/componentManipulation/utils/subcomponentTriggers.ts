@@ -51,42 +51,42 @@ export class SubcomponentTriggers {
   }
 
   private static setThisSubcomponentTriggerCss(baseSubcomponent: Subcomponent, subcomponentThatTriggersThis: Subcomponent,
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
+      activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
     const { componentCompositionAPI } = baseSubcomponent.otherSubcomponentTriggers || {};
-    if (subcomponentThatTriggersThis && componentCompositionAPI && subcomponentThatTriggersThis.activeCssPseudoClass !== activeCssPseudoClass) {
-      subcomponentThatTriggersThis.activeCssPseudoClass = activeCssPseudoClass;
+    if (subcomponentThatTriggersThis && componentCompositionAPI && subcomponentThatTriggersThis.activeCssPseudoClassesDropdownItem !== activeCssPseudoClassesDropdownItem) {
+      subcomponentThatTriggersThis.activeCssPseudoClassesDropdownItem = activeCssPseudoClassesDropdownItem;
       componentCompositionAPI.trigger = isTriggered;
     }
   }
 
-  private static setOtherSubcomponentCss(otherSubcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
+  private static setOtherSubcomponentCss(otherSubcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES,
       isTriggered: boolean): void {
     const { componentCompositionAPI } = otherSubcomponent.otherSubcomponentTriggers || {};
-    if (componentCompositionAPI && !componentCompositionAPI.trigger && otherSubcomponent.activeCssPseudoClass !== activeCssPseudoClass) {
-      otherSubcomponent.activeCssPseudoClass = activeCssPseudoClass;
+    if (componentCompositionAPI && !componentCompositionAPI.trigger && otherSubcomponent.activeCssPseudoClassesDropdownItem !== activeCssPseudoClassesDropdownItem) {
+      otherSubcomponent.activeCssPseudoClassesDropdownItem = activeCssPseudoClassesDropdownItem;
       componentCompositionAPI.triggered = isTriggered;
     }
   }
 
-  private static setOtherSubcomponentsCss(baseSubcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
+  private static setOtherSubcomponentsCss(baseSubcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
     const { subcomponentsToTrigger, subcomponentThatTriggersThis, componentCompositionAPI } = baseSubcomponent.otherSubcomponentTriggers || {};
     if (!componentCompositionAPI || componentCompositionAPI.triggered) return;
     SubcomponentTypeToPropertiesUtils.getTypesWithNonNullSubcomponents(subcomponentsToTrigger).forEach((subcomponentType) => {
       const otherSubcomponent = subcomponentsToTrigger[subcomponentType];
-      SubcomponentTriggers.setOtherSubcomponentCss(otherSubcomponent, activeCssPseudoClass, isTriggered);
+      SubcomponentTriggers.setOtherSubcomponentCss(otherSubcomponent, activeCssPseudoClassesDropdownItem, isTriggered);
     });
-    SubcomponentTriggers.setThisSubcomponentTriggerCss(baseSubcomponent, subcomponentThatTriggersThis, activeCssPseudoClass, isTriggered);
+    SubcomponentTriggers.setThisSubcomponentTriggerCss(baseSubcomponent, subcomponentThatTriggersThis, activeCssPseudoClassesDropdownItem, isTriggered);
   }
 
   // subcomponents here are triggered slightly differently than the useSubcomponentPreviewHandlers file's triggerOtherSubcomponentsMouseEvents
   // method because there are no events fired and the customCss is augmented directly
-  public static triggerOtherSubcomponentsCss(baseSubcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
+  public static triggerOtherSubcomponentsCss(baseSubcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES,
       otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState): void {
-    if (activeCssPseudoClass !== CSS_PSEUDO_CLASSES.DEFAULT) {
-      SubcomponentTriggers.setOtherSubcomponentsCss(baseSubcomponent, activeCssPseudoClass, true);
+    if (activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
+      SubcomponentTriggers.setOtherSubcomponentsCss(baseSubcomponent, activeCssPseudoClassesDropdownItem, true);
       otherSubcomponentTriggerState.subcomponent = baseSubcomponent;
     } else if (otherSubcomponentTriggerState.subcomponent === baseSubcomponent) {
-      SubcomponentTriggers.setOtherSubcomponentsCss(baseSubcomponent, activeCssPseudoClass, false);
+      SubcomponentTriggers.setOtherSubcomponentsCss(baseSubcomponent, activeCssPseudoClassesDropdownItem, false);
       otherSubcomponentTriggerState.subcomponent = null;
     }
   }

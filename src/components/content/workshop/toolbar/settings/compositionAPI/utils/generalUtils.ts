@@ -5,9 +5,9 @@ export default class GeneralUtils {
 
   public static getTriggeredOptionName(subcomponent: Subcomponent, settingSpec: any): string {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
-    const { customCss, activeCssPseudoClass } = subcomponent;
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     return customFeatureObjectKeys
       ? SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]])
-      : customCss[activeCssPseudoClass][cssProperty];
+      : customCss[activeCssPseudoClassesDropdownItem][cssProperty];
   }
 }

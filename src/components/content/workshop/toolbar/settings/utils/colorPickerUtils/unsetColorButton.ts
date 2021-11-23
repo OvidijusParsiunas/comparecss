@@ -15,7 +15,7 @@ export class UnsetColorButton {
   }
 
   private static isClickColorInherited(settingProperty: string, subcomponent: Subcomponent): boolean {
-    if (subcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
+    if (subcomponent.activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK) {
       const workshopComponentCssClick: WorkshopComponentCss = subcomponent.customCss[CSS_PSEUDO_CLASSES.CLICK];
       const workshopComponentCssHover: WorkshopComponentCss = subcomponent.customCss[CSS_PSEUDO_CLASSES.HOVER];
       const workshopComponentCssDefault: WorkshopComponentCss = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
@@ -29,7 +29,7 @@ export class UnsetColorButton {
   }
 
   private static isHoverColorInherited(settingProperty: string, subcomponent: Subcomponent): boolean {
-    if (subcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
+    if (subcomponent.activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.HOVER) {
       const workshopComponentCssHover: WorkshopComponentCss = subcomponent.customCss[CSS_PSEUDO_CLASSES.HOVER];
       const workshopComponentDefault: WorkshopComponentCss = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       return UnsetColorButton.isExistingCssPropertyNotInherited(settingProperty, workshopComponentCssHover)
@@ -40,7 +40,7 @@ export class UnsetColorButton {
   }
 
   private static isUnsetColorButtonStateTrue(settingProperty: string, subcomponent: Subcomponent): boolean {
-    const workshopComponentCss: WorkshopComponentCss = subcomponent.customCss[subcomponent.activeCssPseudoClass];
+    const workshopComponentCss: WorkshopComponentCss = subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem];
     if (workshopComponentCss?.[settingProperty]) {
       const unsetColorButtonStatePropertyValue =  workshopComponentCss[settingProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX];
       if (unsetColorButtonStatePropertyValue) return unsetColorButtonStatePropertyValue === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY;

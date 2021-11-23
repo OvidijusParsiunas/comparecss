@@ -153,11 +153,10 @@ export type Subcomponent = CustomDynamicProperties & {
   descendantCss?: DescendantCss;
   // this css is used during export for elements that have children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
-  // WORK 2 - refactor
-  activeCssPseudoClass: CSS_PSEUDO_CLASSES;
-  // the motivator for this is the fact that the first subcomponent css pseudo class should not be assumed to be the default one
-  defaultCssPseudoClass: CSS_PSEUDO_CLASSES;
-  userSelectedPseudoClass: CSS_PSEUDO_CLASSES; 
+  activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES;
+  // the motivator for the default property is the fact that the first subcomponent css pseudo class should not be assumed to be the default one
+  defaultCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES;
+  activeCssPseudoClassViaUserAction: CSS_PSEUDO_CLASSES; 
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   // features that would not be overwritten by imported child component's subcomponents

@@ -15,10 +15,10 @@ export default class CheckboxUtils {
 
   private static updateCssProperty(trigger: any, subcomponent: Subcomponent, thisSettingSpec: any,
       allSettings: any, newCalculatedValue?: string): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     const { cssProperty, newValue, pseudoClass } = trigger;
     const newResultValue = newCalculatedValue || newValue;
-    customCss[pseudoClass || activeCssPseudoClass][cssProperty] = newResultValue;
+    customCss[pseudoClass || activeCssPseudoClassesDropdownItem][cssProperty] = newResultValue;
     for (let i = 0; i < allSettings.options.length; i += 1) {
       if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i]?.spec?.cssProperty === cssProperty) {
         allSettings.options[i].spec.default = parseInt(newResultValue) || 0;
@@ -76,8 +76,8 @@ export default class CheckboxUtils {
   }
 
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdatedSpec.cssProperty);
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, settingToBeUpdatedSpec.cssProperty);
     if (cssPropertyValue) { settingToBeUpdatedSpec.default = (cssPropertyValue === settingToBeUpdatedSpec.conditionalStyle.truthy); }
   }
 

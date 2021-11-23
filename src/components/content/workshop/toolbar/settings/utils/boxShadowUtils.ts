@@ -20,76 +20,76 @@ export default class BoxShadowUtils {
     if (!subcomponent.auxiliaryPartialCss) {
       subcomponent.auxiliaryPartialCss = {};
     }
-    if (!subcomponent.auxiliaryPartialCss[subcomponent.activeCssPseudoClass]) {
-      subcomponent.auxiliaryPartialCss[subcomponent.activeCssPseudoClass] = {};
+    if (!subcomponent.auxiliaryPartialCss[subcomponent.activeCssPseudoClassesDropdownItem]) {
+      subcomponent.auxiliaryPartialCss[subcomponent.activeCssPseudoClassesDropdownItem] = {};
     }
-    subcomponent.auxiliaryPartialCss[subcomponent.activeCssPseudoClass]
+    subcomponent.auxiliaryPartialCss[subcomponent.activeCssPseudoClassesDropdownItem]
       .boxShadow = `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${colorPickerValue}`;
   }
 
   private static setZeroBoxShadowPropertiesToUnset(subcomponent: Subcomponent): void {
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    if (customCss[activeCssPseudoClass].boxShadow.startsWith(BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
-      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponent, customCss[activeCssPseudoClass]
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    if (customCss[activeCssPseudoClassesDropdownItem].boxShadow.startsWith(BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
+      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponent, customCss[activeCssPseudoClassesDropdownItem]
         .boxShadow.split(' ').pop());
-      customCss[activeCssPseudoClass].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
+      customCss[activeCssPseudoClassesDropdownItem].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
     }
   }
 
-  private static overwriteInheritedBoxShadowProperty(customCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    customCss[activeCssPseudoClass].boxShadow = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow');
+  private static overwriteInheritedBoxShadowProperty(customCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): void {
+    customCss[activeCssPseudoClassesDropdownItem].boxShadow = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, 'boxShadow');
   }
 
-  private static overwriteUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
-      customCss[activeCssPseudoClass].boxShadow = auxiliaryPartialCss
-        && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass].boxShadow
-        ? auxiliaryPartialCss[activeCssPseudoClass].boxShadow : `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
+  private static overwriteUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): void {
+    if (customCss[activeCssPseudoClassesDropdownItem].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      customCss[activeCssPseudoClassesDropdownItem].boxShadow = auxiliaryPartialCss
+        && auxiliaryPartialCss[activeCssPseudoClassesDropdownItem] && auxiliaryPartialCss[activeCssPseudoClassesDropdownItem].boxShadow
+        ? auxiliaryPartialCss[activeCssPseudoClassesDropdownItem].boxShadow : `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
     }
   }
 
-  private static overwriteValues(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
-      BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClass);
+  private static overwriteValues(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): void {
+    if (customCss[activeCssPseudoClassesDropdownItem].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
+      BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClassesDropdownItem);
     }
-    BoxShadowUtils.overwriteUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssPseudoClass);
+    BoxShadowUtils.overwriteUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssPseudoClassesDropdownItem);
   }
 
   public static updateBoxShadowRangeValue(rangeValue: string, spec: any, subcomponent: Subcomponent): void {
     const {cssProperty, partialCss} = spec;
-    const { customCss, activeCssPseudoClass, auxiliaryPartialCss } = subcomponent;
-    if (customCss[activeCssPseudoClass][cssProperty] === undefined) {
+    const { customCss, activeCssPseudoClassesDropdownItem, auxiliaryPartialCss } = subcomponent;
+    if (customCss[activeCssPseudoClassesDropdownItem][cssProperty] === undefined) {
       const defaultValues = [ ...partialCss.fullDefaultValues ];
       defaultValues[partialCss.position] = rangeValue;
-      customCss[activeCssPseudoClass][cssProperty] = defaultValues.join(' ');
+      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = defaultValues.join(' ');
     } else {
-      BoxShadowUtils.overwriteValues(customCss, auxiliaryPartialCss, activeCssPseudoClass);
-      const cssPropertyValues = customCss[activeCssPseudoClass][cssProperty].split(' ');
+      BoxShadowUtils.overwriteValues(customCss, auxiliaryPartialCss, activeCssPseudoClassesDropdownItem);
+      const cssPropertyValues = customCss[activeCssPseudoClassesDropdownItem][cssProperty].split(' ');
       cssPropertyValues[partialCss.position] = `${rangeValue}px`;
-      customCss[activeCssPseudoClass][cssProperty] = cssPropertyValues.join(' ');
+      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = cssPropertyValues.join(' ');
     }
     BoxShadowUtils.setZeroBoxShadowPropertiesToUnset(subcomponent);
   }
 
   public static updateBoxShadowColorValue(hexColor: string, updatedSettingSpec: any, subcomponent: Subcomponent): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
-    const { customCss, activeCssPseudoClass } = subcomponent;
-    if (customCss[activeCssPseudoClass][cssProperty] === undefined) {
+    const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
+    if (customCss[activeCssPseudoClassesDropdownItem][cssProperty] === undefined) {
       const defaultValues = [ ...partialCss.fullDefaultValues ];
       defaultValues[partialCss.position] = hexColor;
-      if (customCss[activeCssPseudoClass][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      if (customCss[activeCssPseudoClassesDropdownItem][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
         BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponent, hexColor);
       } else {
-        customCss[activeCssPseudoClass][cssProperty] = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;
+        customCss[activeCssPseudoClassesDropdownItem][cssProperty] = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;
       }
-    } else if (customCss[activeCssPseudoClass][cssProperty] == BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
-      BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClass);
-    } else if (customCss[activeCssPseudoClass][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+    } else if (customCss[activeCssPseudoClassesDropdownItem][cssProperty] == BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
+      BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClassesDropdownItem);
+    } else if (customCss[activeCssPseudoClassesDropdownItem][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
       BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponent, hexColor);
     } else {
-      const cssPropertyValues = customCss[activeCssPseudoClass][cssProperty].split(' ');
+      const cssPropertyValues = customCss[activeCssPseudoClassesDropdownItem][cssProperty].split(' ');
       cssPropertyValues[partialCss.position] = hexColor;
-      customCss[activeCssPseudoClass][cssProperty] = cssPropertyValues.join(' ');
+      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = cssPropertyValues.join(' ');
     }
   }
 
@@ -102,9 +102,9 @@ export default class BoxShadowUtils {
   }
 
   public static setBoxShadowSettingsColorValue(cssPropertyValue: string, settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
-    const { activeCssPseudoClass, auxiliaryPartialCss } = subcomponent;
+    const { activeCssPseudoClassesDropdownItem, auxiliaryPartialCss } = subcomponent;
     if (cssPropertyValue === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
-      cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, activeCssPseudoClass, settingToBeUpdatedSpec.cssProperty)
+      cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, activeCssPseudoClassesDropdownItem, settingToBeUpdatedSpec.cssProperty)
         || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
     }
     settingToBeUpdatedSpec.default = cssPropertyValue.split(' ')[settingToBeUpdatedSpec.partialCss.position];
