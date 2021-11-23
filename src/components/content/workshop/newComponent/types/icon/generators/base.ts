@@ -67,6 +67,7 @@ export class IconBase extends ComponentBuilder {
       inheritedCss: inheritedTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       customFeatures: IconBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: IconBase.createDefaultCustomFeatures(),
       customStaticFeatures: IconBase.createDefaultCustomStaticFeatures(),

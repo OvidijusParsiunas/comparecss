@@ -77,6 +77,7 @@ class AlertBase extends ComponentBuilder {
       defaultCss: AlertBase.createDefaultCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
       customFeatures: AlertBase.createDefaultCustomFeatures(),

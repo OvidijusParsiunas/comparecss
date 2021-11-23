@@ -61,6 +61,7 @@ class ImageBase extends ComponentBuilder {
       defaultCss: ImageBase.createDefaultImageCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       customFeatures: ImageBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: ImageBase.createDefaultCustomFeatures(),
       customStaticFeatures: ImageBase.createDefaultCustomStaticFeatures(),

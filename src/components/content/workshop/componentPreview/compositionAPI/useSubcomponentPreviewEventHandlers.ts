@@ -114,6 +114,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
+    subcomponent.userSelectedPseudoClass = CSS_PSEUDO_CLASSES.HOVER;
     DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponent, CSS_PSEUDO_CLASSES.HOVER);
   }
 
@@ -126,6 +127,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
       delete subcomponent.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
+    subcomponent.userSelectedPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;
     DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponent, CSS_PSEUDO_CLASSES.HOVER);
     if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary);
   }
@@ -141,6 +143,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
     }
     overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponent.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
+    subcomponent.userSelectedPseudoClass = CSS_PSEUDO_CLASSES.CLICK;
     DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponent, CSS_PSEUDO_CLASSES.CLICK);
   }
 
@@ -153,6 +156,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
       subcomponent.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
+    subcomponent.userSelectedPseudoClass = CSS_PSEUDO_CLASSES.HOVER;
     DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponent, CSS_PSEUDO_CLASSES.CLICK);
   }
 

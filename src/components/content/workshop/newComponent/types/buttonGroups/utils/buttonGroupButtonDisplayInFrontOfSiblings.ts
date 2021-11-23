@@ -43,6 +43,7 @@ export class ButtonGroupButtonDisplayInFrontOfSiblings {
       || ButtonGroupButtonDisplayInFrontOfSiblings.areBorderPropertiesDifferent(subcomponent, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
   }
 
+  // WORK 2 - fix for synced components
   // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
   // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
   // is moved to the front.

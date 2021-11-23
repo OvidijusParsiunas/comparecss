@@ -1,6 +1,7 @@
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { CustomCss, CustomFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
+import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { ButtonGroupButtonDisplayInFrontOfSiblings } from '../utils/buttonGroupButtonDisplayInFrontOfSiblings';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
@@ -8,6 +9,7 @@ import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSu
 import { ButtonGroupButtonSpecificSettings } from '../settings/buttonGroupButtonSpecificSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import { ButtonGroupCompositionAPIUtils } from '../utils/buttonGroupCompositionAPIUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -24,6 +26,12 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static readonly DEFAULT_MARGIN_LEFT = '-2px';
 
+  public static setOverwriteCssForSyncedComponent(buttonComponent: WorkshopComponent): void {
+    if (SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
+      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
+    }
+  }
+
   public static setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent: WorkshopComponent): void {
     buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures = {
       displayInFrontOfSiblingsContainerState: {
@@ -38,6 +46,7 @@ class ButtonGroupBase extends ComponentBuilder {
     const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonGroupBaseComponent);
     const firstButton = buttonComponents[0];
     ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(firstButton, firstButton.containerComponent);
+    ButtonGroupBase.setOverwriteCssForSyncedComponent(firstButton);
   }
 
   public static setOnComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -93,14 +102,18 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
-  private static onTemporarySyncExecutableFunc(buttonComponent: WorkshopComponent): void {
-    ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+  private static syncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
+    if (isPermanentSync) {
+      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
+    } else {
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+    }
   }
 
   private static setTemporarySyncExecutables(buttonComponent: WorkshopComponent): void {
-    buttonComponent.sync.temporarySyncExecutables = {
-      on: ButtonGroupBase.onTemporarySyncExecutableFunc,
-      off: ButtonGroupBase.onTemporarySyncExecutableFunc,
+    buttonComponent.sync.syncExecutables = {
+      on: ButtonGroupBase.syncExecutableFunc,
+      off: ButtonGroupBase.syncExecutableFunc,
     };
   }
 
@@ -173,6 +186,7 @@ class ButtonGroupBase extends ComponentBuilder {
       defaultCss: ButtonGroupBase.createDefaultCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
       customFeatures: ButtonGroupBase.createDefaultCustomFeatures(),

@@ -58,9 +58,9 @@ export default function useBaseComponent(): UseBaseComponent {
     return buttonPaddingSubstitutedToWidth;
   }
 
-  function getButtonGroupButtonOverwrittenCss(component: WorkshopComponent, overwrittenCustomCssObj?: CustomCss): WorkshopComponentCss {
+  function getButtonGroupButtonOverwrittenCss(component: WorkshopComponent): WorkshopComponentCss {
     return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
-      ? ButtonGroupCompositionAPIUtils.getButtonGroupCss(component, overwrittenCustomCssObj) : {};
+      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component) : {};
   }
 
   function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
@@ -72,8 +72,8 @@ export default function useBaseComponent(): UseBaseComponent {
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
-    const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss(component, overwrittenCustomCssObj);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
+    const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss(component);
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
       inheritedCss || {},
@@ -83,8 +83,8 @@ export default function useBaseComponent(): UseBaseComponent {
       getInheritedValues(activeCssPseudoClass, subcomponentCss),
       isIcon(component) ? { pointerEvents: 'none' } : {},
       buttonPaddingSubstitutedToWidthCss,
-      buttonGroupButtonOverwrittenCss,
       selectedDropdownMenuTextCss,
+      buttonGroupButtonOverwrittenCss,
       overflowHiddenCss,
     ];
   };

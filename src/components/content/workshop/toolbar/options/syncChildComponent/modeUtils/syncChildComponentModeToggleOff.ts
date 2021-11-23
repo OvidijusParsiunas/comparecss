@@ -42,19 +42,24 @@ export class SyncChildComponentModeToggleOff {
     return { shouldRepeat: false };
   }
 
+  private static finishSyncingComponent(activeComponent: WorkshopComponent, lastSelectedComponentToSync: WorkshopComponent): void {
+    activeComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
+    activeComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
+    lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeComponent);
+    SyncChildComponent.reSyncComponentsSyncedToThisComponent(activeComponent, activeComponent.type);
+    SyncChildComponent.setAutoSyncedSiblingComponentsToInSync(activeComponent, lastSelectedComponentToSync);
+    activeComponent.sync.syncExecutables?.on?.(activeComponent, true);
+  }
+
   private static setSyncedChildComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component as WorkshopComponent;
-    const activeSeedComponent = subcomponents[activeSubcomponentName].seedComponent;
-    if (activeSeedComponent.sync.lastSelectedComponentToSync) {
+    const activeComponent = subcomponents[activeSubcomponentName].seedComponent;
+    if (activeComponent.sync.lastSelectedComponentToSync) {
       // saving reference as it gets removed before timeout gets executed
-      const lastSelectedComponentToSync = activeSeedComponent.sync.lastSelectedComponentToSync;
+      const lastSelectedComponentToSync = activeComponent.sync.lastSelectedComponentToSync;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
-        activeSeedComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
-        activeSeedComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
-        lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeSeedComponent);
-        SyncChildComponent.reSyncComponentsSyncedToThisComponent(activeSeedComponent, activeSeedComponent.type);
-        SyncChildComponent.setAutoSyncedSiblingComponentsToInSync(activeSeedComponent, lastSelectedComponentToSync);
+        SyncChildComponentModeToggleOff.finishSyncingComponent(activeComponent, lastSelectedComponentToSync);
       }, optionsComponent.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CleanSyncChildComponentMode.cleanComponent(optionsComponent.component, false);

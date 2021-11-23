@@ -1,3 +1,4 @@
+import { CustomCssUtils } from '../../../../../components/content/workshop/utils/componentManipulation/utils/customCssUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
@@ -47,18 +48,18 @@ export default class CssCleaner {
     }
   }
 
-  private static shorthandCss(cleanedCss: CustomCss): void {
-    Object.keys(cleanedCss).forEach((cssPseudoClass: CSS_PSEUDO_CLASSES) => {
+  private static shorthandCss(newCustomCss: CustomCss): void {
+    Object.keys(newCustomCss).forEach((cssPseudoClass: CSS_PSEUDO_CLASSES) => {
       // https://www.w3schools.com/css/css_margin.asp
-      this.shorthandProperties(cleanedCss[cssPseudoClass], { top: 'marginTop', right: 'marginRight', bottom: 'marginBottom', left: 'marginLeft', shorthandProperty: 'margin' });
+      this.shorthandProperties(newCustomCss[cssPseudoClass], { top: 'marginTop', right: 'marginRight', bottom: 'marginBottom', left: 'marginLeft', shorthandProperty: 'margin' });
       // https://www.w3schools.com/css/css_padding.asp
-      this.shorthandProperties(cleanedCss[cssPseudoClass], { top: 'paddingTop', right: 'paddingRight', bottom: 'paddingBottom', left: 'paddingLeft', shorthandProperty: 'padding' });
+      this.shorthandProperties(newCustomCss[cssPseudoClass], { top: 'paddingTop', right: 'paddingRight', bottom: 'paddingBottom', left: 'paddingLeft', shorthandProperty: 'padding' });
     });
   }
 
-  private static removeUnusedCssPseudoClass(cleanedCss: CustomCss): void {
-    Object.keys(cleanedCss).forEach((cssPseudoClass: CSS_PSEUDO_CLASSES) => {
-      if (Object.keys(cleanedCss[cssPseudoClass]).length === 0) delete cleanedCss[cssPseudoClass];
+  private static removeUnusedCssPseudoClass(newCustomCss: CustomCss): void {
+    Object.keys(newCustomCss).forEach((cssPseudoClass: CSS_PSEUDO_CLASSES) => {
+      if (Object.keys(newCustomCss[cssPseudoClass]).length === 0) delete newCustomCss[cssPseudoClass];
     });
   }
 
@@ -81,24 +82,24 @@ export default class CssCleaner {
     }
   }
 
-  private static cleanBorderPropertiesForCssPseudoClass(cleanedCss: CustomCss, customCss: CustomCss, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    if (!cleanedCss[cssPseudoClass]) return;
+  private static cleanBorderPropertiesForCssPseudoClass(newCustomCss: CustomCss, customCss: CustomCss, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    if (!newCustomCss[cssPseudoClass]) return;
     // if borderWidth exists then the border must be present and borderStyle is not set to 'none', this is enforced in the UI
-    if (cleanedCss[cssPseudoClass].hasOwnProperty('borderWidth')) {
-      if (!cleanedCss[cssPseudoClass].hasOwnProperty('borderStyle') && !this.getCssValueAppropriateToState(cssPseudoClass, cleanedCss, 'borderStyle')) {
-        cleanedCss[cssPseudoClass].borderStyle = this.getCssValueAppropriateToState(cssPseudoClass, customCss, 'borderStyle');
+    if (newCustomCss[cssPseudoClass].hasOwnProperty('borderWidth')) {
+      if (!newCustomCss[cssPseudoClass].hasOwnProperty('borderStyle') && !this.getCssValueAppropriateToState(cssPseudoClass, newCustomCss, 'borderStyle')) {
+        newCustomCss[cssPseudoClass].borderStyle = this.getCssValueAppropriateToState(cssPseudoClass, customCss, 'borderStyle');
       }
-      if (!cleanedCss[cssPseudoClass].hasOwnProperty('borderColor') && !this.getCssValueAppropriateToState(cssPseudoClass, cleanedCss, 'borderColor')) {
-        cleanedCss[cssPseudoClass].borderColor = this.getCssValueAppropriateToState(cssPseudoClass, customCss, 'borderColor');
+      if (!newCustomCss[cssPseudoClass].hasOwnProperty('borderColor') && !this.getCssValueAppropriateToState(cssPseudoClass, newCustomCss, 'borderColor')) {
+        newCustomCss[cssPseudoClass].borderColor = this.getCssValueAppropriateToState(cssPseudoClass, customCss, 'borderColor');
       }
     } else {
-      delete cleanedCss[cssPseudoClass].borderColor;
+      delete newCustomCss[cssPseudoClass].borderColor;
     }
   }
 
-  private static cleanBorderCss(cleanedCss: CustomCss, customCss: CustomCss): void {
-    Object.keys(cleanedCss).forEach((cssPseudoClass: CSS_PSEUDO_CLASSES) => {
-      this.cleanBorderPropertiesForCssPseudoClass(cleanedCss, customCss, cssPseudoClass);
+  private static cleanBorderCss(newCustomCss: CustomCss, customCss: CustomCss): void {
+    Object.keys(newCustomCss).forEach((cssPseudoClass: CSS_PSEUDO_CLASSES) => {
+      this.cleanBorderPropertiesForCssPseudoClass(newCustomCss, customCss, cssPseudoClass);
     });
   }
 
@@ -123,25 +124,25 @@ export default class CssCleaner {
     return Number.parseInt(borderRadius) >= (Math.ceil(shortestDimension / 2)) ? '50%' : borderRadius;
   }
   
-  private static retainPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string,
+  private static retainPseudoCss(customCss: CustomCss, newCustomCss: CustomCss, propertyName: string,
     targetPseudoClass: CSS_PSEUDO_CLASSES, previousPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     if (customCss[targetPseudoClass] && customCss[targetPseudoClass].hasOwnProperty(propertyName)
         && customCss[previousPseudoClass][propertyName] !== customCss[targetPseudoClass][propertyName]) {
           let customCssValue = customCss[targetPseudoClass][propertyName];
           if (propertyName === 'borderRadius') { customCssValue = this.cleanBorderRadiusCss(customCss, targetPseudoClass); }
-          cleanedCss[targetPseudoClass][propertyName] = customCssValue;
+          newCustomCss[targetPseudoClass][propertyName] = customCssValue;
           return true;
     }
     return false;
   }
 
-  private static cleanPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string): void {
+  private static cleanPseudoCss(customCss: CustomCss, newCustomCss: CustomCss, propertyName: string): void {
     // attempt to retain the hover value
-    if (this.retainPseudoCss(customCss, cleanedCss, propertyName, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT)) {
+    if (this.retainPseudoCss(customCss, newCustomCss, propertyName, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT)) {
       // if hover value retained, attempt to retain the click value if it is different to hover
-      this.retainPseudoCss(customCss, cleanedCss, propertyName, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
+      this.retainPseudoCss(customCss, newCustomCss, propertyName, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
     } else {
-      this.retainPseudoCss(customCss, cleanedCss, propertyName, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.DEFAULT);
+      this.retainPseudoCss(customCss, newCustomCss, propertyName, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.DEFAULT);
     }
   }
 
@@ -181,28 +182,24 @@ export default class CssCleaner {
     }
   }
 
-  private static cleanDefaultCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string, borderPropertiesStatus: BorderPropertiesStatus): void {
+  private static cleanDefaultCss(customCss: CustomCss, newCustomCss: CustomCss, propertyName: string, borderPropertiesStatus: BorderPropertiesStatus): void {
     let defaultPropertyValue = customCss[CSS_PSEUDO_CLASSES.DEFAULT][propertyName];
     if (this.shouldPropertyBeRetained(propertyName, defaultPropertyValue, borderPropertiesStatus)) {
       if (propertyName === 'borderRadius') { defaultPropertyValue = this.cleanBorderRadiusCss(customCss, CSS_PSEUDO_CLASSES.DEFAULT); }
-      cleanedCss[CSS_PSEUDO_CLASSES.DEFAULT][propertyName] = defaultPropertyValue;
+      newCustomCss[CSS_PSEUDO_CLASSES.DEFAULT][propertyName] = defaultPropertyValue;
     }
   }
 
   public static clean(customCss: CustomCss): CustomCss {
-    const cleanedCss: CustomCss = {
-      [CSS_PSEUDO_CLASSES.DEFAULT]: {},
-      [CSS_PSEUDO_CLASSES.HOVER]: {},
-      [CSS_PSEUDO_CLASSES.CLICK]: {},
-    };
+    const newCustomCss: CustomCss = CustomCssUtils.createNewCustomCssObj();
     const defultBorderPropertiesStatus: BorderPropertiesStatus = { areBorderPropertiesRetained: true };
     Object.keys(customCss[CSS_PSEUDO_CLASSES.DEFAULT]).forEach((propertyName: string) => {
-      this.cleanDefaultCss(customCss, cleanedCss, propertyName, defultBorderPropertiesStatus);
-      this.cleanPseudoCss(customCss, cleanedCss, propertyName);
+      this.cleanDefaultCss(customCss, newCustomCss, propertyName, defultBorderPropertiesStatus);
+      this.cleanPseudoCss(customCss, newCustomCss, propertyName);
     });
-    this.removeUnusedCssPseudoClass(cleanedCss);
-    this.cleanBorderCss(cleanedCss, customCss);
-    this.shorthandCss(cleanedCss);
-    return cleanedCss;
+    this.removeUnusedCssPseudoClass(newCustomCss);
+    this.cleanBorderCss(newCustomCss, customCss);
+    this.shorthandCss(newCustomCss);
+    return newCustomCss;
   }
 }

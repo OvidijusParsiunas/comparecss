@@ -171,6 +171,7 @@ export class DropdownMenuBase extends ComponentBuilder {
       defaultCss: DropdownMenuBase.createDefaultMenuCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),

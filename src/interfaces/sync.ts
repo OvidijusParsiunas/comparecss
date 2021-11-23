@@ -4,9 +4,9 @@ import { WorkshopComponent } from './workshopComponent';
 
 // in sync terminology refers to the component that is currently synced to another component
 
-interface TemporarySyncExecutables {
-  on?: (componentToBeSynced: WorkshopComponent) => void;
-  off?: (componentToBeSynced: WorkshopComponent) => void;
+interface SyncExecutables {
+  on?: (componentToBeSynced: WorkshopComponent, isPermanentSync: boolean) => void;
+  off?: (componentToBeSynced: WorkshopComponent, isPermanentSync: boolean) => void;
 }
 
 interface OnSyncComponents {
@@ -40,5 +40,5 @@ export interface Sync {
   // when sibling child components are auto synced between themselves - the sync button is not displayed, however
   // it is displayed when the child components are synced to components outside of the current component
   siblingChildComponentsAutoSynced?: SiblingChildComponentsAutoSynced;
-  temporarySyncExecutables?: TemporarySyncExecutables;
+  syncExecutables?: SyncExecutables;
 }

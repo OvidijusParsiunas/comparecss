@@ -72,6 +72,7 @@ class CardBase extends ComponentBuilder {
       defaultCss: CardBase.createDefaultCardCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      userSelectedPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
       customFeatures: CardBase.createDefaultCustomFeatures(),

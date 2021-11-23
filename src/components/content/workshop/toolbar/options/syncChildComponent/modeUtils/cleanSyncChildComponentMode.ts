@@ -49,10 +49,10 @@ export class CleanSyncChildComponentMode {
   private static resetBaseSubcomponent(activeComponentTraversal: ComponentPreviewTraversalState): ComponentPreviewTraversalState {
     const resetBaseSubcomponent = this as any as boolean;
     const { component } = activeComponentTraversal;
-    const { baseSubcomponent, sync: { temporarySyncExecutables } } = component;
+    const { baseSubcomponent, sync: { syncExecutables } } = component;
     if (resetBaseSubcomponent) {
       CleanSyncChildComponentMode.resetOriginalCustomProperties(baseSubcomponent);
-      temporarySyncExecutables?.off?.(component);
+      syncExecutables?.off?.(component, false);
     }
     delete baseSubcomponent.tempOriginalCustomProperties;
     CleanSyncChildComponentMode.unsetSiblingChildComponentsAutoSynced(baseSubcomponent.seedComponent);
