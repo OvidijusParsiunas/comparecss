@@ -20,5 +20,7 @@ export interface SiblingChildComponentsAutoSynced {
   // this property allows the parent layer to indicate whether the auto synced components are temporarily synced to another
   // component - which will allow getButtonGroupButtonCss to overwrite the required properties (border/shadow) for every button
   areChildrenComponentsTemporarilySynced?: boolean;
+  // used to prevent same logic from being executed for each sibling component and store the result
+  // also used to prevent logic from being executed when the user changes the css pseudo class
   overwriteCssForSyncedComponent?: CustomCss;
 }

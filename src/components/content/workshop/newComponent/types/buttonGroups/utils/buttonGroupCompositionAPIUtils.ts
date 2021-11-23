@@ -44,8 +44,6 @@ export class ButtonGroupCompositionAPIUtils {
     cssToOverwrite.borderRightWidth = newSideBorderWidth;
   }
 
-  // WORK 2 - fix unsync
-  // optimize - can use the approach to fix this to also deal with the issue of displaying component in front by having a temp overwritten css ref
   private static setBorderAndMarginCss(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
     const { borderWidth } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const borderWidthNumber = Number.parseFloat(borderWidth);
@@ -130,5 +128,17 @@ export class ButtonGroupCompositionAPIUtils {
     ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponentShadow(component, overwriteCssForSyncedComponent);
     const siblingChildComponentsAutoSynced = ButtonGroupCompositionAPIUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
     siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent = overwriteCssForSyncedComponent;
+  }
+
+  public static unsetOverwriteCssForSyncedComponent(component: WorkshopComponent): void {
+    const siblingChildComponentsAutoSynced = ButtonGroupCompositionAPIUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
+    if (siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent) {
+      const { customCss } = component.baseSubcomponent;
+      Object.keys(siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent).forEach((cssPseudoClass) => {
+        const workshopCss: WorkshopComponentCss = siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent[cssPseudoClass];
+        Object.assign(customCss[cssPseudoClass], workshopCss);
+      });
+      delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent;
+    }
   }
 }

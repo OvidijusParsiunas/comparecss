@@ -14,13 +14,14 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
 
-  private static dereferenceCopiedComponentCustomProperties(componentTraversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
+  private static dereferenceSyncedComponentCustomProperties(componentTraversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
     const { component } = componentTraversalState;
-    const { baseSubcomponent } = component;
+    const { baseSubcomponent, sync: { syncExecutables } } = component;
     baseSubcomponent.customCss = JSONUtils.deepCopy(baseSubcomponent.customCss);
     baseSubcomponent.customFeatures = JSONUtils.deepCopy(baseSubcomponent.customFeatures);
     const propertySharingFuncType = baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.LAYER ? 'layer' : 'container';
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(false, propertySharingFuncType, component);
+    syncExecutables?.off?.(component, true);
     return {};
   }
 
@@ -33,6 +34,7 @@ export class SyncedComponent {
         component.sync.componentThisIsSyncedTo = null;
         SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingComponentUtils.copySiblingComponentSyncableTraversalCallback,
           component, siblingComponentTypes);
+        component.sync.syncExecutables?.off?.(component, true);
       });
     });
   }
@@ -51,7 +53,7 @@ export class SyncedComponent {
       SyncedComponent.dereferenceSiblingChildComponents(siblingComponentTypes);
       SyncedComponent.removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent, siblingComponentTypes);
     } else {
-      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
+      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceSyncedComponentCustomProperties, inSyncComponent);
     }
   }
 

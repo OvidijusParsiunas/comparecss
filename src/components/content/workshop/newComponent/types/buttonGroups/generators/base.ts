@@ -102,7 +102,16 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
-  private static syncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
+  private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
+    if (isPermanentSync) {
+      ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
+    } else {
+      // WORK 2 - does need to be called?
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+    }
+  }
+
+  private static onSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
     if (isPermanentSync) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
     } else {
@@ -112,8 +121,8 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setTemporarySyncExecutables(buttonComponent: WorkshopComponent): void {
     buttonComponent.sync.syncExecutables = {
-      on: ButtonGroupBase.syncExecutableFunc,
-      off: ButtonGroupBase.syncExecutableFunc,
+      on: ButtonGroupBase.onSyncExecutableFunc,
+      off: ButtonGroupBase.offSyncExecutableFunc,
     };
   }
 
