@@ -68,6 +68,8 @@ class ButtonGroupBase extends ComponentBuilder {
       // subcomponent is from button component
       const borderTopWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
       subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = borderTopWidth;
+      const buttonComponent = subcomponent.seedComponent;
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
     } else if (cssProperty === 'borderRadius') {
       // subcomponent is from button component
       const borderRadius = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
@@ -105,16 +107,12 @@ class ButtonGroupBase extends ComponentBuilder {
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
     if (isPermanentSync) {
       ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
-    } else {
-      // WORK 2 - does need to be called?
-      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
     }
   }
 
   private static onSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
     if (isPermanentSync) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
-    } else {
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
     }
   }

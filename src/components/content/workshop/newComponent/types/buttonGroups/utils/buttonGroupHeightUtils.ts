@@ -4,11 +4,12 @@ import { WorkshopComponent } from "../../../../../../../interfaces/workshopCompo
 export class ButtonGroupHeightUtils {
 
   public static setButtonGroupHeightViaButtonProperties(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
-    const buttonBaseSubcomponent = buttonComponent.baseSubcomponent;
-    const height = Number.parseFloat(buttonBaseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].height);
-    const paddingTop = Number.parseFloat(buttonBaseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].paddingTop);
-    const paddingBottom = Number.parseFloat(buttonBaseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].paddingBottom);
-    const totalHeight = height + paddingTop + paddingBottom;
+    const defaultCustomCss = buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const height = Number.parseFloat(defaultCustomCss.height);
+    const paddingTop = Number.parseFloat(defaultCustomCss.paddingTop);
+    const paddingBottom = Number.parseFloat(defaultCustomCss.paddingBottom);
+    const borderTopWidth = Number.parseFloat(defaultCustomCss.borderTopWidth);
+    const totalHeight = height + paddingTop + paddingBottom + (borderTopWidth * 2);
     buttonGroupComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].height = `${totalHeight}px`;
   }
 }

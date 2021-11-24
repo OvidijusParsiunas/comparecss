@@ -18,7 +18,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
-  // WORK 2 - fix base (also overlay)
+  // WORK 2 - card component has bottom border issues
   public static setSyncableComponents(buttonComponent: WorkshopComponent): void {
     const uniqueComponents = {
       [COMPONENT_TYPES.BUTTON]: buttonComponent,
