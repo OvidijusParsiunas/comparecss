@@ -90,11 +90,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
   function setCustomCss(customCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): void {
     const newDefaultProperties = {
       ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[activeCssPseudoClassesDropdownItem], ...isUnsetButtonDisplayedForColorInputs,
-      // WORK 2 - refactor
-      backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, 'backgroundColor'),
-      color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, 'color'),
-      borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, 'borderColor'),
-      boxShadow: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, 'boxShadow'),
+      ...ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, customCss),
     };
     subcomponent.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }

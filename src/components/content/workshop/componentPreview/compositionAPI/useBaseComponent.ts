@@ -28,15 +28,6 @@ export default function useBaseComponent(): UseBaseComponent {
     return baseContainerCss;
   }
 
-  function getInheritedValues(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, subcomponentCss: CustomCss): WorkshopComponentCss {
-    return {
-      backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponentCss, 'backgroundColor'),
-      color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponentCss, 'color'),
-      borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponentCss, 'borderColor'),
-      boxShadow: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponentCss, 'boxShadow'),
-    };
-  }
-
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
     if (customFeatures?.jsClasses?.has(JAVASCRIPT_CLASSES.RIPPLES)) {
       return { overflow: 'hidden' };
@@ -71,6 +62,7 @@ export default function useBaseComponent(): UseBaseComponent {
     const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = component.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
+    const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
     const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss(component);
@@ -80,8 +72,8 @@ export default function useBaseComponent(): UseBaseComponent {
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[activeCssPseudoClassesDropdownItem],
       { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-      getInheritedValues(activeCssPseudoClassesDropdownItem, subcomponentCss),
       isIcon(component) ? { pointerEvents: 'none' } : {},
+      inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
       buttonGroupButtonOverwrittenCss,
