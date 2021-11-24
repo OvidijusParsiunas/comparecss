@@ -1,3 +1,4 @@
+import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../consts/borderWidthAlias';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../consts/borderStyles.enum';
@@ -53,7 +54,7 @@ export default {
         default: 0,
         scale: [0, 100],
         smoothingDivisible: 4,
-        cssProperty: 'borderWidth',
+        cssProperty: BORDER_WIDTH_CSS_PROPERTY_ALIAS,
         postfix: 'px',
       },
       triggers: [
@@ -80,7 +81,7 @@ export default {
       },
       triggers: {
         none: {
-          cssProperty: 'borderWidth',
+          cssProperty: BORDER_WIDTH_CSS_PROPERTY_ALIAS,
           defaultValue: '0px',
           negativeConditions: new Set([0, undefined]),
         },

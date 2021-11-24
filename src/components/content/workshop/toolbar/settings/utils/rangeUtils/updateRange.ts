@@ -1,3 +1,5 @@
+import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import SharedUtils from '../sharedUtils';
 
@@ -24,11 +26,21 @@ export class UpdateRange {
     return Number.parseFloat(value) * smoothingDivisible;
   }
 
+  protected static updateOtherBorderProperties(subcomponent: Subcomponent, rangeValue?: string): void {
+    const newRangeValue = rangeValue || subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
+    const { [CSS_PSEUDO_CLASSES.DEFAULT]: defaultCss } = subcomponent.customCss;
+    defaultCss.borderTopWidth = newRangeValue;
+    defaultCss.borderRightWidth = newRangeValue;
+    defaultCss.borderBottomWidth = newRangeValue;
+  }
+
   protected static updateCustomCss(rangeValue: string, spec: any, subcomponent: Subcomponent): number {
     const { cssProperty, smoothingDivisible, postfix } = spec;
     const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     const realRangeValue = Math.round(rangeValue as unknown as number / smoothingDivisible);
-    customCss[activeCssPseudoClassesDropdownItem][cssProperty] = `${realRangeValue}${postfix}`;
+    const realRangeValueStr = `${realRangeValue}${postfix}`;
+    customCss[activeCssPseudoClassesDropdownItem][cssProperty] = realRangeValueStr;
+    if (cssProperty === BORDER_WIDTH_CSS_PROPERTY_ALIAS) UpdateRange.updateOtherBorderProperties(subcomponent, realRangeValueStr);
     return realRangeValue;
   }
 

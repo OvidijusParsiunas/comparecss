@@ -1,3 +1,4 @@
+import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
@@ -83,6 +84,18 @@ export default class RangeUtils extends UpdateRange {
     SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponent, updatedSetting.spec.cssProperty);
   }
 
+  private static updateCustomFeatureSetting(settingToBeUpdated: any, subcomponent: Subcomponent): void {
+    settingToBeUpdated.spec.default = UpdateRange.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponent);
+    if (settingToBeUpdated.spec.updateSettingSpecViaOtherSettings) {
+      UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(settingToBeUpdated.spec, subcomponent);
+    }
+    if (settingToBeUpdated.spec.updateOtherCssProperties) {
+      // when resetting subcomponent, update other interconnected subcomponent features that depend on it
+      const rangeStringValue = UpdateRange.getCustomFeatureStringRangeValue(settingToBeUpdated.spec.customFeatureObjectKeys, subcomponent);
+      UpdateOtherRangesUtils.updateOtherSubcomponentRanges(settingToBeUpdated.spec.updateOtherCssProperties, rangeStringValue);
+    }
+  }
+
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
     const singlePropertyValue = settingToBeUpdated.spec.partialCss
       ? cssPropertyValue.split(' ')[settingToBeUpdated.spec.partialCss.position] : cssPropertyValue;
@@ -93,31 +106,30 @@ export default class RangeUtils extends UpdateRange {
     }
   }
 
+  private static updateCssPropertySetting(settingToBeUpdated: any, cssPropertyValue: string, subcomponent: Subcomponent): void {
+    const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue,
+      settingToBeUpdated.spec);
+    if (!hasBoxShadowBeenSet) {
+      RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue);
+      if (settingToBeUpdated.spec.cssProperty === BORDER_WIDTH_CSS_PROPERTY_ALIAS) {
+        UpdateRange.updateOtherBorderProperties(subcomponent);
+      }
+      // update setting and adjust css to boundaries if resetting
+      if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) UpdateOtherRangesUtils.updateOtherOptionSettingAndCssProperties(
+        settingToBeUpdated.spec, subcomponent);
+      // when resetting subcomponent, update other interconnected subcomponent css that depend on it
+      if (settingToBeUpdated.spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(
+        settingToBeUpdated.spec.updateOtherCssProperties, Number.parseFloat(cssPropertyValue));
+    }
+  }
+
   public static updateSettings(settingToBeUpdated: any, subcomponent: Subcomponent): void {
     const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
-      const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue,
-        settingToBeUpdated.spec);
-      if (!hasBoxShadowBeenSet) {
-        RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue);
-        // update setting and adjust css to boundaries if resetting
-        if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) UpdateOtherRangesUtils.updateOtherOptionSettingAndCssProperties(
-          settingToBeUpdated.spec, subcomponent);
-        // when resetting subcomponent, update other interconnected subcomponent css that depend on it
-        if (settingToBeUpdated.spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(
-          settingToBeUpdated.spec.updateOtherCssProperties, Number.parseFloat(cssPropertyValue));
-      }
+      RangeUtils.updateCssPropertySetting(settingToBeUpdated, cssPropertyValue, subcomponent);
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
-      settingToBeUpdated.spec.default = UpdateRange.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponent);
-      if (settingToBeUpdated.spec.updateSettingSpecViaOtherSettings) {
-        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(settingToBeUpdated.spec, subcomponent);
-      }
-      if (settingToBeUpdated.spec.updateOtherCssProperties) {
-        // when resetting subcomponent, update other interconnected subcomponent features that depend on it
-        const rangeStringValue = UpdateRange.getCustomFeatureStringRangeValue(settingToBeUpdated.spec.customFeatureObjectKeys, subcomponent);
-        UpdateOtherRangesUtils.updateOtherSubcomponentRanges(settingToBeUpdated.spec.updateOtherCssProperties, rangeStringValue);
-      }
+      RangeUtils.updateCustomFeatureSetting(settingToBeUpdated, subcomponent);
     } else {
       settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
     }

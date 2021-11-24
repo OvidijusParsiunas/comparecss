@@ -14,7 +14,7 @@ export class ButtonGroupButtonDisplayInFrontOfSiblings {
 
   private static areBorderPropertiesDifferent(subcomponent: Subcomponent, newPseudoClass: CSS_PSEUDO_CLASSES,
       oldPseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    return subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth !== '0px'
+    return subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth !== '0px'
       && !ButtonGroupButtonDisplayInFrontOfSiblings.areBorderColorsMatching(subcomponent, newPseudoClass, oldPseudoClass);
   }
 

@@ -13,7 +13,7 @@ export default {
         default: 0,
         scale: [0, 100],
         smoothingDivisible: 4,
-        cssProperty: 'borderLeftWidth',
+        cssProperty: 'borderRightWidth',
         postfix: 'px',
       },
     },

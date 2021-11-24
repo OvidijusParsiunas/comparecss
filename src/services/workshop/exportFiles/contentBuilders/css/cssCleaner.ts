@@ -1,4 +1,5 @@
 import { CustomCssUtils } from '../../../../../components/content/workshop/utils/componentManipulation/utils/customCssUtils';
+import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../consts/borderWidthAlias';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
@@ -84,8 +85,8 @@ export default class CssCleaner {
 
   private static cleanBorderPropertiesForCssPseudoClass(newCustomCss: CustomCss, customCss: CustomCss, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
     if (!newCustomCss[cssPseudoClass]) return;
-    // if borderWidth exists then the border must be present and borderStyle is not set to 'none', this is enforced in the UI
-    if (newCustomCss[cssPseudoClass].hasOwnProperty('borderWidth')) {
+    // if BORDER_WIDTH_CSS_PROPERTY_ALIAS exists then the border must be present and borderStyle is not set to 'none', this is enforced in the UI
+    if (newCustomCss[cssPseudoClass].hasOwnProperty(BORDER_WIDTH_CSS_PROPERTY_ALIAS)) {
       if (!newCustomCss[cssPseudoClass].hasOwnProperty('borderStyle') && !this.getCssValueAppropriateToState(cssPseudoClass, newCustomCss, 'borderStyle')) {
         newCustomCss[cssPseudoClass].borderStyle = this.getCssValueAppropriateToState(cssPseudoClass, customCss, 'borderStyle');
       }
@@ -166,7 +167,7 @@ export default class CssCleaner {
           return false;
         }
         return true;
-      case 'borderWidth':
+      case BORDER_WIDTH_CSS_PROPERTY_ALIAS:
         if (propertyValue === '0px') {
           borderPropertiesStatus.areBorderPropertiesRetained = false;
           return true;

@@ -58,12 +58,12 @@ class ButtonGroupBase extends ComponentBuilder {
       // subcomponent is from button component
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponent.seedComponent,
         subcomponent.seedComponent.containerComponent);
-    } else if (cssProperty === 'borderLeftWidth') {
+    } else if (cssProperty === 'borderRightWidth') {
       // subcomponent is from button component
-      const borderLeftWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth;
+      const { borderRightWidth } = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths
-      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = borderLeftWidth === '0px' ? '-2px' : `-${borderLeftWidth}`;
-      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = borderLeftWidth;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = borderRightWidth === '0px' ? '-2px' : `-${borderRightWidth}`;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = borderRightWidth;
     } else if (cssProperty === 'borderTopWidth') {
       // subcomponent is from button component
       const borderTopWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
@@ -167,7 +167,10 @@ class ButtonGroupBase extends ComponentBuilder {
         color: '#004085',
         backgroundColor: 'unset',
         borderColor: '#b8daff',
-        borderWidth: '0px',
+        borderTopWidth: '0px',
+        borderRightWidth: '0px',
+        borderLeftWidth: '0px',
+        borderBottomWidth: '0px',
         borderStyle: BORDER_STYLES.SOLID,
         borderRadius: '0px',
         width: 'auto',

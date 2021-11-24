@@ -28,7 +28,7 @@ const buttonGroupButtonSpecificActiveOptions = [
 export const buttonGroupButtonOptions: SubcomponentOptions<ButtonGroupButtonOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     ...ComponentOptionsUtils.overwriteOptions(
-      ComponentOptionsUtils.removeOptions(childButtonOptions[CSS_PSEUDO_CLASSES.DEFAULT],  WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW),
+      ComponentOptionsUtils.removeOptions(childButtonOptions[CSS_PSEUDO_CLASSES.DEFAULT], WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW),
       buttonGroupButtonSpecificOptions),
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [

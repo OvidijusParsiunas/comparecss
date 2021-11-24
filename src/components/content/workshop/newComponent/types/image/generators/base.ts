@@ -13,7 +13,10 @@ class ImageBase extends ComponentBuilder {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         borderRadius: '0px',
-        borderWidth: '0px',
+        borderTopWidth: '0px',
+        borderRightWidth: '0px',
+        borderLeftWidth: '0px',
+        borderBottomWidth: '0px',
         borderColor: '#1779ba',
         borderStyle: BORDER_STYLES.SOLID,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
