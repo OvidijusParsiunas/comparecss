@@ -1,4 +1,4 @@
-import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
+import { childComponentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
@@ -9,7 +9,7 @@ import { AddLayerComponent } from './addLayerComponent';
 export class AddTemporaryAddPreviewLayerComponent extends AddLayerComponent {
 
   public static addTemporary(activeComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES): WorkshopComponent {
-    const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
+    const componentGenerator = childComponentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newComponent = AddLayerComponent.createNewComponent(componentGenerator, activeComponent,
       TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     newComponent.baseSubcomponent.isTemporaryAddPreview = true;

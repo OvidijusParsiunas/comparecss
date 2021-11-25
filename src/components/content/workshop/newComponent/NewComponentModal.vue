@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import { componentTypeToStyleGenerators } from './types/componentTypeToStyleGenerators';
+import { masterComponentTypeToStyleGenerators } from './types/componentTypeToStyleGenerators';
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
@@ -157,7 +157,7 @@ export default {
       this.currentlySelectedComponentType = componentType;
     },
     addComponent(): void {
-      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLES.DEFAULT].createNewComponent({});
+      const newComponent = masterComponentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLES.DEFAULT].createNewComponent({});
       newComponent.className = this.className;
       this.$emit('add-component', newComponent);
       // updates modal only after it has closed

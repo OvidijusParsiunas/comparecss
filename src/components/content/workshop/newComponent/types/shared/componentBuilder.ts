@@ -224,7 +224,7 @@ export class ComponentBuilder {
     };
   }
   
-  private static alignBase(baseSubcomponent: Subcomponent, horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS): void {
+  private static setAlignmentInParent(baseSubcomponent: Subcomponent, horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS): void {
     if (baseSubcomponent.customStaticFeatures) {
       baseSubcomponent.customStaticFeatures.alignment = { horizontalSection };
       baseSubcomponent.defaultCustomStaticFeatures.alignment = { horizontalSection };
@@ -238,7 +238,7 @@ export class ComponentBuilder {
       createBaseSubcomponent: (name: string) => Subcomponent, isBaseOptional = true): WorkshopComponent {
     const baseName = presetProperties.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
-    if (presetProperties.horizontalSection) ComponentBuilder.alignBase(baseSubcomponent, presetProperties.horizontalSection);
+    if (presetProperties.horizontalSection) ComponentBuilder.setAlignmentInParent(baseSubcomponent, presetProperties.horizontalSection);
     const baseComponent = ComponentBuilder.createComponent(presetProperties, baseSubcomponent, isBaseOptional);
     baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;

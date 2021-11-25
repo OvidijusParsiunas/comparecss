@@ -3,8 +3,8 @@ import { AutoSyncedSiblingContainerComponentUtils } from '../../autoSyncedSiblin
 import { IncrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/incrementChildComponentCountLimitsState';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
+import { childComponentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
-import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
@@ -132,7 +132,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   public static addUsingParentDropdownStructure(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, parentLayer: Layer): WorkshopComponent {
-    const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
+    const componentGenerator = childComponentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
       containerComponent, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.onBuildProperties);

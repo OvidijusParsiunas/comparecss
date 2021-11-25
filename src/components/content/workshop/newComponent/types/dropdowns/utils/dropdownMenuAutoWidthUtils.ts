@@ -82,7 +82,6 @@ export class DropdownMenuAutoWidthUtils {
     return menuComponent.componentPreviewStructure.layers.map((layer) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
         layer.alignmentSectionToComponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].baseSubcomponent.name);
-      // WORK 2 - if dropdown is in card and below screen bottom - this will error out
       return document.getElementById(subcomponentId).clientWidth;
     });
   }

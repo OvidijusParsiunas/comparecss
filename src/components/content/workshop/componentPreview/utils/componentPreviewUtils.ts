@@ -54,7 +54,8 @@ export default class ComponentPreviewUtils {
   // when inheriting during a click or hover class, attempt to get a valid value from a lower class
   // when inheriting during a default class - return 'inherit' to make the element transparent
   // currently utilised for background and text color properties only
-  public static getInheritedCustomCssValue(cssPseudoClass: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssProperty: string): string {
+  public static getInheritedCustomCssValue<T extends keyof WorkshopComponentCss>(cssPseudoClass: CSS_PSEUDO_CLASSES, customCss: CustomCss,
+      cssProperty: T): WorkshopComponentCss[T] {
     switch (cssPseudoClass) {
       case (CSS_PSEUDO_CLASSES.CLICK):
         if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
@@ -69,10 +70,10 @@ export default class ComponentPreviewUtils {
     }
   }
 
-  private static setInheritedCustomCssValue<T extends WorkshopComponentCss, V extends keyof WorkshopComponentCss>(inheritedValues: T,
-      activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssProperty: V): void {
+  private static setInheritedCustomCssValue<T extends WorkshopComponentCss, Y extends keyof WorkshopComponentCss>(inheritedValues: T,
+      activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssProperty: Y): void {
     if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]) {
-      inheritedValues[cssProperty] = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, cssProperty) as T[V];
+      inheritedValues[cssProperty] = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, cssProperty) as T[Y];
     }
   }
 

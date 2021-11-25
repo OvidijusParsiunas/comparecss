@@ -2,9 +2,9 @@ import { IncrementChildComponentCountLimitsState } from '../../childComponentCou
 import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AutoSyncedSiblingComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
+import { childComponentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { AlignmentSectionToComponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -126,7 +126,7 @@ export class AddLayerComponent extends AddComponentShared {
   }
 
   public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean): WorkshopComponent {
-    const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
+    const componentGenerator = childComponentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = ChildComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
     const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const newComponent = AddLayerComponent.createNewComponent(componentGenerator, masterComponent,

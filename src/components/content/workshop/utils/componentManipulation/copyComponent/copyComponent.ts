@@ -2,7 +2,7 @@ import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/
 import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { UpdateLinkedComponentsDropdownItemNames } from '../updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { ParentBasedPresetProperties, PropertyOverwritables } from '../../../../../../interfaces/newChildComponents';
-import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
+import { masterComponentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
@@ -174,7 +174,7 @@ export class CopyComponent extends ComponentBuilder {
   public static copy(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
     // used here as button builders do not inherently reset the unique id
     uniqueSubcomponentIdState.resetUniqueId();
-    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLES.BASE].createNewComponent({});
+    const newComponent = masterComponentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLES.BASE].createNewComponent({});
     CopyComponent.copyComponent(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');

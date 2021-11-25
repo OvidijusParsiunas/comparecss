@@ -64,10 +64,10 @@ import ExpandedModalPreviewModeToggleOpenAnimation from './utils/animations/expa
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { subcomponentAndOverlayElementIdsState } from './utils/elements/subcomponentAndOverlayElementIdsState';
 import { SubcomponentSelectModeSubOverlay } from './utils/elements/overlays/subcomponentSelectModeSubOverlay';
+import { masterComponentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils'
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
-import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
 import { CustomFeatures, WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
@@ -105,7 +105,7 @@ export default {
       displayed: false,
       mouseEvents: null,
       subcomponentAndOverlayElementIds: null,
-      component: componentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLES.DEFAULT].createNewComponent({}),
+      component: masterComponentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLES.DEFAULT].createNewComponent({}),
     },
   }),
   methods: {
