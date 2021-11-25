@@ -126,12 +126,12 @@ export class ComponentBuilder {
   protected static setNewChildComponentsItemsProperties(component: WorkshopComponent, layerChildItems: BASE_SUBCOMPONENT_NAMES[],
       componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCountLimitsState?: ChildComponentCountLimitsState): void {
     component.newChildComponents = {
-      sharedDropdownItemsRefs: { layer: DropdownUtils.generateDropdownStructure(layerChildItems) },
-      dropdown: {
-        items: DropdownUtils.generateDropdownStructure(componentChildItems),
-      },
+      addRemoveFunctionality: {
+        sharedDropdownItemsRefs: { layer: DropdownUtils.generateDropdownStructure(layerChildItems) },
+        dropdownItems: DropdownUtils.generateDropdownStructure(componentChildItems),
+      }
     };
-    if (childComponentCountLimitsState) component.newChildComponents.dropdown.childComponentCountLimitsState = childComponentCountLimitsState;
+    if (childComponentCountLimitsState) component.newChildComponents.addRemoveFunctionality.childComponentCountLimitsState = childComponentCountLimitsState;
   }
 
   protected static createSyncablesObjectUsingSubcomponents(uniqueComponents: ComponentTypeToProperties,

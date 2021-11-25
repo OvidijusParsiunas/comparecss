@@ -149,6 +149,7 @@
 </template>
 
 <script lang="ts">
+import { ChildComponentCountLimitStateUtils } from '../../utils/componentManipulation/childComponentCountLimitsState/childComponentCountLimitsStateUtils';
 import { removeChildComponentModalState } from '../../utils/componentManipulation/removeChildComponent/removeChildComponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
@@ -455,7 +456,8 @@ export default {
       this.temporarilyAllowOptionAnimations(SyncedComponent.toggleChildComponentSyncToOff.bind(this, this.component, callback));
     },
     isRemoveChildComponentButtonDisplayed(): boolean {
-      return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;
+      const activeSubcomponent: Subcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
+      return activeSubcomponent.isRemovable && ChildComponentCountLimitStateUtils.isCurrentCountHigherThanMin(activeSubcomponent.seedComponent);
     },
     beginToRemoveChildComponent(): void {
       if (!this.getIsDoNotShowModalAgainState()) {
@@ -480,7 +482,7 @@ export default {
     },
     getChildComponentsThatCanBeAdded(): NestedDropdownStructure {
       return (this.component.subcomponents[this.component.activeSubcomponentName] as Subcomponent)
-        .seedComponent.newChildComponents?.dropdown?.items || {};
+        .seedComponent.newChildComponents.addRemoveFunctionality?.dropdownItems || {};
     },
     getChildComponentsThatCanBeAddAndRefresh(): NestedDropdownStructure {
       // used to refresh dropdown items on a dynamic change of dropdown items obj contents - e.g. an item inside the obj can have isEnabled set to false

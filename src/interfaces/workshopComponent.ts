@@ -214,6 +214,7 @@ export interface WorkshopComponent {
   sync: Sync;
   paddingComponent?: WorkshopComponent;
   paddingComponentChild?: WorkshopComponent;
+  // change
   // properties for components that can be added through the add child component dropdown
   newChildComponents: NewChildComponents;
   onChildComponentRemovalFunc?: PropertyOverwritableFunc;

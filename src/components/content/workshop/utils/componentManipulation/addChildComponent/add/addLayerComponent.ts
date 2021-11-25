@@ -35,8 +35,9 @@ export class AddLayerComponent extends AddComponentShared {
   }
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.newChildComponents.sharedDropdownItemsRefs?.layer) {
-      newComponent.newChildComponents = { dropdown: { items: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer } };
+    if (containerComponent.newChildComponents.addRemoveFunctionality?.sharedDropdownItemsRefs?.layer) {
+      newComponent.newChildComponents = { addRemoveFunctionality: {
+        dropdownItems: containerComponent.newChildComponents.addRemoveFunctionality.sharedDropdownItemsRefs.layer } };
     }
   }
 

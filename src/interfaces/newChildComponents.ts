@@ -39,16 +39,16 @@ export interface SharedDropdownItemsRefs {
   layer: NestedDropdownStructure;
 }
 
-interface NewChildComponentsDropdown {
-  items?: NestedDropdownStructure;
+interface AddRemoveFunctionality {
+  dropdownItems?: NestedDropdownStructure;
   childComponentCountLimitsState?: ChildComponentCountLimitsState;
-}
-
-export interface NewChildComponents {
-  dropdown?: NewChildComponentsDropdown;
   // this property is never used in the layer generator files and is instead set in the container component then appended when a new layer is created
   // this is done so that the same new component item list reference is shared across all layers and the enabled and disabled items would be in-sync
   sharedDropdownItemsRefs?: SharedDropdownItemsRefs;
+}
+
+export interface NewChildComponents {
+  addRemoveFunctionality?: AddRemoveFunctionality;
   propertyOverwritables?: PropertyOverwritables;
   // this property references components that are automatically added to layer and removed a long with it
   // it additionally helps when container component is being copied

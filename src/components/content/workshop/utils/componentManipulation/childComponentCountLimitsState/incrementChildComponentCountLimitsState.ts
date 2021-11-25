@@ -11,7 +11,7 @@ export class IncrementChildComponentCountLimitsState extends ChildComponentCount
 
   private static isChildComponentCountAtMax(): boolean {
     const { childComponentCountLimitsState, newComponentNamePrefix } = this as any as ConditionFuncContextValues;
-    return childComponentCountLimitsState.max[newComponentNamePrefix]
+    return childComponentCountLimitsState.max?.[newComponentNamePrefix]
       && childComponentCountLimitsState.current[newComponentNamePrefix] >= childComponentCountLimitsState.max[newComponentNamePrefix];
   }
 
@@ -26,7 +26,7 @@ export class IncrementChildComponentCountLimitsState extends ChildComponentCount
   }
 
   public static increment(parentComponent: WorkshopComponent, newComponentNamePrefix: string): void {
-    const { childComponentCountLimitsState: childComponentCountLimitsState } = parentComponent.newChildComponents?.dropdown || {};
+    const { childComponentCountLimitsState } = parentComponent.newChildComponents.addRemoveFunctionality || {};
     if (childComponentCountLimitsState) {
       IncrementChildComponentCountLimitsState.incrementCurrentCount(childComponentCountLimitsState, newComponentNamePrefix);
       ChildComponentCountLimitsStateShared.setAddPreviewDropdownItemStateIfConditionMet(

@@ -153,10 +153,9 @@ class ButtonGroupBase extends ComponentBuilder {
 
   public static setChildComponentsItems(buttonGroupBaseComponent: WorkshopComponent): void {
     const baseComponentItems = [BUTTON_COMPONENTS_BASE_NAMES.BUTTON];
-    // WORK 2 - create a min and have a minimum number of buttonas as 1
-    // const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.BUTTON]: 1 }};
+    const childComponentMinCount = { min: { [BUTTON_COMPONENTS_BASE_NAMES.BUTTON]: 1 }};
     ComponentBuilder.setNewChildComponentsItemsProperties(buttonGroupBaseComponent,
-      baseComponentItems, baseComponentItems);
+      baseComponentItems, baseComponentItems, childComponentMinCount);
   }
 
   private static createDefaultCss(): CustomCss {

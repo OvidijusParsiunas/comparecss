@@ -18,7 +18,7 @@ interface SynSyncablesResult {
 export class SyncChildComponent {
 
   private static setAreChildrenComponentsTemporarilySynced(syncableSubcomponent: Subcomponent): void {
-    const { siblingChildComponentsAutoSynced } = syncableSubcomponent.seedComponent.parentLayer?.subcomponent.seedComponent.sync;
+    const { siblingChildComponentsAutoSynced } = syncableSubcomponent.seedComponent.parentLayer?.subcomponent.seedComponent.sync || {};
     if (siblingChildComponentsAutoSynced) siblingChildComponentsAutoSynced.areChildrenComponentsTemporarilySynced = true;
   }
 
@@ -95,7 +95,6 @@ export class SyncChildComponent {
     let wasAComponentToBeSyncedToMissing = false;
     Object.keys(uniqueComponents).forEach((componentType: COMPONENT_TYPES) => {
       const syncableSubcomponent = uniqueComponents[componentType]?.baseSubcomponent;
-      console.log(syncableSubcomponent);
       if (!syncableSubcomponent) {
         if (siblingComponentTypes) SyncChildComponent.setMissingSiblingComponentProperties(
           componentToBeSyncedTo, isTemporary, siblingComponentTypes, componentType);

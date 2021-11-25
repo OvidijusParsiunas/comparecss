@@ -6,5 +6,6 @@ export type BaseNameCount = {
 
 export interface ChildComponentCountLimitsState {
   current?: BaseNameCount;
-  max: BaseNameCount;
+  max?: BaseNameCount;
+  min?: BaseNameCount;
 }

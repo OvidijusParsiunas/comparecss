@@ -33,7 +33,6 @@ export default class JSONUtils {
     return JSONUtils.createNewObject(object) as T;
   }
 
-  // WORK 2 - check if this works
   public static getKeyByValue<T, K extends keyof T>(object: T, value: T[K]): string {
     return Object.keys(object).find(key => object[key] === value);
   }

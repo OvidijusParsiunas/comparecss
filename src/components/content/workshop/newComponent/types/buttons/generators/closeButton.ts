@@ -12,14 +12,14 @@ import { buttonBase } from './base';
 
 class CloseButton extends ComponentBuilder {
 
-  public static removeNewChildComponentsDropdownProperties(buttonComponent: WorkshopComponent): void {
-    delete buttonComponent.newChildComponents.dropdown;
+  public static removeChildComponentAddRemoveFunctionality(buttonComponent: WorkshopComponent): void {
+    delete buttonComponent.newChildComponents.addRemoveFunctionality;
   }
 
   private static overwriteButtonTextProperties(textBaseSubcomponent: Subcomponent, textContent: string): void {
     textBaseSubcomponent.customStaticFeatures.subcomponentText.text = textContent;
     textBaseSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = textContent;
-    textBaseSubcomponent.isRemovable = true;
+    textBaseSubcomponent.isRemovable = false;
   }
 
   private static overwriteInheritedCss(textBaseSubcomponent: Subcomponent): void {
@@ -98,7 +98,7 @@ class CloseButton extends ComponentBuilder {
   public static overwriteButton(buttonComponent: WorkshopComponent): void {
     CloseButton.overwriteBaseCustomCss(buttonComponent.baseSubcomponent);
     CloseButton.setButtonStyle(buttonComponent);
-    CloseButton.removeNewChildComponentsDropdownProperties(buttonComponent);
+    CloseButton.removeChildComponentAddRemoveFunctionality(buttonComponent);
   }
 }
 
