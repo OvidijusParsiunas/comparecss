@@ -5,7 +5,7 @@ import { CreateNewComponent } from '../../../../../../../interfaces/componentGen
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { plainLayer } from '../../layers/generators/plainLayer';
+import { paddingBase } from './base';
 
 export class PaddingComponentUtils {
 
@@ -20,7 +20,7 @@ export class PaddingComponentUtils {
     paddingComponentObj[propertyName] = childComponentObj[propertyName];
   }
 
-  // needs to be executed after linked components insertion as this renders linked base dropdown items as final
+  // needs to be executed after linked components insertion as this renders linked base dropdown items with their final implementation
   private static setSharedProperties(paddingComponent: WorkshopComponent, childComponent: WorkshopComponent): void {
     PaddingComponentUtils.mergeChildAndPaddingComponentPropertiesAndSetReferences(childComponent,
       paddingComponent, 'subcomponents');
@@ -38,14 +38,10 @@ export class PaddingComponentUtils {
     return childComponent;
   }
   
-  public static create(baseName: string, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, baseType: SUBCOMPONENT_TYPES,
+  public static create(baseName: string, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, subcomponentType: SUBCOMPONENT_TYPES,
       createChildComponentFunc: CreateNewComponent, childBaseName: BUTTON_COMPONENTS_BASE_NAMES,
       overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
-    const paddingComponent = plainLayer.createNewComponent({ baseName });
-    paddingComponent.type = componentType;
-    paddingComponent.style = componentStyle;
-    paddingComponent.baseSubcomponent.subcomponentType = baseType;
-    paddingComponent.sync.syncables.containerComponents = [paddingComponent];
+    const paddingComponent = paddingBase.createNewComponent({ baseName, componentType, componentStyle, baseSubcomponentType: subcomponentType });
     const childComponent = PaddingComponentUtils.createChildComponent(
       paddingComponent, createChildComponentFunc, childBaseName, overwriteChildComponentFunc);
     PaddingComponentUtils.setSharedProperties(paddingComponent, childComponent);

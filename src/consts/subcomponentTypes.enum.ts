@@ -7,4 +7,5 @@ export enum SUBCOMPONENT_TYPES {
   ICON,
   DROPDOWN,
   DROPDOWN_MENU,
+  PADDING,
 }
