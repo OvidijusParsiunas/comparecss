@@ -5,7 +5,7 @@ import { Subcomponent } from '../../../../../interfaces/workshopComponent';
 
 export default function useLayerAlignmentSectionComponent(): UseLayerAlignmentSectionComponent {
 
-  const getStyleProperties = (subcomponent: Subcomponent, index: string): WorkshopComponentCss[] => {
+  const getComponentStyleProperties = (subcomponent: Subcomponent, index: string): WorkshopComponentCss[] => {
     return [
       { order: index },
       subcomponent.seedComponent.type === COMPONENT_TYPES.ICON ? { pointerEvents: 'none' } : {},
@@ -13,6 +13,6 @@ export default function useLayerAlignmentSectionComponent(): UseLayerAlignmentSe
   };
 
   return {
-    getStyleProperties,
+    getComponentStyleProperties,
   };
 }

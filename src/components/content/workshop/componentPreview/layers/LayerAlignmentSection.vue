@@ -4,7 +4,7 @@
          will have to disable pointer events in the layer sections and have the js class in the layer parent, will also need to find a way to be able to
          highlight the text in the subcomponent select mode -->
     <div v-for="(component, index) in components" :key="component"
-      :style="getStyleProperties(component.baseSubcomponent, index)"
+      :style="getComponentStyleProperties(component.baseSubcomponent, index)"
       class="component-element-container"
       :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(component.baseSubcomponent)]">
       <base-component v-if="component"
