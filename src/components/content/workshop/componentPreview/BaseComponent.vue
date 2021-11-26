@@ -4,7 +4,7 @@
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
         :icon="getIconName()"
-        :style="getStyleProperties(component)"
+        :style="getComponentStyleProperties(component)"
         :class="[COMPONENT_PREVIEW_MARKER,
           ...getJsClasses(), ...getComponentCssClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
@@ -21,17 +21,17 @@
           />
       </component>
       <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
-      <div v-else :style="getStyleProperties(component)"></div>
+      <div v-else :style="getComponentStyleProperties(component)"></div>
       <div v-if="isIcon(component)"
         :id="getBaseId('subcomponentId')"
-        :style="getOverlayStyleProperties()"
+        :style="getOverlayStyleProperties(component, isChildComponent)"
         :class="getOverlayClasses(true)"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
       <div ref="componentPreviewOverlay"
         :id="getBaseId('overlayId')"
         style="display: none"
-        :style="getOverlayStyleProperties()"
+        :style="getOverlayStyleProperties(component, isChildComponent)"
         :class="getOverlayClasses()">
           {{getSubcomponentText(component)}}
           <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
@@ -104,19 +104,6 @@ export default {
     },
     getComponentCssClasses(): string[] {
       return this.component.componentClasses || [];
-    },
-    // WORK 2 - move this to the use file
-    getOverlayStyleProperties(): WorkshopComponentCss {
-      const subcomponentCss = {
-        ...this.component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
-        ...this.getBaseContainerCss(this.component),
-        ...this.getButtonGroupButtonOverwrittenCss(this.component),
-      };
-      if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
-      if (this.component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-      if (!this.component.linkedComponents?.base && !this.isChildComponent) subcomponentCss.marginTop = '0px';
-      if (this.isIcon(this.component)) subcomponentCss.height = subcomponentCss.width;
-      return subcomponentCss;
     },
     getOverlayClasses(isIconOverlayTrigger: boolean): string[] {
       const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];

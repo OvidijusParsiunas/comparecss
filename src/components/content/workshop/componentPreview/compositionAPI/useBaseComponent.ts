@@ -58,7 +58,7 @@ export default function useBaseComponent(): UseBaseComponent {
     return SelectDropdownUtils.isTextSelected(component) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
-  const getStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
+  const getComponentStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
     const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = component.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
@@ -81,6 +81,20 @@ export default function useBaseComponent(): UseBaseComponent {
     ];
   };
 
+  const getOverlayStyleProperties = (component: WorkshopComponent, isChildComponent: boolean): WorkshopComponentCss => {
+    const subcomponentCss = {
+      ...component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+      color: '#ff000000',
+      ...getBaseContainerCss(component),
+      ...getButtonGroupButtonOverwrittenCss(component),
+    };
+    if (!isChildComponent) subcomponentCss.height = component.linkedComponents?.base ? 'unset' : '100% !important';
+    if (component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+    if (!component.linkedComponents?.base && !isChildComponent) subcomponentCss.marginTop = '0px';
+    if (isIcon(component)) subcomponentCss.height = subcomponentCss.width;
+    return subcomponentCss;
+  }
+
   const getSubcomponentText = (component: WorkshopComponent): string => {
     const { customFeatures, customStaticFeatures } = component.baseSubcomponent;
     const { subcomponentText, selectDropdownText } = customStaticFeatures || {};
@@ -94,9 +108,9 @@ export default function useBaseComponent(): UseBaseComponent {
 
   return {
     isIcon,
-    getStyleProperties,
     getSubcomponentText,
     getBaseContainerCss,
-    getButtonGroupButtonOverwrittenCss,
+    getOverlayStyleProperties,
+    getComponentStyleProperties,
   };
 }
