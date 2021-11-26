@@ -28,7 +28,7 @@ export default function useLayerComponent(): UseLayerComponent {
     return SelectDropdownUtils.isItemSelected(layer) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
-  const getStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
+  const getComponentStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
     const { subcomponent: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClassesDropdownItem } } = layer;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const subcomponentCss = overwrittenCustomCssObj || customCss;
@@ -46,7 +46,15 @@ export default function useLayerComponent(): UseLayerComponent {
     ];
   };
 
+  const getOverlayStyleProperties = (layer: Layer, layers: Layer[], currentIndex: number): WorkshopComponentCss => {
+    const subcomponentCss = { ...layer.subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
+    subcomponentCss.zIndex = layers.length - currentIndex + 1;
+    if (layer.subcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block';
+    return subcomponentCss;
+  }
+
   return {
-    getStyleProperties,
+    getOverlayStyleProperties,
+    getComponentStyleProperties,
   };
 }

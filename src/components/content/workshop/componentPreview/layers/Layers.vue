@@ -2,7 +2,7 @@
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div :id="getLayerId(layer.subcomponent.name, 'subcomponentId')"
-        :style="getStyleProperties(layer, index === layers.length - 1)"
+        :style="getComponentStyleProperties(layer, index === layers.length - 1)"
         :class="[...classes, COMPONENT_PREVIEW_MARKER]"
         @mouseenter="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseLeave')"
@@ -26,7 +26,7 @@
       </div>
       <div :id="getLayerId(layer.subcomponent.name, 'overlayId')"
         style="display: none"
-        :style="getLayerStyleProperties(layer, layers, index)"
+        :style="getOverlayStyleProperties(layer, layers, index)"
         :class="getLayerClasses(layer)"></div>
     </div>
   </div>
@@ -67,12 +67,6 @@ export default {
     },
     getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
-    },
-    getLayerStyleProperties(layer: Layer, layers: Layer[], currentIndex: number): WorkshopComponentCss {
-      const subcomponentCss = { ...layer.subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
-      subcomponentCss.zIndex = layers.length - currentIndex + 1;
-      if (layer.subcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block';
-      return subcomponentCss;
     },
     getLayerClasses(layer: Layer): string[] {
       const classes = [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
