@@ -85,7 +85,7 @@ export class SyncedComponent {
   public static copyChildPropertiesFromInSyncContainerComponent(targetChildComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,
       containerType: COMPONENT_TYPES): void {
     const componentToSync = SyncedComponent.findChildComponentToSync(targetChildComponent, componentThisIsSyncedTo, containerType);
-    if (componentToSync) SyncChildComponent.syncBaseSubcomponent(componentToSync.baseSubcomponent, targetChildComponent.baseSubcomponent, false);
+    if (componentToSync) SyncChildComponent.syncBaseSubcomponent(targetChildComponent.baseSubcomponent, componentToSync.baseSubcomponent, false);
   }
 
   public static updateIfComponentSyncedToIsRemoved(component: WorkshopComponent): void {
