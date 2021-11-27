@@ -4,6 +4,7 @@ import { CompositionAPISubcomponentTriggerState } from '../../../../../interface
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
+import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
@@ -50,8 +51,9 @@ export default function useBaseComponent(): UseBaseComponent {
   }
 
   function getButtonGroupButtonOverwrittenCss(component: WorkshopComponent): WorkshopComponentCss {
-    return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
-      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component) : {};
+    return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP || 
+      (component.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY && component.baseSubcomponent.customStaticFeatures?.buttonGroupSideBorders)
+        ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component) : {};
   }
 
   function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {

@@ -17,7 +17,8 @@ export class ButtonGroupCompositionAPIUtils {
     if (buttonGroupSideBorders) {
       if (buttonGroupSideBorders.left) {
         cssToOverwrite.borderLeftWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
-      } else if (buttonGroupSideBorders.right) {
+      }
+      if (buttonGroupSideBorders.right) {
         cssToOverwrite.borderRightWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
       }
     }

@@ -85,7 +85,7 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   public static setOnChildComponentRemovalFunc(buttonGroupComponent: WorkshopComponent): void {
-    buttonGroupComponent.childComponentHandlers.onRemoveFunc = ButtonGroupBorderUtils.setBorderClasses;
+    buttonGroupComponent.childComponentHandlers.onRemoveFunc = ButtonGroupBorderUtils.setBorderProperties;
   }
 
   public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -141,7 +141,7 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
-          ButtonGroupBorderUtils.setBorderClasses,
+          ButtonGroupBorderUtils.setBorderProperties,
           ButtonGroupButtonSpecificSettings.set,
         ],
       },
