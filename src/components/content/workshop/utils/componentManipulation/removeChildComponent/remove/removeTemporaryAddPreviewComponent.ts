@@ -18,15 +18,15 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
 
   // the reason why we need to fully remove the layer's child component properties is because their addition alters the parent dropdown structure
   // (child components within other temp child components (text in button component) do not affect dropdown structure as they don't use parent)
-  private static removeChildComponentsInLayer(activeComponent: WorkshopComponent, childComponentsLockedToLayer: WorkshopComponent[]): void {
-    childComponentsLockedToLayer?.forEach((component) => RemoveAnyChildComponent.remove(activeComponent, component.baseSubcomponent.name));
+  private static removeChildComponentsInLayer(activeComponent: WorkshopComponent, childComponentsLockedToThis: WorkshopComponent[]): void {
+    childComponentsLockedToThis?.forEach((component) => RemoveAnyChildComponent.remove(activeComponent, component.baseSubcomponent.name));
   }
 
   public static remove(activeComponent: WorkshopComponent): void {
     if (!activeComponent.subcomponents[TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY]) return;
     const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(activeComponent, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
-    const { newChildComponents, subcomponents } = targetDetails.targetComponent;
-    RemoveTemporaryAddPreviewComponent.removeChildComponentsInLayer(activeComponent, newChildComponents.childComponentsLockedToLayer);
+    const { childComponentsLockedToThis, subcomponents } = targetDetails.targetComponent;
+    RemoveTemporaryAddPreviewComponent.removeChildComponentsInLayer(activeComponent, childComponentsLockedToThis);
     RemoveTemporaryAddPreviewComponent.removeTargetChildComponent(activeComponent, targetDetails, subcomponents);
   }
 }

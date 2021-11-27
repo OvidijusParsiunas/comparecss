@@ -26,7 +26,7 @@ interface ButtonAndMenuComponentsSetupProperties {
 export class DropdownPaddingBase extends ComponentBuilder {
 
   private static setAndExecutePropertyReferenceSharingFuncs(paddingComponent: WorkshopComponent): void {
-    paddingComponent.newChildComponents.propertyOverwritables = {
+    paddingComponent.childComponentHandlers.onAddOverwritables = {
       propertyReferenceSharingFuncs: {
         // only executed when padding component is dereferenced
         // custom properties references are signalled to be shared on new layer additions by siblingChildComponentsAutoSynced,

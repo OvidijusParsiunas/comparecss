@@ -24,7 +24,7 @@ export class DecrementChildComponentCountLimitsState extends ChildComponentCount
   public static decrement(parentComponent: WorkshopComponent, removedChildComponentBaseName: string): void {
     // if temp component
     if (!parentComponent || !parentComponent.masterComponent) return;
-    const { childComponentCountLimitsState } = parentComponent.newChildComponents.addRemoveFunctionality || {};
+    const { childComponentCountLimitsState } = parentComponent.childComponentHandlers.addRemoveButtonSuppState || {};
     if (childComponentCountLimitsState) {
       const removedSubcomponentNamePrefix = StringUtils.getFirstWordInString(removedChildComponentBaseName);
       DecrementChildComponentCountLimitsState.decrementCurrentCount(childComponentCountLimitsState, removedSubcomponentNamePrefix);

@@ -81,9 +81,9 @@ export class DefaultDropdownMenu {
   }
 
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
-    menuComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.LAYER]
+    menuComponent.childComponentHandlers.onAddOverwritables.postBuildFuncs[COMPONENT_TYPES.LAYER]
       .unshift(DropdownItemLayer.overwriteDropdownItem.bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext));
-    menuComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = [
+    menuComponent.childComponentHandlers.onAddOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = [
       ApplyDropdownMenuItemTextProperties.apply.bind(
         { menuComponent, createDefaultTextCss: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentContext)];
   }

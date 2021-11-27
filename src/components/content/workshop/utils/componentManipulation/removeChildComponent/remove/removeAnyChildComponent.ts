@@ -158,7 +158,7 @@ export class RemoveAnyChildComponent {
       if (alignedComponents) RemoveAnyChildComponent.removeAlignedComponent(alignedComponents, component, masterComponent,
         containerComponent, index);
       // the reason why the container is getting passed along seed component is because the containerComponent may not exist because of temp removal
-      deletedComponentContainerComponent?.onChildComponentRemovalFunc?.(component, deletedComponentContainerComponent);
+      deletedComponentContainerComponent?.childComponentHandlers.onRemoveFunc?.(component, deletedComponentContainerComponent);
       return { stopTraversal: true, traversalState };
     }
     return {};

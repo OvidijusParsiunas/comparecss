@@ -26,7 +26,7 @@ export class IncrementChildComponentCountLimitsState extends ChildComponentCount
   }
 
   public static increment(parentComponent: WorkshopComponent, newComponentNamePrefix: string): void {
-    const { childComponentCountLimitsState } = parentComponent.newChildComponents.addRemoveFunctionality || {};
+    const { childComponentCountLimitsState } = parentComponent.childComponentHandlers.addRemoveButtonSuppState || {};
     if (childComponentCountLimitsState) {
       IncrementChildComponentCountLimitsState.incrementCurrentCount(childComponentCountLimitsState, newComponentNamePrefix);
       ChildComponentCountLimitsStateShared.setAddPreviewDropdownItemStateIfConditionMet(

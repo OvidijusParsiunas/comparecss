@@ -20,7 +20,7 @@ class AlertBase extends ComponentBuilder {
   }
 
   public static setPropertyOverwritables(alertComponent: WorkshopComponent): void {
-    alertComponent.newChildComponents.propertyOverwritables = {
+    alertComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.TEXT]: [AlertBase.setComponentToRemovable],
         [COMPONENT_TYPES.BUTTON]: [AlertBase.setComponentToRemovable],

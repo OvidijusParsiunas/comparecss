@@ -125,13 +125,13 @@ export class ComponentBuilder {
 
   protected static setNewChildComponentsItemsProperties(component: WorkshopComponent, layerChildItems: BASE_SUBCOMPONENT_NAMES[],
       componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCountLimitsState?: ChildComponentCountLimitsState): void {
-    component.newChildComponents = {
-      addRemoveFunctionality: {
+    component.childComponentHandlers = {
+      addRemoveButtonSuppState: {
         sharedDropdownItemsRefs: { layer: DropdownUtils.generateDropdownStructure(layerChildItems) },
         dropdownItems: DropdownUtils.generateDropdownStructure(componentChildItems),
       }
     };
-    if (childComponentCountLimitsState) component.newChildComponents.addRemoveFunctionality.childComponentCountLimitsState = childComponentCountLimitsState;
+    if (childComponentCountLimitsState) component.childComponentHandlers.addRemoveButtonSuppState.childComponentCountLimitsState = childComponentCountLimitsState;
   }
 
   protected static createSyncablesObjectUsingSubcomponents(uniqueComponents: ComponentTypeToProperties,
@@ -220,7 +220,7 @@ export class ComponentBuilder {
       componentStatus: { isRemoved: false },
       sync: ComponentBuilder.createEmptySyncObject(),
       baseSubcomponent: baseSubcomponent,
-      newChildComponents: {},
+      childComponentHandlers: {},
     };
   }
   

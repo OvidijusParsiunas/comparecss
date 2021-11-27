@@ -85,7 +85,7 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   public static setOnChildComponentRemovalFunc(buttonGroupComponent: WorkshopComponent): void {
-    buttonGroupComponent.onChildComponentRemovalFunc = ButtonGroupBorderUtils.setBorderClasses;
+    buttonGroupComponent.childComponentHandlers.onRemoveFunc = ButtonGroupBorderUtils.setBorderClasses;
   }
 
   public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -133,7 +133,7 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
-    buttonGroupComponent.newChildComponents.propertyOverwritables = {
+    buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
           ButtonGroupBase.setMarginLeft,

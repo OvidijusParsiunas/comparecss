@@ -24,7 +24,7 @@ export class DropdownMenuBase extends ComponentBuilder {
 
   public static setNewChildComponents(dropdownMenuComponent: WorkshopComponent): void {
     const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
-    dropdownMenuComponent.newChildComponents.addRemoveFunctionality = { dropdownItems };
+    dropdownMenuComponent.childComponentHandlers.addRemoveButtonSuppState = { dropdownItems };
   }
 
   public static setSyncableComponents(dropdownMenuComponent: WorkshopComponent): void {
@@ -44,7 +44,7 @@ export class DropdownMenuBase extends ComponentBuilder {
   }
 
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
-    menuComponent.newChildComponents.propertyOverwritables = {
+    menuComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.LAYER]: [DropdownMenuBase.incrementItemTextOptionIndex],
       },
@@ -77,7 +77,7 @@ export class DropdownMenuBase extends ComponentBuilder {
   }
 
   public static setOnChildComponentRemovalFunc(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownMenuAutoWidthUtils.updateButtonAndMenuWidth;
+    dropdownMenuComponent.childComponentHandlers.onRemoveFunc = DropdownMenuAutoWidthUtils.updateButtonAndMenuWidth;
   }
 
   private static copyItemAndTextComponentProperties(layerSubcomponentToBeCopied: Subcomponent, targetLayerSubcomponent: Subcomponent,
@@ -86,7 +86,7 @@ export class DropdownMenuBase extends ComponentBuilder {
     targetLayerSubcomponent.customFeatures = layerSubcomponentToBeCopied.customFeatures;
     ApplyDropdownMenuItemTextProperties.apply
       .bind({ menuComponent } as SetTextSubcomponentContext)
-      (targetLayerSubcomponent.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
+      (targetLayerSubcomponent.seedComponent.childComponentsLockedToThis[0]);
   }
 
   private static getMenuComponent(component: WorkshopComponent): WorkshopComponent {

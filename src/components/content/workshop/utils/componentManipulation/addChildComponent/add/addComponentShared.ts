@@ -4,7 +4,7 @@ import { ComponentGenerator, PresetProperties } from '../../../../../../../inter
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
-import { ReferenceSharingFuncType } from '../../../../../../../interfaces/newChildComponents';
+import { ReferenceSharingFuncType } from '../../../../../../../interfaces/childComponentHandlers';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -73,7 +73,7 @@ export class AddComponentShared {
 
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
       sharingFuncType: keyof ReferenceSharingFuncType): void {
-    const overwritables = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
+    const overwritables = containerComponent.childComponentHandlers.onAddOverwritables?.postBuildFuncs?.[newComponent.type];
     (overwritables || []).forEach((overwritable) => overwritable(newComponent, containerComponent));
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(true, sharingFuncType, containerComponent);
   }

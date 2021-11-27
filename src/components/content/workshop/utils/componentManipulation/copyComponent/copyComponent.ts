@@ -1,7 +1,7 @@
 import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { UpdateLinkedComponentsDropdownItemNames } from '../updateChildComponent/updateLinkedComponentsDropdownItemNames';
-import { ParentBasedPresetProperties, PropertyOverwritables } from '../../../../../../interfaces/newChildComponents';
+import { ParentBasedPresetProperties, PropertyOverwritables } from '../../../../../../interfaces/childComponentHandlers';
 import { masterComponentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
@@ -22,26 +22,26 @@ import { ComponentOptions } from 'vue';
 export class CopyComponent extends ComponentBuilder {
 
   private static resetPropertiesAddedOnBuild(newParentComponent: WorkshopComponent, originalPropertyOverwritables: PropertyOverwritables): void {
-    newParentComponent.newChildComponents.propertyOverwritables = originalPropertyOverwritables;
+    newParentComponent.childComponentHandlers.onAddOverwritables = originalPropertyOverwritables;
   }
 
   private static setNewChildPropertyOverwritables(newParentComponent: WorkshopComponent, childType: COMPONENT_TYPES, section: HORIZONTAL_ALIGNMENT_SECTIONS): void {
     const parentBasedPresetProperties: ParentBasedPresetProperties = { horizontalSection: section };
-    const { newChildComponents } = newParentComponent;
-    if (!newChildComponents.propertyOverwritables) {
-      newChildComponents.propertyOverwritables = { onBuildProperties: { [childType]: parentBasedPresetProperties } };
+    const { childComponentHandlers } = newParentComponent;
+    if (!childComponentHandlers.onAddOverwritables) {
+      childComponentHandlers.onAddOverwritables = { onBuildProperties: { [childType]: parentBasedPresetProperties } };
     } else {
-      newChildComponents.propertyOverwritables.onBuildProperties = { [childType]: parentBasedPresetProperties };
+      childComponentHandlers.onAddOverwritables.onBuildProperties = { [childType]: parentBasedPresetProperties };
     }
   }
 
   private static createOrGetLockedComponentInAlignmentSection(newLayer: Layer, alignedComponent: WorkshopComponent, section: HORIZONTAL_ALIGNMENT_SECTIONS,
       index: number, newParentComponent: WorkshopComponent, newComponents: WorkshopComponent[]): WorkshopComponent {
-    if (newLayer.subcomponent.seedComponent.newChildComponents.childComponentsLockedToLayer) {
+    if (newLayer.subcomponent.seedComponent.childComponentsLockedToThis) {
       return newLayer.alignmentSectionToComponents[section][index];
     }
     const { type, style } = alignedComponent;
-    const originalPropertyOverwritables = JSONUtils.deepCopy(newParentComponent.newChildComponents.propertyOverwritables);
+    const originalPropertyOverwritables = JSONUtils.deepCopy(newParentComponent.childComponentHandlers.onAddOverwritables);
     CopyComponent.setNewChildPropertyOverwritables(newParentComponent, type, section);
     const newAlignedComponent = AddContainerComponent.add(newParentComponent, type, style, newLayer.subcomponent.name);
     CopyComponent.resetPropertiesAddedOnBuild(newParentComponent, originalPropertyOverwritables);
@@ -83,7 +83,7 @@ export class CopyComponent extends ComponentBuilder {
     const { alignmentSectionToComponents } = copiedLayer;
     const defaultActiveSubcomponentName = CopyComponent.setActiveSubcomponentNameForAlignmentSectionComponents(newLayer, isLayerEditable, newParentComponent);
     Object.keys(alignmentSectionToComponents).forEach((section: HORIZONTAL_ALIGNMENT_SECTIONS) => {
-      if (!newLayer.subcomponent.seedComponent.newChildComponents.childComponentsLockedToLayer) {
+      if (!newLayer.subcomponent.seedComponent.childComponentsLockedToThis) {
         CopyComponent.removeAllComponentsInAlignmentSection(section, newLayer, newParentComponent);
       }
       CopyComponent.copyComponentsInAlignmentSection(alignmentSectionToComponents[section], newLayer, section, newParentComponent, newComponents);

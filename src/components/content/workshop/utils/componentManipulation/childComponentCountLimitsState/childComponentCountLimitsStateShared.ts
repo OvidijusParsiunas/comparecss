@@ -17,7 +17,7 @@ export class ChildComponentCountLimitsStateShared {
   protected static setAddPreviewDropdownItemStateIfConditionMet(conditionFunc: () => boolean,
       parentComponent: WorkshopComponent, newComponentNamePrefix: string, isEnabled: boolean): void {
     if (conditionFunc()) {
-      const { newChildComponents: { addRemoveFunctionality: { dropdownItems, sharedDropdownItemsRefs } } } = parentComponent;
+      const { childComponentHandlers: { addRemoveButtonSuppState: { dropdownItems, sharedDropdownItemsRefs } } } = parentComponent;
       ChildComponentCountLimitsStateShared.setItemState(dropdownItems, newComponentNamePrefix, isEnabled);
       ChildComponentCountLimitsStateShared.setItemState(sharedDropdownItemsRefs?.layer, newComponentNamePrefix, isEnabled);
     }

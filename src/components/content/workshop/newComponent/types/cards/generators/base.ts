@@ -19,7 +19,7 @@ class CardBase extends ComponentBuilder {
   }
 
   public static setPropertyOverwritables(cardComponent: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables = {
+  cardComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.LAYER]: [CardBase.setComponentToRemovable],
       },

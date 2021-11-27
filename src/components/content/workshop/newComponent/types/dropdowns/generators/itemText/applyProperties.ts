@@ -81,8 +81,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
 
   private static copyTextFromSiblingItem(activeBaseComponentLayers: Layer[], textComponent: WorkshopComponent): void {
     const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
-    const { baseSubcomponent: textSubcomponentToBeCopied } = siblingDropdownItem.subcomponent.seedComponent
-      .newChildComponents.childComponentsLockedToLayer[0];
+    const { baseSubcomponent: textSubcomponentToBeCopied } = siblingDropdownItem.subcomponent.seedComponent.childComponentsLockedToThis[0];
     textComponent.baseSubcomponent.customCss = textSubcomponentToBeCopied.customCss;
     textComponent.baseSubcomponent.defaultCss = textSubcomponentToBeCopied.defaultCss;
     textComponent.baseSubcomponent.customFeatures = textSubcomponentToBeCopied.customFeatures;

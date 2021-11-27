@@ -2,7 +2,7 @@ import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COM
 import { AutoSyncedSiblingContainerComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { IncrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/incrementChildComponentCountLimitsState';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
-import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
+import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/childComponentHandlers';
 import { childComponentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
@@ -135,7 +135,7 @@ export class AddContainerComponent extends AddComponentShared {
     const componentGenerator = childComponentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      containerComponent, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.onBuildProperties);
+      containerComponent, masterComponent, containerComponent.childComponentHandlers.onAddOverwritables?.onBuildProperties);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);

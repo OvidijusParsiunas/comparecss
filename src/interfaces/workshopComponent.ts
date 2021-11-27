@@ -9,12 +9,11 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
-import { PropertyOverwritableFunc } from './removeChildComponentFunc';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { ButtonGroupSideBorders } from './buttonGroupSideBorders';
+import { ChildComponentHandlers } from './childComponentHandlers';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { NewChildComponents } from './newChildComponents';
 import { LinkedComponents } from './linkedComponents';
 import { CloseTriggers } from './closeTriggers';
 import { TempCustomCss } from './tempCustomCss';
@@ -214,10 +213,12 @@ export interface WorkshopComponent {
   sync: Sync;
   paddingComponent?: WorkshopComponent;
   paddingComponentChild?: WorkshopComponent;
-  // change
-  // properties for components that can be added through the add child component dropdown
-  newChildComponents: NewChildComponents;
-  onChildComponentRemovalFunc?: PropertyOverwritableFunc;
+  // this property references components that are automatically added to layer and removed a long with it
+  // it additionally helps when container component is being copied
+  childComponentsLockedToThis?: WorkshopComponent[];
+  // properties for performing additional functionality when adding/removing child components, also management of state that supports
+  // generation of add/remove buttons
+  childComponentHandlers: ChildComponentHandlers;
   onComponentDisplayFunc?: (component: WorkshopComponent) => void;
 }
 

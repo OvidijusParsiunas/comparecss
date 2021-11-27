@@ -13,7 +13,7 @@ import { buttonBase } from './base';
 class CloseButton extends ComponentBuilder {
 
   public static removeChildComponentAddRemoveFunctionality(buttonComponent: WorkshopComponent): void {
-    delete buttonComponent.newChildComponents.addRemoveFunctionality;
+    delete buttonComponent.childComponentHandlers.addRemoveButtonSuppState;
   }
 
   private static overwriteButtonTextProperties(textBaseSubcomponent: Subcomponent, textContent: string): void {

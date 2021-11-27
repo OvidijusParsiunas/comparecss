@@ -35,7 +35,7 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   private static addTextComponentReferences(menuComponent: WorkshopComponent, itemComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
     itemComponent.baseSubcomponent.otherSubcomponentTriggers.subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
-    itemComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);
+    itemComponent.childComponentsLockedToThis.push(textComponent);
     DropdownItemLayer.setSyncableComponents(itemComponent, textComponent);
     menuComponent.sync.syncables.onSyncComponents.repeatedComponents.push(itemComponent);
   }
@@ -61,7 +61,7 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static initializeChildComponentsLockedToLayer(itemComponent: WorkshopComponent): void {
-    itemComponent.newChildComponents.childComponentsLockedToLayer = [];
+    itemComponent.childComponentsLockedToThis = [];
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {

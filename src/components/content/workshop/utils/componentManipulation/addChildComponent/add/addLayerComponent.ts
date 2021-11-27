@@ -35,9 +35,9 @@ export class AddLayerComponent extends AddComponentShared {
   }
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.newChildComponents.addRemoveFunctionality?.sharedDropdownItemsRefs?.layer) {
-      newComponent.newChildComponents = { addRemoveFunctionality: {
-        dropdownItems: containerComponent.newChildComponents.addRemoveFunctionality.sharedDropdownItemsRefs.layer } };
+    if (containerComponent.childComponentHandlers.addRemoveButtonSuppState?.sharedDropdownItemsRefs?.layer) {
+      newComponent.childComponentHandlers = { addRemoveButtonSuppState: {
+        dropdownItems: containerComponent.childComponentHandlers.addRemoveButtonSuppState.sharedDropdownItemsRefs.layer } };
     }
   }
 
@@ -73,7 +73,7 @@ export class AddLayerComponent extends AddComponentShared {
       if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
     } else {
       // if child components of auto synced layers should also be the same - then the siblingComponentTypes state will need to be stored at the container
-      // component, but there currently is no use case that requires such functionality as it is currently handled by childComponentsLockedToLayer
+      // component, but there currently is no use case that requires such functionality as it is currently handled by childComponentsLockedToThis
       AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
         newLayerProperties,
         containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponent,

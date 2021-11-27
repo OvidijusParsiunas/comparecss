@@ -32,7 +32,7 @@ class ButtonBase extends ComponentBuilder {
   }
 
   public static setPropertyReferenceSharingFuncs(buttonBaseComponent: WorkshopComponent): void {
-    buttonBaseComponent.newChildComponents.propertyOverwritables = {
+    buttonBaseComponent.childComponentHandlers.onAddOverwritables = {
       propertyReferenceSharingFuncs: {
         container: [JsClassesUtils.assignJsClassesRefToAllSubcomponents.bind(ButtonBase.createDefaultButtonJsClasses())],
       },
