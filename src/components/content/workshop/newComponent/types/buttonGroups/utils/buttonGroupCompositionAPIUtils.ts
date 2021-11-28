@@ -1,6 +1,8 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../../../../../../../consts/buttonGroupSideBorders.enum';
+import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -10,17 +12,30 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 
 export class ButtonGroupCompositionAPIUtils {
 
-  private static readonly NULLIFIED_MARGIN_WIDTH = '0px';
+  private static readonly ZERO_PIXELS = '0px';
+  /* used to prevent a bug in chrome where the background color bleeds past the border when it is 0px */
+  private static readonly MINIMAL_BORDER_RADIUS = '0.00001px';
 
+  // WORK 2 - refactor
+  private static setBorderRadius(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
+    if (component.componentClasses[0] === BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_MIDDLE_BUTTON) {
+      const { baseSubcomponent } = component;
+      if (baseSubcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT
+          || baseSubcomponent.activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
+        cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
+      } else {
+        cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.MINIMAL_BORDER_RADIUS;
+      }
+    }
+  }
+
+  // WORK 2 - refactor
   private static setSideButtonBordersCss(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    const { buttonGroupSideBorders } = component.baseSubcomponent.customStaticFeatures || {};
-    if (buttonGroupSideBorders) {
-      if (buttonGroupSideBorders.left) {
-        cssToOverwrite.borderLeftWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
-      }
-      if (buttonGroupSideBorders.right) {
-        cssToOverwrite.borderRightWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
-      }
+    const { buttonGroupButtonPositionType } = component.baseSubcomponent.customStaticFeatures || {};
+    if (buttonGroupButtonPositionType) {
+      const { borderTopWidth } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+      if (buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT) cssToOverwrite.borderLeftWidth = borderTopWidth;
+      if (buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT) cssToOverwrite.borderRightWidth = borderTopWidth;
     }
   }
 
@@ -34,9 +49,9 @@ export class ButtonGroupCompositionAPIUtils {
   }
 
   private static setMargin(borderWidthNumber: number, cssToOverwrite: WorkshopComponentCss): void {
-    cssToOverwrite.marginTop = ButtonGroupCompositionAPIUtils.NULLIFIED_MARGIN_WIDTH;
-    cssToOverwrite.marginBottom = ButtonGroupCompositionAPIUtils.NULLIFIED_MARGIN_WIDTH;
-    cssToOverwrite.marginRight = ButtonGroupCompositionAPIUtils.NULLIFIED_MARGIN_WIDTH;
+    cssToOverwrite.marginTop = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
+    cssToOverwrite.marginBottom = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
+    cssToOverwrite.marginRight = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
     ButtonGroupCompositionAPIUtils.setMarginLeft(borderWidthNumber, cssToOverwrite);
   }
 
@@ -85,6 +100,7 @@ export class ButtonGroupCompositionAPIUtils {
       }
     }
     ButtonGroupCompositionAPIUtils.setSideButtonBordersCss(component, cssToOverwrite);
+    ButtonGroupCompositionAPIUtils.setBorderRadius(component, cssToOverwrite);
     return cssToOverwrite;
   }
 

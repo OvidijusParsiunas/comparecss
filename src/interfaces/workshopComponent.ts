@@ -1,6 +1,7 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from './displayInFrontOfSiblingsState';
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
+import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../consts/buttonGroupSideBorders.enum';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../consts/horizontalAlignmentSections';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -10,7 +11,6 @@ import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
-import { ButtonGroupSideBorders } from './buttonGroupSideBorders';
 import { ChildComponentHandlers } from './childComponentHandlers';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
@@ -106,13 +106,13 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
+// should not be primitives as these values are copied by key
 export interface CustomStaticFeatures {
   alignment?: Alignment;
   // applied to the dropdown padding component
   selectDropdownText?: SelectDropdownText;
   // applied to the dropdown menu component
   dropdownMenuData?: DropdownMenuData;
-  buttonGroupSideBorders?: ButtonGroupSideBorders;
   jsClasses?: ComponentJavascriptClasses;
   subcomponentText?: Text;
   image?: Image;
@@ -125,6 +125,8 @@ export interface CustomStaticFeatures {
   // component to appear on top whilst the blurred or unclicked components can still be above other components during their
   // transition animation
   displayInFrontOfSiblingsContainerState?: DisplayInFrontOfSiblingsContainerState;
+  // WORK 3 - primitives
+  buttonGroupButtonPositionType?: BUTTON_GROUP_BUTTON_POSITION_TYPES;
 }
 
 export interface CustomDynamicProperties {
@@ -191,6 +193,7 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
+  // WORK 3 - remove
   // difference between this and jsClasses is that this is not used for js purposes and is not shared with child components
   componentClasses?: string[];
   baseSubcomponent: Subcomponent;
