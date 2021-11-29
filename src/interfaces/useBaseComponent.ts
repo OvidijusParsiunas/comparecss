@@ -6,5 +6,6 @@ export interface UseBaseComponent {
   getSubcomponentText: (component: WorkshopComponent) => string;
   getBaseContainerCss:(component: WorkshopComponent) => WorkshopComponentCss;
   getComponentStyleProperties: (component: WorkshopComponent) => WorkshopComponentCss[];
+  getBaseContainerCssClasses: (component: WorkshopComponent, isChildComponent: boolean) => string[];
   getOverlayStyleProperties: (component: WorkshopComponent, isChildComponent: boolean) => WorkshopComponentCss;
 }

@@ -1,6 +1,6 @@
 <template>
   <div ondragstart="return false;">
-    <div :class="(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS)" :style="getBaseContainerCss(component)">
+    <div :style="getBaseContainerCss(component)" :class="getBaseContainerCssClasses(component, isChildComponent)">
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
         :icon="getIconName()"
@@ -103,8 +103,9 @@ export default {
       return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     },
     getComponentCssClasses(): string[] {
-      return this.component.componentClasses || [];
+      return this.component.cssClasses?.componentClasses || [];
     },
+    // WORK 3 - move this to use file
     getOverlayClasses(isIconOverlayTrigger: boolean): string[] {
       const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
       if (this.isChildComponent) {
@@ -188,6 +189,9 @@ export default {
   .button-group-right-button {
     border-top-left-radius: 0.00001px !important;
     border-bottom-left-radius: 0.00001px !important;
+  }
+  .button-group-middle-button {
+    border-radius: 0.00001px !important;
   }
 </style>
 <style lang="css">

@@ -106,7 +106,6 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
-// should not be primitives as these values are copied by key
 export interface CustomStaticFeatures {
   alignment?: Alignment;
   // applied to the dropdown padding component
@@ -125,7 +124,6 @@ export interface CustomStaticFeatures {
   // component to appear on top whilst the blurred or unclicked components can still be above other components during their
   // transition animation
   displayInFrontOfSiblingsContainerState?: DisplayInFrontOfSiblingsContainerState;
-  // WORK 3 - primitives
   buttonGroupButtonPositionType?: BUTTON_GROUP_BUTTON_POSITION_TYPES;
 }
 
@@ -180,6 +178,12 @@ export type Subcomponents = {
   [subcomponentName: string]: Subcomponent;
 }
 
+// WORK 3 - should be sets
+interface CssClasses {
+  componentClasses?: string[];
+  containerClasses?: string[];
+}
+
 export interface WorkshopComponent {
   type: COMPONENT_TYPES;
   style: COMPONENT_STYLES;
@@ -193,9 +197,8 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
-  // WORK 3 - remove
-  // difference between this and jsClasses is that this is not used for js purposes and is not shared with child components
-  componentClasses?: string[];
+  // difference between these and jsClasses is that they are not used for js purposes and are not shared with child components 
+  cssClasses?: CssClasses;
   baseSubcomponent: Subcomponent;
   // only on child container components
   parentLayer?: Layer;

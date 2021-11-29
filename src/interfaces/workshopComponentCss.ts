@@ -1,4 +1,12 @@
-export interface WorkshopComponentCss {
+export interface BorderRadiusCss {
+  borderRadius?: string;
+  borderTopLeftRadius?: string;
+  borderBottomLeftRadius?: string;
+  borderBottomRightRadius?: string;
+  borderTopRightRadius?: string;
+}
+
+export type WorkshopComponentCss = {
   // borderWidth property has been removed and should not be used: check DOC: 7880 for details
   borderStyle?: string;
   borderColor?: string;
@@ -14,7 +22,6 @@ export interface WorkshopComponentCss {
   borderRightWidth?: string;
   borderRightStyle?: string;
   borderRightColor?: string;
-  borderRadius?: string;
   transition?: string; // this is mostly used to mark a transition style that will be removed when exporting css files
   boxShadow?: string; // should not start with '0px 0px 0px 0px' due to DOC: 7879
   backgroundColor?: string;
@@ -57,7 +64,7 @@ export interface WorkshopComponentCss {
   wordBreak?: string;
   backgroundImage?: string;
   order?: string;
-}
+} & BorderRadiusCss;
 
 // DOC: 7880
 // borderWidth has been removed due to a browser (agnostic) bug that displays a border (1.2...px width) on the newly

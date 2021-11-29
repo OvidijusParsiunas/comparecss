@@ -3,6 +3,7 @@ import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonG
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../../../../../consts/buttonGroupSideBorders.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -11,8 +12,10 @@ import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { UseBaseComponent } from '../../../../../interfaces/useBaseComponent';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
+import { STATIC_POSITION_CLASS } from '../../../../../consts/sharedClasses';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
+// WORK 2 - refactor to have the component right away
 export default function useBaseComponent(): UseBaseComponent {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponent: null };
@@ -21,12 +24,36 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
-  function getBaseContainerCss(component: WorkshopComponent): WorkshopComponentCss {
+  // WORK 3 - refactor
+  const getBaseContainerCss = (component: WorkshopComponent): WorkshopComponentCss => {
     const { baseSubcomponent } = component;
     const { top } = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const baseContainerCss: WorkshopComponentCss = { top: top || '50%' };
     DisplayInFrontOfSiblings.setZIndexOnComponentCss(baseSubcomponent, baseContainerCss);
+    if (component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP) {
+      const { overwrittenCustomCssObj, customCss, activeCssPseudoClassesDropdownItem } = component.baseSubcomponent;
+      const subcomponentCss = overwrittenCustomCssObj || customCss;
+      const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
+      baseContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow || subcomponentCss[activeCssPseudoClassesDropdownItem].boxShadow || subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].boxShadow;
+      if (component.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT) {
+        baseContainerCss.borderTopLeftRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+        baseContainerCss.borderBottomLeftRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+      } else if (component.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT) {
+        baseContainerCss.borderTopRightRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+        baseContainerCss.borderBottomRightRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+      } else if (component.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE) {
+        baseContainerCss.borderRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+      }
+      baseContainerCss.transition = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].transition;
+    }
     return baseContainerCss;
+  };
+
+  const getBaseContainerCssClasses = (component: WorkshopComponent, isChildComponent: boolean): string[] => {
+    const classes = [];
+    classes.push(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS);
+    if (component.cssClasses?.containerClasses) classes.push(...component.cssClasses.containerClasses);
+    return classes;
   }
 
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
@@ -113,6 +140,7 @@ export default function useBaseComponent(): UseBaseComponent {
     getSubcomponentText,
     getBaseContainerCss,
     getOverlayStyleProperties,
+    getBaseContainerCssClasses,
     getComponentStyleProperties,
   };
 }

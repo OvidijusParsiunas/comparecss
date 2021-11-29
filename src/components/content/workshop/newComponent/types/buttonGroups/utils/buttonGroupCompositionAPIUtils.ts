@@ -15,20 +15,10 @@ export class ButtonGroupCompositionAPIUtils {
   /* used to prevent a bug in chrome where the background color bleeds past the border when it is 0px */
   private static readonly MINIMAL_BORDER_RADIUS = '0.00001px';
 
-  // WORK 2 - refactor
-  private static setBorderRadius(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    const { baseSubcomponent } = component;
-    if (baseSubcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT
-        || baseSubcomponent.activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
-      cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-    } else {
-      cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.MINIMAL_BORDER_RADIUS;
-    }
-  }
-
   private static setButtonBorderProperties(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
     const { buttonGroupButtonPositionType } = component.baseSubcomponent.customStaticFeatures || {};
-    if (buttonGroupButtonPositionType) {
+    // WORK 3 - buttonGroupButtonPositionType should no longer be needed and component classes should be used instead
+    if (buttonGroupButtonPositionType !== undefined) {
       const { borderTopWidth } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       switch (buttonGroupButtonPositionType) {
         case BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT:
@@ -37,13 +27,12 @@ export class ButtonGroupCompositionAPIUtils {
         case BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT:
           cssToOverwrite.borderRightWidth = borderTopWidth;
           break;
-        case BUTTON_GROUP_BUTTON_POSITION_TYPES.MIDDLE:
-          ButtonGroupCompositionAPIUtils.setBorderRadius(component, cssToOverwrite);
-          break;
-        default:
-          // BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE
+        case BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE:
           cssToOverwrite.borderRightWidth = borderTopWidth;
           cssToOverwrite.borderLeftWidth = borderTopWidth; 
+          break;
+        default:
+          break;
       }
     }
   }
@@ -103,12 +92,11 @@ export class ButtonGroupCompositionAPIUtils {
         // used to prevent calculations from being executed for each button and when the user changes the button css pseudo class
         cssToOverwrite = { ...ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponent) };
       } else {
-        // used for temp sync
-        cssToOverwrite.boxShadow = '';
         ButtonGroupCompositionAPIUtils.setBorderAndMarginCss(component, cssToOverwrite);
       }
     }
     ButtonGroupCompositionAPIUtils.setButtonBorderProperties(component, cssToOverwrite);
+    cssToOverwrite.boxShadow = '';
     return cssToOverwrite;
   }
 

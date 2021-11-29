@@ -9,6 +9,7 @@ import { CustomCss, CustomFeatures, Subcomponent } from '../../../../../interfac
 import { SubcomponentTypeToProperties } from '../../../../../interfaces/subcomponentTypeToProperties';
 import { StationaryAnimations, FadeAnimation } from '../../../../../interfaces/animations';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
@@ -88,7 +89,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
   }
 
   function setCustomCss(customCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): void {
-    const newDefaultProperties = {
+    const newDefaultProperties: WorkshopComponentCss = {
       ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[activeCssPseudoClassesDropdownItem], ...isUnsetButtonDisplayedForColorInputs,
       ...ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, customCss),
     };
