@@ -2,7 +2,6 @@ import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentMani
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../../../../../../../consts/buttonGroupSideBorders.enum';
-import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -18,24 +17,34 @@ export class ButtonGroupCompositionAPIUtils {
 
   // WORK 2 - refactor
   private static setBorderRadius(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    if (component.componentClasses[0] === BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_MIDDLE_BUTTON) {
-      const { baseSubcomponent } = component;
-      if (baseSubcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT
-          || baseSubcomponent.activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
-        cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-      } else {
-        cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.MINIMAL_BORDER_RADIUS;
-      }
+    const { baseSubcomponent } = component;
+    if (baseSubcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT
+        || baseSubcomponent.activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
+      cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
+    } else {
+      cssToOverwrite.borderRadius = ButtonGroupCompositionAPIUtils.MINIMAL_BORDER_RADIUS;
     }
   }
 
-  // WORK 2 - refactor
-  private static setSideButtonBordersCss(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
+  private static setButtonBorderProperties(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
     const { buttonGroupButtonPositionType } = component.baseSubcomponent.customStaticFeatures || {};
     if (buttonGroupButtonPositionType) {
       const { borderTopWidth } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      if (buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT) cssToOverwrite.borderLeftWidth = borderTopWidth;
-      if (buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT) cssToOverwrite.borderRightWidth = borderTopWidth;
+      switch (buttonGroupButtonPositionType) {
+        case BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT:
+          cssToOverwrite.borderLeftWidth = borderTopWidth;
+          break;
+        case BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT:
+          cssToOverwrite.borderRightWidth = borderTopWidth;
+          break;
+        case BUTTON_GROUP_BUTTON_POSITION_TYPES.MIDDLE:
+          ButtonGroupCompositionAPIUtils.setBorderRadius(component, cssToOverwrite);
+          break;
+        default:
+          // BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE
+          cssToOverwrite.borderRightWidth = borderTopWidth;
+          cssToOverwrite.borderLeftWidth = borderTopWidth; 
+      }
     }
   }
 
@@ -99,8 +108,7 @@ export class ButtonGroupCompositionAPIUtils {
         ButtonGroupCompositionAPIUtils.setBorderAndMarginCss(component, cssToOverwrite);
       }
     }
-    ButtonGroupCompositionAPIUtils.setSideButtonBordersCss(component, cssToOverwrite);
-    ButtonGroupCompositionAPIUtils.setBorderRadius(component, cssToOverwrite);
+    ButtonGroupCompositionAPIUtils.setButtonBorderProperties(component, cssToOverwrite);
     return cssToOverwrite;
   }
 

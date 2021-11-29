@@ -3,13 +3,12 @@ import { TargetDetails } from '../../../../../interfaces/componentTraversal';
 
 export default class ComponentTraversalUtils {
 
-  public static generateTargetDetails(containerComponent: WorkshopComponent, targetSubcomponentName: string): TargetDetails {
+  public static generateTargetDetails(masterComponent: WorkshopComponent, targetSubcomponentName: string): TargetDetails {
     return {
       targetSubcomponentName,
-      targetDropdownItemName: containerComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[targetSubcomponentName],
-      containerComponent,
-      masterComponent: containerComponent.masterComponent,
-      targetComponent: containerComponent.subcomponents[targetSubcomponentName].seedComponent,
+      targetDropdownItemName: masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[targetSubcomponentName],
+      masterComponent,
+      targetComponent: masterComponent.subcomponents[targetSubcomponentName].seedComponent,
     };
   }
 }

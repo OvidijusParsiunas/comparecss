@@ -99,6 +99,14 @@ export class RemoveAnyChildComponent {
     return {};
   }
 
+  private static triggerOnRemoveFunc(component: WorkshopComponent, masterComponent: WorkshopComponent): void {
+    // temporary components do not have the containerComponent property set, however we can use the TargetDetails masterComponent property instead
+    // as during the removal of temporary components - masterComponent is their container component
+    const deletedComponentContainerComponent = component.containerComponent || masterComponent;
+    // the reason why the container is getting passed along seed component is because the containerComponent may not exist because of temp removal
+    deletedComponentContainerComponent?.childComponentHandlers.onRemoveFunc?.(component, deletedComponentContainerComponent);
+  }
+
   private static removeSubcomponent(subcomponentName: string, masterComponent: WorkshopComponent): void {
     // if temp component
     if (!masterComponent) return;
@@ -106,11 +114,10 @@ export class RemoveAnyChildComponent {
     delete masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[subcomponentName];
   }
 
-  private static removeAlignedComponents(component: WorkshopComponent, masterComponent: WorkshopComponent,
-      containerComponent: WorkshopComponent): void {
+  private static removeAlignedComponents(component: WorkshopComponent, masterComponent: WorkshopComponent): void {
     const { baseSubcomponent: { name } } = component;
     component.componentPreviewStructure.layers.forEach((layer) => {
-      RemoveAnyChildComponent.removeLayerComponents(layer, masterComponent, containerComponent);
+      RemoveAnyChildComponent.removeLayerComponents(layer, masterComponent);
     });
     // a child component can be counted by either the parent layer or the container component, hence need to make sure the count is
     // decremented at both of these components
@@ -119,13 +126,13 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeSubcomponent(name, masterComponent);
   }
 
-  private static removeLayerComponents(layer: Layer, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+  private static removeLayerComponents(layer: Layer, masterComponent: WorkshopComponent): void {
     const { alignmentSectionToComponents } = layer;
     if (alignmentSectionToComponents) {
       Object.keys(alignmentSectionToComponents).forEach((sectionName) => {
         const components: WorkshopComponent[] = alignmentSectionToComponents[sectionName];
         components.forEach((component) => {
-          RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent, containerComponent);
+          RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent);
         });
       });
       const layerName = layer.subcomponent.name;
@@ -135,30 +142,25 @@ export class RemoveAnyChildComponent {
   }
 
   private static removeAlignedComponent(alignedComponents: WorkshopComponent[], component: WorkshopComponent,
-      masterComponent: WorkshopComponent, containerComponent: WorkshopComponent, index: number): void {
-    RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent, containerComponent);
+      masterComponent: WorkshopComponent, index: number): void {
+    RemoveAnyChildComponent.removeAlignedComponents(component, masterComponent);
     alignedComponents.splice(index, 1);
-    InterconnectedSettings.update(false, containerComponent, component.baseSubcomponent);
+    InterconnectedSettings.update(false, masterComponent, component.baseSubcomponent);
     AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(component);
   }
 
-  private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    RemoveAnyChildComponent.removeLayerComponents(layers[index], masterComponent, containerComponent);
+  private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent): void {
+    RemoveAnyChildComponent.removeLayerComponents(layers[index], masterComponent);
     layers.splice(index, 1);
   }
 
   protected static removeChildComponentInPreviewStructureIfFound(traversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
     const { component, layers, alignedComponents, index } = traversalState;
-    const { targetComponent, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
+    const { targetComponent, masterComponent } = this as any as TargetRemovalDetails;
     if (targetComponent === component) {
-      // containerComponent variable is not always the actual container component (set as masterComponent by the remove method below)
-      // when actual container component not available (when temp), the seed component master is usuall the container
-      const deletedComponentContainerComponent = component.containerComponent || component.masterComponent;
-      if (layers) RemoveAnyChildComponent.removeLayer(layers, index, masterComponent, containerComponent);
-      if (alignedComponents) RemoveAnyChildComponent.removeAlignedComponent(alignedComponents, component, masterComponent,
-        containerComponent, index);
-      // the reason why the container is getting passed along seed component is because the containerComponent may not exist because of temp removal
-      deletedComponentContainerComponent?.childComponentHandlers.onRemoveFunc?.(component, deletedComponentContainerComponent);
+      if (layers) RemoveAnyChildComponent.removeLayer(layers, index, masterComponent);
+      if (alignedComponents) RemoveAnyChildComponent.removeAlignedComponent(alignedComponents, component, masterComponent, index);
+      RemoveAnyChildComponent.triggerOnRemoveFunc(component, masterComponent);
       return { stopTraversal: true, traversalState };
     }
     return {};
@@ -171,7 +173,7 @@ export class RemoveAnyChildComponent {
     targetDetails.isRemovingActiveComponent = isRemovingActiveComponent;
     const { traversalState } = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails), higherActiveComponentContainer);
-    if (traversalState) targetDetails.parentLayerAlignmentSectionToComponents = traversalState.alignmentSectionToComponents;
+    targetDetails.parentLayerAlignmentSectionToComponents = traversalState.alignmentSectionToComponents;
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));

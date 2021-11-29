@@ -3,4 +3,5 @@ export enum BUTTON_GROUP_BUTTON_POSITION_TYPES {
   LEFT = 1,
   MIDDLE,
   RIGHT,
+  SINGLE,
 }

@@ -10,7 +10,6 @@ interface StopTraversal {
 export interface TargetDetails {
   targetSubcomponentName: string;
   targetDropdownItemName: string;
-  containerComponent: WorkshopComponent;
   masterComponent: WorkshopComponent;
   targetComponent: WorkshopComponent;
   parentLayerAlignmentSectionToComponents?: AlignmentSectionToComponents;

@@ -29,7 +29,7 @@ export class ButtonGroupBorderUtils extends ComponentBuilder {
   }
 
   private static setSingleButtonBorderProperties(buttonComponent: WorkshopComponent): void {
-    buttonComponent.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType = BUTTON_GROUP_BUTTON_POSITION_TYPES.MIDDLE;
+    buttonComponent.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType = BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE;
     buttonComponent.componentClasses = [];
   }
 
