@@ -72,14 +72,15 @@ export class DisplayInFrontOfSiblings {
     }
   }
 
-  public static setZIndexOnComponentCss(baseSubcomponent: Subcomponent, baseContainerCss: WorkshopComponentCss): void {
+  public static getZIndexCss(baseSubcomponent: Subcomponent): WorkshopComponentCss {
     const { customStaticFeatures, activeCssPseudoClassesDropdownItem } = baseSubcomponent || {};
     if (customStaticFeatures?.displayInFrontOfSiblingsState) {
       if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK) {
-        baseContainerCss.zIndex = DisplayInFrontOfSiblings.MAX_Z_INDEX;
+        return { zIndex: DisplayInFrontOfSiblings.MAX_Z_INDEX };
       } else {
-        baseContainerCss.zIndex = customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
+        return { zIndex: customStaticFeatures.displayInFrontOfSiblingsState.zIndex };
       }
     }
+    return {};
   }
 }

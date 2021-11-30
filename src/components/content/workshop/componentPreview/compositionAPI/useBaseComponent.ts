@@ -23,11 +23,13 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
+  const getBaseContainerParentStyleProperties = (component: WorkshopComponent): WorkshopComponentCss => {
+    return DisplayInFrontOfSiblings.getZIndexCss(component.baseSubcomponent);
+  };
+
   const getBaseContainerStyleProperties = (component: WorkshopComponent): WorkshopComponentCss => {
-    const { baseSubcomponent } = component;
-    const { top } = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const { top } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const baseContainerCss: WorkshopComponentCss = { top: top || '50%' };
-    DisplayInFrontOfSiblings.setZIndexOnComponentCss(baseSubcomponent, baseContainerCss);
     const buttonGroupButtonContainerCss = component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
       ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonContainerCss(component) : {};
     return { ...baseContainerCss, ...buttonGroupButtonContainerCss };
@@ -126,5 +128,6 @@ export default function useBaseComponent(): UseBaseComponent {
     getBaseContainerCssClasses,
     getComponentStyleProperties,
     getBaseContainerStyleProperties,
+    getBaseContainerParentStyleProperties,
   };
 }

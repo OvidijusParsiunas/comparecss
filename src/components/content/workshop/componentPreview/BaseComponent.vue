@@ -1,5 +1,5 @@
 <template>
-  <div ondragstart="return false;">
+  <div ondragstart="return false;" :style="getBaseContainerParentStyleProperties(component)">
     <div :style="getBaseContainerStyleProperties(component)" :class="getBaseContainerCssClasses(component, isChildComponent)">
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
