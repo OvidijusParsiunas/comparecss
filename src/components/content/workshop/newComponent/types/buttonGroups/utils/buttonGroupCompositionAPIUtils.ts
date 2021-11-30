@@ -85,7 +85,7 @@ export class ButtonGroupCompositionAPIUtils {
   public static getButtonGroupButtonCss(component: WorkshopComponent): WorkshopComponentCss {
     let cssToOverwrite: WorkshopComponentCss = {};
     if (ButtonGroupCompositionAPIUtils.canPropertiesBeOverwritten(component)) {
-      const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced
+      const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
       if (overwriteCssForSyncedComponent) {
         // used to prevent calculations from being executed for each button and when the user changes the button css pseudo class
         cssToOverwrite = { ...ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponent) };
@@ -98,12 +98,24 @@ export class ButtonGroupCompositionAPIUtils {
     return cssToOverwrite;
   }
 
+  private static setOverwrittenBoundingBox(component: WorkshopComponent, buttonGroupButtonContainerCss: WorkshopComponentCss): void {
+    const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
+    buttonGroupButtonContainerCss.boxShadow = overwriteCssForSyncedComponent
+      ? ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponent).boxShadow
+      : '';
+  }
+
   public static getButtonGroupButtonContainerCss(component: WorkshopComponent): WorkshopComponentCss {
     const { overwrittenCustomCssObj, customCss, activeCssPseudoClassesDropdownItem } = component.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
-    const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
     const buttonGroupButtonContainerCss: WorkshopComponentCss = {};
-    buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
+    if (ButtonGroupCompositionAPIUtils.canPropertiesBeOverwritten(component)) {
+      ButtonGroupCompositionAPIUtils.setOverwrittenBoundingBox(component, buttonGroupButtonContainerCss);
+    } else {
+      // important to remember that we are passing subcomponentCss and not customCss
+      const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
+      buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
+    }
     buttonGroupButtonContainerCss.transition = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].transition;
     buttonGroupButtonContainerCss.borderRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
     return buttonGroupButtonContainerCss;
@@ -127,7 +139,7 @@ export class ButtonGroupCompositionAPIUtils {
   }
 
   private static setOverwriteCssForSyncedComponentShadow(component: WorkshopComponent, overwriteCssForSyncedComponent: CustomCss): void {
-    overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.DEFAULT].boxShadow = '';
+    overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.DEFAULT].boxShadow = CSS_PROPERTY_VALUES.UNSET;
     ButtonGroupCompositionAPIUtils.setBoxShadowWithoutOffsetAndBlur(component.baseSubcomponent,
       CSS_PSEUDO_CLASSES.HOVER, overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.HOVER]);
     ButtonGroupCompositionAPIUtils.setBoxShadowWithoutOffsetAndBlur(component.baseSubcomponent,
