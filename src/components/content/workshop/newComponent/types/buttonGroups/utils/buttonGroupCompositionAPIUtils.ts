@@ -12,8 +12,6 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 export class ButtonGroupCompositionAPIUtils {
 
   private static readonly ZERO_PIXELS = '0px';
-  /* used to prevent a bug in chrome where the background color bleeds past the border when it is 0px */
-  private static readonly MINIMAL_BORDER_RADIUS = '0.00001px';
 
   private static setButtonBorderProperties(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
     const { buttonGroupButtonPositionType } = component.baseSubcomponent.customStaticFeatures || {};
@@ -98,6 +96,17 @@ export class ButtonGroupCompositionAPIUtils {
     ButtonGroupCompositionAPIUtils.setButtonBorderProperties(component, cssToOverwrite);
     cssToOverwrite.boxShadow = '';
     return cssToOverwrite;
+  }
+
+  public static getButtonGroupButtonContainerCss(component: WorkshopComponent): WorkshopComponentCss {
+    const { overwrittenCustomCssObj, customCss, activeCssPseudoClassesDropdownItem } = component.baseSubcomponent;
+    const subcomponentCss = overwrittenCustomCssObj || customCss;
+    const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
+    const buttonGroupButtonContainerCss: WorkshopComponentCss = {};
+    buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
+    buttonGroupButtonContainerCss.transition = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].transition;
+    buttonGroupButtonContainerCss.borderRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+    return buttonGroupButtonContainerCss;
   }
 
   private static getBoxShadowValue(subcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): string {

@@ -1,6 +1,6 @@
 <template>
   <div ondragstart="return false;">
-    <div :style="getBaseContainerCss(component)" :class="getBaseContainerCssClasses(component, isChildComponent)">
+    <div :style="getBaseContainerStyleProperties(component)" :class="getBaseContainerCssClasses(component, isChildComponent)">
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
         :icon="getIconName()"
@@ -181,6 +181,12 @@ export default {
   .close-button-text-overlay-height {
     height: 50%;
   }
+  /* the button group button class' properties can ofcourse be set in the ButtonGroupCompositionAPIUtils class'
+     setButtonBorderProperties method and the button group button container classes in the useBaseComponent
+     getBaseContainerStyleProperties function - however the browser does not refresh the dom when these are set - and only
+     triggers a refresh on mouse hover of the component - hence this is a workaround to immediately refresh
+     the button properties when its position type changes; e.g. right to middle etc */
+  /* 0.00001px is used to prevent a bug in chrome where the background color bleeds past the border when it is 0px */
   .button-group-left-button {
     border-top-right-radius: 0.00001px !important;
     border-bottom-right-radius: 0.00001px !important;
@@ -192,6 +198,19 @@ export default {
   }
   .button-group-middle-button {
     border-radius: 0.00001px !important;
+  }
+  /* because radius of 0.00001px sets the shadow corners to be round - the shadow is displayed in the container element instead
+     where radius can be set to 0px without causing the bug */
+  .button-group-left-button-container {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+  }
+  .button-group-right-button-container {
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+  }
+  .button-group-middle-button-container {
+    border-radius: 0px !important;
   }
 </style>
 <style lang="css">

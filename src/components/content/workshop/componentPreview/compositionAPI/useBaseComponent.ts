@@ -3,7 +3,6 @@ import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonG
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../../../../../consts/buttonGroupSideBorders.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -24,29 +23,14 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
-  // WORK 3 - refactor
-  const getBaseContainerCss = (component: WorkshopComponent): WorkshopComponentCss => {
+  const getBaseContainerStyleProperties = (component: WorkshopComponent): WorkshopComponentCss => {
     const { baseSubcomponent } = component;
     const { top } = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const baseContainerCss: WorkshopComponentCss = { top: top || '50%' };
     DisplayInFrontOfSiblings.setZIndexOnComponentCss(baseSubcomponent, baseContainerCss);
-    if (component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP) {
-      const { overwrittenCustomCssObj, customCss, activeCssPseudoClassesDropdownItem } = component.baseSubcomponent;
-      const subcomponentCss = overwrittenCustomCssObj || customCss;
-      const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
-      baseContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow || subcomponentCss[activeCssPseudoClassesDropdownItem].boxShadow || subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].boxShadow;
-      if (component.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT) {
-        baseContainerCss.borderTopLeftRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-        baseContainerCss.borderBottomLeftRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-      } else if (component.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT) {
-        baseContainerCss.borderTopRightRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-        baseContainerCss.borderBottomRightRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-      } else if (component.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType === BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE) {
-        baseContainerCss.borderRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-      }
-      baseContainerCss.transition = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].transition;
-    }
-    return baseContainerCss;
+    const buttonGroupButtonContainerCss = component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
+      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonContainerCss(component) : {};
+    return { ...baseContainerCss, ...buttonGroupButtonContainerCss };
   };
 
   const getBaseContainerCssClasses = (component: WorkshopComponent, isChildComponent: boolean): string[] => {
@@ -114,7 +98,7 @@ export default function useBaseComponent(): UseBaseComponent {
     const subcomponentCss = {
       ...component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
       color: '#ff000000',
-      ...getBaseContainerCss(component),
+      ...getBaseContainerStyleProperties(component),
       ...getButtonGroupButtonOverwrittenCss(component),
     };
     if (!isChildComponent) subcomponentCss.height = component.linkedComponents?.base ? 'unset' : '100% !important';
@@ -138,9 +122,9 @@ export default function useBaseComponent(): UseBaseComponent {
   return {
     isIcon,
     getSubcomponentText,
-    getBaseContainerCss,
     getOverlayStyleProperties,
     getBaseContainerCssClasses,
     getComponentStyleProperties,
+    getBaseContainerStyleProperties,
   };
 }
