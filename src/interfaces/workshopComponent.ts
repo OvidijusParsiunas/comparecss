@@ -178,10 +178,9 @@ export type Subcomponents = {
   [subcomponentName: string]: Subcomponent;
 }
 
-// WORK 3 - should be sets
 interface CssClasses {
-  componentClasses?: string[];
-  containerClasses?: string[];
+  componentClasses?: Set<string>;
+  containerClasses?: Set<string>;
 }
 
 export interface WorkshopComponent {
