@@ -3,6 +3,7 @@ import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonG
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -10,6 +11,7 @@ import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponen
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { UseBaseComponent } from '../../../../../interfaces/useBaseComponent';
+import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../../consts/sharedClasses';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
@@ -21,6 +23,10 @@ export default function useBaseComponent(): UseBaseComponent {
 
   const isIcon = (component: WorkshopComponent): boolean => {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
+  };
+
+  const isXButtonText = (component: WorkshopComponent): boolean => {
+    return component.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
   };
 
   const getBaseContainerParentStyleProperties = (component: WorkshopComponent): WorkshopComponentCss => {
@@ -40,6 +46,30 @@ export default function useBaseComponent(): UseBaseComponent {
     classes.push(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS);
     if (component.cssClasses?.containerClasses) classes.push(...component.cssClasses.containerClasses);
     return classes;
+  }
+
+  const getComponentCssClasses = (component: WorkshopComponent): Set<string>|string[] => {
+    return component.cssClasses?.componentClasses || [];
+  }
+
+  const getLayerCssClasses = (component: WorkshopComponent, isChildComponent: boolean, isIconOverlayTrigger?: boolean): string[] => {
+    const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
+    if (isChildComponent) {
+      classes.push('child-component');
+    } else {
+      classes.push(STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height');
+    }
+    if (isXButtonText(component)) {
+      classes.push('close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER);
+    } else if (isIconOverlayTrigger) {
+      classes.push(SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER);
+    } else {
+      classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
+    }
+    if (component.baseSubcomponent.isTemporaryAddPreview) {
+      classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+    }
+    return [...classes, ...getComponentCssClasses(component)];
   }
 
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
@@ -124,9 +154,12 @@ export default function useBaseComponent(): UseBaseComponent {
 
   return {
     isIcon,
+    isXButtonText,
+    getLayerCssClasses,
+    getComponentCssClasses,
+    getBaseContainerCssClasses,
     getSubcomponentText,
     getOverlayStyleProperties,
-    getBaseContainerCssClasses,
     getComponentStyleProperties,
     getBaseContainerStyleProperties,
     getBaseContainerParentStyleProperties,

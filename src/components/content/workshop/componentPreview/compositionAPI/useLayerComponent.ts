@@ -1,5 +1,6 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -53,7 +54,17 @@ export default function useLayerComponent(): UseLayerComponent {
     return subcomponentCss;
   }
 
+  
+  const getLayerCssClasses = (layer: Layer): string[] => {
+    const classes = [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
+    if (layer.subcomponent.isTemporaryAddPreview) {
+      classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+    }
+    return classes;
+  }
+
   return {
+    getLayerCssClasses,
     getOverlayStyleProperties,
     getComponentStyleProperties,
   };

@@ -6,7 +6,7 @@
         :icon="getIconName()"
         :style="getComponentStyleProperties(component)"
         :class="[COMPONENT_PREVIEW_MARKER,
-          ...getJsClasses(), ...getComponentCssClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
+          ...getJsClasses(), ...getComponentCssClasses(component), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
         @mousedown="activateSubcomponentMouseEvent('subcomponentMouseDown')"
@@ -25,18 +25,18 @@
       <div v-if="isIcon(component)"
         :id="getBaseId('subcomponentId')"
         :style="getOverlayStyleProperties(component, isChildComponent)"
-        :class="getOverlayClasses(true)"
+        :class="getLayerCssClasses(component, isChildComponent, true)"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
       <div ref="componentPreviewOverlay"
         :id="getBaseId('overlayId')"
         style="display: none"
         :style="getOverlayStyleProperties(component, isChildComponent)"
-        :class="getOverlayClasses()">
+        :class="getLayerCssClasses(component, isChildComponent)">
           {{getSubcomponentText(component)}}
           <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
             enter event can be fired before the mouse actually reaches the actual subcomponent content -->
-          <div v-if="isXButtonText()"
+          <div v-if="isXButtonText(component)"
             :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
             :style="getXButtonOverlayStyleProperties()"
             @mouseEnter="useSubcomponentSelectModeEventHandlers.subcomponentMouseEnter"
@@ -66,7 +66,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.en
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
 import { UseBaseComponent } from '../../../../interfaces/useBaseComponent';
-import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import useBaseComponent from './compositionAPI/useBaseComponent';
 import { SetUtils } from '../utils/generic/setUtils';
@@ -102,34 +101,8 @@ export default {
       const { customFeatures, customStaticFeatures } = this.component.baseSubcomponent as Subcomponent;
       return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     },
-    getComponentCssClasses(): string[] {
-      return this.component.cssClasses?.componentClasses || [];
-    },
-    // WORK 3 - move this to use file
-    getOverlayClasses(isIconOverlayTrigger: boolean): string[] {
-      const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
-      if (this.isChildComponent) {
-        classes.push('child-component');
-      } else {
-        classes.push(STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height');
-      }
-      if (this.isXButtonText()) {
-        classes.push('close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER);
-      } else if (isIconOverlayTrigger) {
-        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER);
-      } else {
-        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
-      }
-      if (this.component.baseSubcomponent.isTemporaryAddPreview) {
-        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
-      }
-      return [classes, ...this.getComponentCssClasses()];
-    },
-    isXButtonText(): boolean {
-      return this.component.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
-    },
     getSubcomponentMouseEventsDisabledClassForXButtonText(): string {
-      return this.isXButtonText() ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
+      return this.isXButtonText(this.component) ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
     },
     getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
       const { overwrittenCustomCssObj, customCss } = this.component.baseSubcomponent;

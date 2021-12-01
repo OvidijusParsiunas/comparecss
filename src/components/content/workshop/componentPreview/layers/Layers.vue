@@ -27,7 +27,7 @@
       <div :id="getLayerId(layer.subcomponent.name, 'overlayId')"
         style="display: none"
         :style="getOverlayStyleProperties(layer, layers, index)"
-        :class="getLayerClasses(layer)"></div>
+        :class="getLayerCssClasses(layer)"></div>
     </div>
   </div>
 </template>
@@ -67,13 +67,6 @@ export default {
     },
     getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
-    },
-    getLayerClasses(layer: Layer): string[] {
-      const classes = [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
-      if (layer.subcomponent.isTemporaryAddPreview) {
-        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
-      }
-      return classes;
     },
     activateSubcomponentMouseEvent(layerName: string, subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       const layerId = this.getLayerId(layerName, 'subcomponentId');
