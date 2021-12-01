@@ -15,61 +15,61 @@ import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../../consts/sharedClasses';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
+import { Ref } from 'vue';
 
-// WORK 2 - refactor to have the component right away
-export default function useBaseComponent(): UseBaseComponent {
+export default function useBaseComponent(component: Ref<WorkshopComponent>, isChildComponent: Ref<boolean>): UseBaseComponent {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponent: null };
 
-  const isIcon = (component: WorkshopComponent): boolean => {
-    return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
+  const isIcon = (): boolean => {
+    return component.value.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
-  const isXButtonText = (component: WorkshopComponent): boolean => {
-    return component.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
+  const isXButtonText = (): boolean => {
+    return component.value.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
   };
 
-  const getBaseContainerParentStyleProperties = (component: WorkshopComponent): WorkshopComponentCss => {
-    return DisplayInFrontOfSiblings.getZIndexCss(component.baseSubcomponent);
+  const getBaseContainerParentStyleProperties = (): WorkshopComponentCss => {
+    return DisplayInFrontOfSiblings.getZIndexCss(component.value.baseSubcomponent);
   };
 
-  const getBaseContainerStyleProperties = (component: WorkshopComponent): WorkshopComponentCss => {
-    const { top } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+  const getBaseContainerStyleProperties = (): WorkshopComponentCss => {
+    const { top } = component.value.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const baseContainerCss: WorkshopComponentCss = { top: top || '50%' };
-    const buttonGroupButtonContainerCss = component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
-      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonContainerCss(component) : {};
+    const buttonGroupButtonContainerCss = component.value.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
+      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonContainerCss(component.value) : {};
     return { ...baseContainerCss, ...buttonGroupButtonContainerCss };
   };
 
-  const getBaseContainerCssClasses = (component: WorkshopComponent, isChildComponent: boolean): string[] => {
+  const getBaseContainerCssClasses = (): string[] => {
     const classes = [];
     classes.push(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS);
-    if (component.cssClasses?.containerClasses) classes.push(...component.cssClasses.containerClasses);
+    if (component.value.cssClasses?.containerClasses) classes.push(...component.value.cssClasses.containerClasses);
     return classes;
   }
 
-  const getComponentCssClasses = (component: WorkshopComponent): Set<string>|string[] => {
-    return component.cssClasses?.componentClasses || [];
+  const getComponentCssClasses = (): Set<string>|string[] => {
+    return component.value.cssClasses?.componentClasses || [];
   }
 
-  const getLayerCssClasses = (component: WorkshopComponent, isChildComponent: boolean, isIconOverlayTrigger?: boolean): string[] => {
+  const getLayerCssClasses = (isIconOverlayTrigger?: boolean): string[] => {
     const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
     if (isChildComponent) {
       classes.push('child-component');
     } else {
       classes.push(STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height');
     }
-    if (isXButtonText(component)) {
+    if (isXButtonText()) {
       classes.push('close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER);
     } else if (isIconOverlayTrigger) {
       classes.push(SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER);
     } else {
       classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
     }
-    if (component.baseSubcomponent.isTemporaryAddPreview) {
+    if (component.value.baseSubcomponent.isTemporaryAddPreview) {
       classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
     }
-    return [...classes, ...getComponentCssClasses(component)];
+    return [...classes, ...getComponentCssClasses()];
   }
 
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
@@ -81,9 +81,9 @@ export default function useBaseComponent(): UseBaseComponent {
 
   // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
-  function substituteButtonPaddingToWidthCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
+  function substituteButtonPaddingToWidthCss(subcomponentCss: CustomCss): WorkshopComponentCss {
     const buttonPaddingSubstitutedToWidth: WorkshopComponentCss = {};
-    if (component.type === COMPONENT_TYPES.BUTTON || component.type === COMPONENT_TYPES.DROPDOWN) {
+    if (component.value.type === COMPONENT_TYPES.BUTTON || component.value.type === COMPONENT_TYPES.DROPDOWN) {
       const { paddingLeft, paddingRight, width } = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT];
       const newWidth = `${Number.parseFloat(paddingLeft) + Number.parseFloat(width) + Number.parseFloat(paddingRight)}px`;
       buttonPaddingSubstitutedToWidth.paddingLeft = '0px';
@@ -93,32 +93,32 @@ export default function useBaseComponent(): UseBaseComponent {
     return buttonPaddingSubstitutedToWidth;
   }
 
-  function getButtonGroupButtonOverwrittenCss(component: WorkshopComponent): WorkshopComponentCss {
-    return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP || 
-        (component.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY
-          && component.parentLayer.subcomponent.seedComponent.containerComponent.type === COMPONENT_TYPES.BUTTON_GROUP)
-      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component) : {};
+  function getButtonGroupButtonOverwrittenCss(): WorkshopComponentCss {
+    return component.value.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP || 
+        (component.value.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY
+          && component.value.parentLayer.subcomponent.seedComponent.containerComponent.type === COMPONENT_TYPES.BUTTON_GROUP)
+      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component.value) : {};
   }
 
-  function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
-    return SelectDropdownUtils.isTextSelected(component) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
+  function getSelectedDropdownMenuTextCss(subcomponentCss: CustomCss): WorkshopComponentCss {
+    return SelectDropdownUtils.isTextSelected(component.value) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
-  const getComponentStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
-    const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = component.baseSubcomponent;
+  const getComponentStyleProperties = (): WorkshopComponentCss[] => {
+    const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = component.value.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
-    SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
+    SubcomponentTriggers.triggerOtherSubcomponentsCss(component.value.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
-    const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
-    const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
-    const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss(component);
+    const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(subcomponentCss);
+    const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(subcomponentCss);
+    const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss();
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
       inheritedCss || {},
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[activeCssPseudoClassesDropdownItem],
       { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-      isIcon(component) ? { pointerEvents: 'none' } : {},
+      isIcon() ? { pointerEvents: 'none' } : {},
       inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
@@ -127,22 +127,22 @@ export default function useBaseComponent(): UseBaseComponent {
     ];
   };
 
-  const getOverlayStyleProperties = (component: WorkshopComponent, isChildComponent: boolean): WorkshopComponentCss => {
+  const getOverlayStyleProperties = (): WorkshopComponentCss => {
     const subcomponentCss = {
-      ...component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+      ...component.value.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
       color: '#ff000000',
-      ...getBaseContainerStyleProperties(component),
-      ...getButtonGroupButtonOverwrittenCss(component),
+      ...getBaseContainerStyleProperties(),
+      ...getButtonGroupButtonOverwrittenCss(),
     };
-    if (!isChildComponent) subcomponentCss.height = component.linkedComponents?.base ? 'unset' : '100% !important';
-    if (component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-    if (!component.linkedComponents?.base && !isChildComponent) subcomponentCss.marginTop = '0px';
-    if (isIcon(component)) subcomponentCss.height = subcomponentCss.width;
+    if (!isChildComponent) subcomponentCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
+    if (component.value.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+    if (!component.value.linkedComponents?.base && !isChildComponent) subcomponentCss.marginTop = '0px';
+    if (isIcon()) subcomponentCss.height = subcomponentCss.width;
     return subcomponentCss;
   }
 
-  const getSubcomponentText = (component: WorkshopComponent): string => {
-    const { customFeatures, customStaticFeatures } = component.baseSubcomponent;
+  const getSubcomponentText = (): string => {
+    const { customFeatures, customStaticFeatures } = component.value.baseSubcomponent;
     const { subcomponentText, selectDropdownText } = customStaticFeatures || {};
     const { dropdown } = customFeatures || {};
     // checks if this is a text subcomponent, if it has a select property reference (dropdown item text subcomponents do not) and whether it is enabled

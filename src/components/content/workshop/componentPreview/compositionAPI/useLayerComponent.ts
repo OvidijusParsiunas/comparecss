@@ -10,8 +10,9 @@ import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
+import { Ref } from 'vue';
 
-export default function useLayerComponent(): UseLayerComponent {
+export default function useLayerComponent(layers: Ref<Layer[]>): UseLayerComponent {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponent: null };
 
@@ -47,9 +48,9 @@ export default function useLayerComponent(): UseLayerComponent {
     ];
   };
 
-  const getOverlayStyleProperties = (layer: Layer, layers: Layer[], currentIndex: number): WorkshopComponentCss => {
+  const getOverlayStyleProperties = (layer: Layer, currentIndex: number): WorkshopComponentCss => {
     const subcomponentCss = { ...layer.subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
-    subcomponentCss.zIndex = layers.length - currentIndex + 1;
+    subcomponentCss.zIndex = layers.value.length - currentIndex + 1;
     if (layer.subcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block';
     return subcomponentCss;
   }

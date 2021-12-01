@@ -1,5 +1,5 @@
 <template>
-  <div class="layer-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
+  <div class="layer-sections-container" :class="[...jsClasses, COMPONENT_PREVIEW_MARKER]">
     <!-- center -->
     <layer-alignment-section v-if="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
       class="center-section"
@@ -8,7 +8,7 @@
       :components="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
-    <div class="default-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
+    <div class="default-sections-container" :class="[...jsClasses, COMPONENT_PREVIEW_MARKER]">
       <!-- left -->
       <layer-alignment-section v-if="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
         style="order: 0"
@@ -59,10 +59,10 @@ export default {
     layerAlignmentSection,
   },
   props: {
-    subcomponentAndOverlayElementIds: Object,
-    alignmentSectionToComponents: Object,
+    jsClasses: Array,
     mouseEvents: Object,
-    classes: Array,
+    alignmentSectionToComponents: Object,
+    subcomponentAndOverlayElementIds: Object,
   },
 }
 </script>

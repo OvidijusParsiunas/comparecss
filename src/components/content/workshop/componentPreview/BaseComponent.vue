@@ -1,42 +1,42 @@
 <template>
-  <div ondragstart="return false;" :style="getBaseContainerParentStyleProperties(component)">
-    <div :style="getBaseContainerStyleProperties(component)" :class="getBaseContainerCssClasses(component, isChildComponent)">
+  <div ondragstart="return false;" :style="getBaseContainerParentStyleProperties()">
+    <div :style="getBaseContainerStyleProperties()" :class="getBaseContainerCssClasses()">
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
         :icon="getIconName()"
-        :style="getComponentStyleProperties(component)"
+        :style="getComponentStyleProperties()"
         :class="[COMPONENT_PREVIEW_MARKER,
-          ...getJsClasses(), ...getComponentCssClasses(component), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
+          ...getJsClasses(), ...getComponentCssClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
         @mousedown="activateSubcomponentMouseEvent('subcomponentMouseDown')"
         @mouseup="activateSubcomponentMouseEvent('subcomponentMouseUp')"
         @click="activateSubcomponentMouseEvent('subcomponentClick')">
-          {{getSubcomponentText(component)}}
+          {{ getSubcomponentText() }}
           <layers
-            :classes="[...getJsClasses()]"
+            :jsClasses="[...getJsClasses()]"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
             :mouseEvents="mouseEvents"
             :layers="component.componentPreviewStructure.layers"
           />
       </component>
       <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
-      <div v-else :style="getComponentStyleProperties(component)"></div>
-      <div v-if="isIcon(component)"
+      <div v-else :style="getComponentStyleProperties()"></div>
+      <div v-if="isIcon()"
         :id="getBaseId('subcomponentId')"
-        :style="getOverlayStyleProperties(component, isChildComponent)"
-        :class="getLayerCssClasses(component, isChildComponent, true)"
+        :style="getOverlayStyleProperties()"
+        :class="getLayerCssClasses(true)"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
       <div ref="componentPreviewOverlay"
         :id="getBaseId('overlayId')"
         style="display: none"
-        :style="getOverlayStyleProperties(component, isChildComponent)"
-        :class="getLayerCssClasses(component, isChildComponent)">
-          {{getSubcomponentText(component)}}
+        :style="getOverlayStyleProperties()"
+        :class="getLayerCssClasses()">
+          {{ getSubcomponentText() }}
           <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
             enter event can be fired before the mouse actually reaches the actual subcomponent content -->
-          <div v-if="isXButtonText(component)"
+          <div v-if="isXButtonText()"
             :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
             :style="getXButtonOverlayStyleProperties()"
             @mouseEnter="useSubcomponentSelectModeEventHandlers.subcomponentMouseEnter"
@@ -59,6 +59,7 @@ import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useS
 import useSubcomponentSelectModeEventHandlers from './compositionAPI/useSubcomponentSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
+import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { Subcomponent, WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
@@ -70,6 +71,7 @@ import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import useBaseComponent from './compositionAPI/useBaseComponent';
 import { SetUtils } from '../utils/generic/setUtils';
 import layers from './layers/Layers.vue';
+import { ref, Ref, watch } from 'vue';
 
 interface Consts {
   SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
@@ -79,15 +81,32 @@ interface Consts {
   useSubcomponentSelectModeEventHandlers: UseSubcomponentPreviewEventHandlers;
 }
 
+interface Props {
+  isChildComponent: boolean;
+  component: WorkshopComponent;
+  mouseEvents: SubcomponentPreviewMouseEvents;
+  subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds;
+}
+
 export default {
-  setup(): Consts & UseBaseComponent {
+  setup(props: Props): Consts & UseBaseComponent {
+    // WORK 2 - try to make a reusable func for this
+    const componentRef: Ref<Props['component']> = ref(props.component);
+    const isChildComponentRef: Ref<Props['isChildComponent']> = ref(props.isChildComponent);
+    watch(() => props.component, (newComponent) => {
+      componentRef.value = newComponent;
+    });
+    watch(() => props.isChildComponent, (isChildComponent) => {
+      isChildComponentRef.value = isChildComponent;
+    });
+    const useBaseComponentCompositionAPI = useBaseComponent(componentRef, isChildComponentRef)
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
       useSubcomponentSelectModeEventHandlers: useSubcomponentSelectModeEventHandlers(),
-      ...useBaseComponent(),
+      ...useBaseComponentCompositionAPI,
     };
   },
   methods: {
@@ -102,7 +121,7 @@ export default {
       return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     },
     getSubcomponentMouseEventsDisabledClassForXButtonText(): string {
-      return this.isXButtonText(this.component) ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
+      return this.isXButtonText() ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
     },
     getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
       const { overwrittenCustomCssObj, customCss } = this.component.baseSubcomponent;
@@ -120,7 +139,7 @@ export default {
       return { position: 'absolute', ...positions[position] };
     },
     getTag(): string {
-      return this.isIcon(this.component) ? 'font-awesome-icon' : 'div';
+      return this.isIcon() ? 'font-awesome-icon' : 'div';
     },
     getIconName(): string {
       const iconName = (this.component as WorkshopComponent).baseSubcomponent.customStaticFeatures?.icon?.name;

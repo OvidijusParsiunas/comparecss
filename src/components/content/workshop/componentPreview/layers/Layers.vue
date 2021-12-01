@@ -3,7 +3,7 @@
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div :id="getLayerId(layer.subcomponent.name, 'subcomponentId')"
         :style="getComponentStyleProperties(layer, index === layers.length - 1)"
-        :class="[...classes, COMPONENT_PREVIEW_MARKER]"
+        :class="[...jsClasses, COMPONENT_PREVIEW_MARKER]"
         @mouseenter="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseLeave')"
         @mousedown="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseDown')"
@@ -12,7 +12,7 @@
           <layer-alignment-sections
             v-if="layer.alignmentSectionToComponents"
             :class="COMPONENT_PREVIEW_MARKER"
-            :classes="classes"
+            :jsClasses="jsClasses"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
             :alignmentSectionToComponents="layer.alignmentSectionToComponents"
             :mouseEvents="mouseEvents"/>
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
+import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
@@ -44,18 +45,31 @@ import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import useLayerComponent from '../compositionAPI/useLayerComponent';
 import layerAlignmentSections from './LayerAlignmentSections.vue';
+import { Ref, ref, watch } from 'vue';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
   SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
 }
 
+interface Props {
+  layers: Layer[];
+  jsClasses: string[];
+  mouseEvents: SubcomponentPreviewMouseEvents;
+  subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds;
+}
+
 export default {
-  setup(): Consts & UseLayerComponent {
+  setup(props: Props): Consts & UseLayerComponent {
+    const layersRef: Ref<Props['layers']> = ref(props.layers);
+    watch(() => props.layers, (newComponent) => {
+      layersRef.value = newComponent;
+    });
+    const useLayerComponentCompositionAPI = useLayerComponent(layersRef)
     return {
       COMPONENT_PREVIEW_MARKER, 
       SUBCOMPONENT_OVERLAY_CLASSES,
-      ...useLayerComponent(),
+      ...useLayerComponentCompositionAPI,
     };
   },
   methods: {
@@ -77,10 +91,10 @@ export default {
     layerAlignmentSections,
   },
   props: {
-    subcomponentAndOverlayElementIds: Object,
-    mouseEvents: Object,
     layers: Object,
-    classes: Array,
+    jsClasses: Array,
+    mouseEvents: Object,
+    subcomponentAndOverlayElementIds: Object,
   }
 }
 </script>
