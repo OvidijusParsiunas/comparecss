@@ -1,6 +1,0 @@
-export enum BUTTON_GROUP_BUTTON_POSITION_TYPES {
-  LEFT,
-  MIDDLE,
-  RIGHT,
-  SINGLE,
-}

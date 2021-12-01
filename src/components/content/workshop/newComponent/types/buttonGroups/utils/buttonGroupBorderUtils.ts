@@ -1,5 +1,4 @@
 import { BUTTON_GROUP_BUTTON_CONTAINER_CLASSES } from '../../../../../../../consts/buttonGroupButtonContainerClasses.enum';
-import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../../../../../../../consts/buttonGroupSideBorders.enum';
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ButtonGroupGenericUtils } from './buttonGroupGenericUtils';
@@ -12,17 +11,14 @@ export class ButtonGroupBorderUtils extends ComponentBuilder {
       const button = buttons[i];
       button.cssClasses.componentClasses = new Set([BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_MIDDLE_BUTTON]);
       button.cssClasses.containerClasses = new Set([BUTTON_GROUP_BUTTON_CONTAINER_CLASSES.BUTTON_GROUP_MIDDLE_BUTTON_CONTAINER]);
-      button.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType = BUTTON_GROUP_BUTTON_POSITION_TYPES.MIDDLE;
     }
   }
 
   private static setSideButtonsProperties(buttons: WorkshopComponent[]): void {
     const leftButton = buttons[0];
-    leftButton.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType = BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT;
     leftButton.cssClasses.componentClasses = new Set([BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_LEFT_BUTTON]);
     leftButton.cssClasses.containerClasses = new Set([BUTTON_GROUP_BUTTON_CONTAINER_CLASSES.BUTTON_GROUP_LEFT_BUTTON_CONTAINER]);
     const rightButton = buttons[buttons.length - 1];
-    rightButton.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType = BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT;
     rightButton.cssClasses.componentClasses = new Set([BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_RIGHT_BUTTON]);
     rightButton.cssClasses.containerClasses = new Set([BUTTON_GROUP_BUTTON_CONTAINER_CLASSES.BUTTON_GROUP_RIGHT_BUTTON_CONTAINER]);
   }
@@ -33,9 +29,8 @@ export class ButtonGroupBorderUtils extends ComponentBuilder {
   }
 
   private static setSingleButtonBorderProperties(buttonComponent: WorkshopComponent): void {
-    buttonComponent.baseSubcomponent.customStaticFeatures.buttonGroupButtonPositionType = BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE;
+    buttonComponent.cssClasses.componentClasses = new Set([BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_SINGLE_BUTTON]);
     buttonComponent.cssClasses.containerClasses?.clear();
-    buttonComponent.cssClasses.componentClasses?.clear();
   }
 
   // buttonComponent can reference the button that was removed

@@ -65,8 +65,9 @@ export default function useBaseComponent(): UseBaseComponent {
 
   function getButtonGroupButtonOverwrittenCss(component: WorkshopComponent): WorkshopComponentCss {
     return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP || 
-      (component.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY && component.baseSubcomponent.customStaticFeatures?.buttonGroupButtonPositionType)
-        ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component) : {};
+        (component.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY
+          && component.parentLayer.subcomponent.seedComponent.containerComponent.type === COMPONENT_TYPES.BUTTON_GROUP)
+      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component) : {};
   }
 
   function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {

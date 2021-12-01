@@ -1,7 +1,7 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../../../../../../../consts/buttonGroupSideBorders.enum';
+import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -14,24 +14,15 @@ export class ButtonGroupCompositionAPIUtils {
   private static readonly ZERO_PIXELS = '0px';
 
   private static setButtonBorderProperties(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    const { buttonGroupButtonPositionType } = component.baseSubcomponent.customStaticFeatures || {};
-    // WORK 3 - buttonGroupButtonPositionType should no longer be needed and component classes should be used instead
-    if (buttonGroupButtonPositionType !== undefined) {
-      const { borderTopWidth } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      switch (buttonGroupButtonPositionType) {
-        case BUTTON_GROUP_BUTTON_POSITION_TYPES.LEFT:
-          cssToOverwrite.borderLeftWidth = borderTopWidth;
-          break;
-        case BUTTON_GROUP_BUTTON_POSITION_TYPES.RIGHT:
-          cssToOverwrite.borderRightWidth = borderTopWidth;
-          break;
-        case BUTTON_GROUP_BUTTON_POSITION_TYPES.SINGLE:
-          cssToOverwrite.borderRightWidth = borderTopWidth;
-          cssToOverwrite.borderLeftWidth = borderTopWidth; 
-          break;
-        default:
-          break;
-      }
+    const { componentClasses } = component.cssClasses;
+    const { borderTopWidth } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    if (componentClasses.has(BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_LEFT_BUTTON)) {
+      cssToOverwrite.borderLeftWidth = borderTopWidth;
+    } else if (componentClasses.has(BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_RIGHT_BUTTON)) {
+      cssToOverwrite.borderRightWidth = borderTopWidth;
+    } else if (componentClasses.has(BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_SINGLE_BUTTON)) {
+      cssToOverwrite.borderRightWidth = borderTopWidth;
+      cssToOverwrite.borderLeftWidth = borderTopWidth; 
     }
   }
 

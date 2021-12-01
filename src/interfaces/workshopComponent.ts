@@ -1,7 +1,6 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from './displayInFrontOfSiblingsState';
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
-import { BUTTON_GROUP_BUTTON_POSITION_TYPES } from '../consts/buttonGroupSideBorders.enum';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../consts/horizontalAlignmentSections';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -124,7 +123,6 @@ export interface CustomStaticFeatures {
   // component to appear on top whilst the blurred or unclicked components can still be above other components during their
   // transition animation
   displayInFrontOfSiblingsContainerState?: DisplayInFrontOfSiblingsContainerState;
-  buttonGroupButtonPositionType?: BUTTON_GROUP_BUTTON_POSITION_TYPES;
 }
 
 export interface CustomDynamicProperties {
