@@ -1,7 +1,6 @@
 import { MouseEnterItemEvent } from './dropdownMenuMouseEvents';
 
-// WORK 2 - rename
-export interface DropdownCompositionAPI {
+export interface UseDropdownComponent {
   mouseEnterButtonEventHandler?: () => void;
   mouseLeaveButtonEventHandler?: () => void;
   mouseEnterItemEventHandler?: (mouseEnterItemEvent: MouseEnterItemEvent) => void;

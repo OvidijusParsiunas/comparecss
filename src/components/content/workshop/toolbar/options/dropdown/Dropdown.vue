@@ -43,10 +43,10 @@ import { COMPONENT_CARD_MARKER, DROPDOWN_ITEM_MARKER, RANGE_SETTING_MARKER } fro
 import { CUSTOM_DROPDOWN_ITEM_CLASSES } from '../../../../../../consts/customDropdownItemClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
+import { UseDropdownComponent } from '../../../../../../interfaces/useDropdownComponent';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import BrowserType from '../../../utils/generic/browserType';
@@ -76,7 +76,7 @@ interface Props {
   activeItemPropertyKeyName: string;
   objectContainingActiveItem: unknown;
   dropdownItems: NestedDropdownStructure;
-  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>) => DropdownCompositionAPI;
+  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>) => UseDropdownComponent;
 }
 
 interface SearchForItemResultData {
@@ -101,12 +101,12 @@ export default {
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
     fontAwesomeIconColor: FONT_AWESOME_COLORS.DEFAULT,
   }),
-  setup(props: Props): DropdownCompositionAPI {
+  setup(props: Props): UseDropdownComponent {
     // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
     // const areMenusDisplayed: Ref<boolean> = ref(false);
     const objectContainingActiveItemRef: Ref<Props['objectContainingActiveItem']> = ref(props.objectContainingActiveItem);
     const activeModePropertyKeyNameRef: Ref<Props['activeItemPropertyKeyName']> = ref(props.activeItemPropertyKeyName);
-    let customEventHandlers = {} as DropdownCompositionAPI;
+    let customEventHandlers = {} as UseDropdownComponent;
     if (props.customEventHandlers) {
       watch(() => props.objectContainingActiveItem, (newObjectContainingActiveItem) => {
         objectContainingActiveItemRef.value = newObjectContainingActiveItem;

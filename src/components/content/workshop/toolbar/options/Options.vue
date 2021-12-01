@@ -176,9 +176,9 @@ import { RemoveChildComponentEvent } from '../../../../../interfaces/settingsCom
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { AddChildComponentEvent } from '../../../../../interfaces/addChildComponentEvent';
-import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { SyncChildComponentUtils } from './syncChildComponent/syncChildComponentUtils';
+import { UseDropdownComponent } from '../../../../../interfaces/useDropdownComponent';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
@@ -203,7 +203,7 @@ import {
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
-  useSubcomponentDropdownEventHandlers: (objectContainingActiveItem: Ref<unknown>, activeItemPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
+  useSubcomponentDropdownEventHandlers: (objectContainingActiveItem: Ref<unknown>, activeItemPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => UseDropdownComponent;
   OPTION_MENU_BUTTON_MARKER: string;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   FULL_PREVIEW_MODE_BUTTON_MARKER: string;
