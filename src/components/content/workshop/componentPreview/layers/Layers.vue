@@ -42,10 +42,10 @@ import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponen
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
+import { CompositionAPIUtils } from '../../compositionAPI/compositionAPIUtils';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import useLayerComponent from '../compositionAPI/useLayerComponent';
 import layerAlignmentSections from './LayerAlignmentSections.vue';
-import { Ref, ref, watch } from 'vue';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
@@ -61,11 +61,7 @@ interface Props {
 
 export default {
   setup(props: Props): Consts & UseLayerComponent {
-    const layersRef: Ref<Props['layers']> = ref(props.layers);
-    watch(() => props.layers, (newComponent) => {
-      layersRef.value = newComponent;
-    });
-    const useLayerComponentCompositionAPI = useLayerComponent(layersRef)
+    const useLayerComponentCompositionAPI = CompositionAPIUtils.createCompositionAPI(useLayerComponent, props, ['layers']);
     return {
       COMPONENT_PREVIEW_MARKER, 
       SUBCOMPONENT_OVERLAY_CLASSES,

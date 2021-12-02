@@ -170,8 +170,8 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { EnabledIfChildComponentPresent, Option } from '../../../../../interfaces/componentOptions';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
-import { Subcomponent, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
+import { Subcomponent, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { RemoveChildComponentEvent } from '../../../../../interfaces/settingsComponentEvents';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';

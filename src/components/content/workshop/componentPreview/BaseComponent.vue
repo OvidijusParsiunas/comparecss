@@ -66,12 +66,12 @@ import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPosition
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
+import { CompositionAPIUtils } from '../compositionAPI/compositionAPIUtils';
 import { UseBaseComponent } from '../../../../interfaces/useBaseComponent';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import useBaseComponent from './compositionAPI/useBaseComponent';
 import { SetUtils } from '../utils/generic/setUtils';
 import layers from './layers/Layers.vue';
-import { ref, Ref, watch } from 'vue';
 
 interface Consts {
   SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
@@ -90,16 +90,7 @@ interface Props {
 
 export default {
   setup(props: Props): Consts & UseBaseComponent {
-    // WORK 2 - try to make a reusable func for this
-    const componentRef: Ref<Props['component']> = ref(props.component);
-    const isChildComponentRef: Ref<Props['isChildComponent']> = ref(props.isChildComponent);
-    watch(() => props.component, (newComponent) => {
-      componentRef.value = newComponent;
-    });
-    watch(() => props.isChildComponent, (isChildComponent) => {
-      isChildComponentRef.value = isChildComponent;
-    });
-    const useBaseComponentCompositionAPI = useBaseComponent(componentRef, isChildComponentRef)
+    const useBaseComponentCompositionAPI = CompositionAPIUtils.createCompositionAPI(useBaseComponent, props, ['component', 'isChildComponent']);
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,

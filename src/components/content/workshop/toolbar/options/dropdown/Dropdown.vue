@@ -49,9 +49,10 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { UseDropdownComponent } from '../../../../../../interfaces/useDropdownComponent';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
+import { CompositionAPIUtils } from '../../../compositionAPI/compositionAPIUtils';
 import BrowserType from '../../../utils/generic/browserType';
 import dropdownMenu from './DropdownMenu.vue';
-import { Ref, ref, watch } from 'vue';
+import { Ref } from 'vue';
 
 interface Data {
   isComponentDisplayed: boolean;
@@ -102,22 +103,8 @@ export default {
     fontAwesomeIconColor: FONT_AWESOME_COLORS.DEFAULT,
   }),
   setup(props: Props): UseDropdownComponent {
-    // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
-    // const areMenusDisplayed: Ref<boolean> = ref(false);
-    const objectContainingActiveItemRef: Ref<Props['objectContainingActiveItem']> = ref(props.objectContainingActiveItem);
-    const activeModePropertyKeyNameRef: Ref<Props['activeItemPropertyKeyName']> = ref(props.activeItemPropertyKeyName);
-    let customEventHandlers = {} as UseDropdownComponent;
-    if (props.customEventHandlers) {
-      watch(() => props.objectContainingActiveItem, (newObjectContainingActiveItem) => {
-        objectContainingActiveItemRef.value = newObjectContainingActiveItem;
-      });
-      watch(() => props.activeItemPropertyKeyName, (newActiveModePropertyKeyName) => {
-        activeModePropertyKeyNameRef.value = newActiveModePropertyKeyName;
-      });
-      customEventHandlers = props.customEventHandlers(objectContainingActiveItemRef, activeModePropertyKeyNameRef);
-    }
     return {
-      ...customEventHandlers,
+      ...CompositionAPIUtils.createCompositionAPI(props.customEventHandlers, props, ['objectContainingActiveItem', 'activeItemPropertyKeyName']),
     };
   },
   computed: {
