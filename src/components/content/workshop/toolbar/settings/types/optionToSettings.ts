@@ -1,6 +1,6 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
-import childComponentPositionVerticalOffset from './childComponentPositionVerticalOffset';
-import childComponentPositionNoAlign from './childComponentPositionNoAlign';
+import childComponentPositionWthVerticalOffset from './childComponentPositionWthVerticalOffset';
+import childComponentVerticalOffset from './childComponentVerticalOffset';
 import buttonGroupButtonBorder from './buttonGroupButtonBorder';
 import buttonGroupButtonShadow from './buttonGroupButtonShadow';
 import dropdownButtonPosition from './dropdownButtonPosition';
@@ -8,6 +8,7 @@ import childComponentPosition from './childComponentPosition';
 import selectDropdownButtonSize from './dropdownButtonSize';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownMenuPosition';
+import childComponentOrder from './childComponentOrder';
 import dropdownButtonText from './dropdownButtonText';
 import sizeWidthSizeName from './sizeWidthSizeName';
 import buttonAnimations from './buttonAnimations';
@@ -70,9 +71,10 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE]: backgroundColorImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_ORDER]: childComponentOrder,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION]: childComponentPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION_VERTICAL_OFFSET]: childComponentPositionVerticalOffset,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION_NO_ALIGN]: childComponentPositionNoAlign,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_VERTICAL_OFFSET]: childComponentVerticalOffset,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION_WTH_VERTICAL_OFFSET]: childComponentPositionWthVerticalOffset,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_ANIMATIONS]: imageAnimations,

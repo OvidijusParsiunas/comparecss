@@ -12,6 +12,10 @@ const buttonGroupButtonSpecificOptions = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_BORDER,
   },
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_ORDER,
+  }
 ];
 
 const buttonGroupButtonSpecificActiveOptions = [

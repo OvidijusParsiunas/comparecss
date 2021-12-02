@@ -1,7 +1,7 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { PlayAnimationPreviewEvent } from '../../../../../../../interfaces/settingsComponentEvents';
 
-export class AnimationPreview {
+export class AnimationPreviewActionsDropdownMouseEvents {
 
   private static getActionsDropdownMouseEventCallbacks(isOpenAnimation: boolean): ActionsDropdownMouseEventCallbacks {
     return {
@@ -26,10 +26,10 @@ export class AnimationPreview {
   }
 
   public static readonly EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS: ActionsDropdownMouseEventCallbacks = {
-    ...AnimationPreview.getActionsDropdownMouseEventCallbacks(false),
+    ...AnimationPreviewActionsDropdownMouseEvents.getActionsDropdownMouseEventCallbacks(false),
   };
 
   public static readonly ENTRANCE_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS: ActionsDropdownMouseEventCallbacks = {
-    ...AnimationPreview.getActionsDropdownMouseEventCallbacks(true),
+    ...AnimationPreviewActionsDropdownMouseEvents.getActionsDropdownMouseEventCallbacks(true),
   };
 }

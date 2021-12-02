@@ -1,10 +1,10 @@
+import { AnimationPreviewActionsDropdownMouseEvents } from '../../../../toolbar/settings/types/shared/animationPreviewActionsDropdownMouseEvents';
 import { UpdateOtherCssProperties, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../../consts/layerSectionDivisor';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
-import { AnimationPreview } from '../../shared/settings/animationPreview';
 
 export class CardBaseSpecificSettings {
 
@@ -19,7 +19,7 @@ export class CardBaseSpecificSettings {
   private static readonly CARD_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
     [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: {
       [SETTING_NAMES.DISMISS]: {
-        actionsDropdownMouseEvents: AnimationPreview.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
+        actionsDropdownMouseEvents: AnimationPreviewActionsDropdownMouseEvents.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
     },
   };

@@ -1,8 +1,8 @@
+import { AnimationPreviewActionsDropdownMouseEvents } from '../../../../toolbar/settings/types/shared/animationPreviewActionsDropdownMouseEvents';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
-import { AnimationPreview } from '../../shared/settings/animationPreview';
 
 export class AlertBaseSpecificSettings {
 
@@ -16,7 +16,7 @@ export class AlertBaseSpecificSettings {
     },
     [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: {
       [SETTING_NAMES.DISMISS]: {
-        actionsDropdownMouseEvents: AnimationPreview.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
+        actionsDropdownMouseEvents: AnimationPreviewActionsDropdownMouseEvents.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
     },
   };

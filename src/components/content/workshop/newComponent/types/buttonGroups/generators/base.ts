@@ -168,6 +168,10 @@ class ButtonGroupBase extends ComponentBuilder {
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
         fontFamily: '"Poppins", sans-serif',
         textAlign: 'left',
+        marginTop: '0px',
+        marginLeft: '0px',
+        marginRight: '0px',
+        marginBottom: '0px',
       },
     };
   }

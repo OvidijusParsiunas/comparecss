@@ -1,9 +1,9 @@
+import { AnimationPreviewActionsDropdownMouseEvents } from '../../../../toolbar/settings/types/shared/animationPreviewActionsDropdownMouseEvents';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { CardBaseSpecificSettings } from '../../cards/settings/cardBaseSpecificSettings';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
-import { AnimationPreview } from '../../shared/settings/animationPreview';
 
 export class ModalBaseSpecificSettings {
 
@@ -11,10 +11,10 @@ export class ModalBaseSpecificSettings {
     ...CardBaseSpecificSettings.CARD_BASE_GENERIC_COMPONENTS,
     [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: {
       [SETTING_NAMES.ENTRANCE]: {
-        actionsDropdownMouseEvents: AnimationPreview.ENTRANCE_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
+        actionsDropdownMouseEvents: AnimationPreviewActionsDropdownMouseEvents.ENTRANCE_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
       [SETTING_NAMES.EXIT]: {
-        actionsDropdownMouseEvents: AnimationPreview.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
+        actionsDropdownMouseEvents: AnimationPreviewActionsDropdownMouseEvents.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
     },
   };
