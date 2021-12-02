@@ -1,4 +1,3 @@
-import { DisplayInFrontOfSiblings } from '../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
@@ -30,7 +29,9 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   };
 
   const getBaseContainerParentStyleProperties = (): WorkshopComponentCss => {
-    return DisplayInFrontOfSiblings.getZIndexCss(component.value.baseSubcomponent);
+    return component.value.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
+      ? ButtonGroupCompositionAPIUtils.getButtonComponentParentContainerDivCss(component.value.baseSubcomponent)
+      : {};
   };
 
   const getBaseContainerStyleProperties = (): WorkshopComponentCss => {

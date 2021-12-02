@@ -1,4 +1,5 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
+import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
@@ -26,33 +27,24 @@ export class ButtonGroupCompositionAPIUtils {
     }
   }
 
-  private static setMarginLeft(borderWidthNumber: number, cssToOverwrite: WorkshopComponentCss): void {
-    if (borderWidthNumber === 0) {
-      cssToOverwrite.marginLeft = '-2px';
-    } else {
-      const newBorderWidthNumber = borderWidthNumber > 2 ? 2 : borderWidthNumber;
-      cssToOverwrite.marginLeft = `-${newBorderWidthNumber}px`;
-    }
-  }
-
-  private static setMargin(borderWidthNumber: number, cssToOverwrite: WorkshopComponentCss): void {
+  private static setMargin(cssToOverwrite: WorkshopComponentCss): void {
     cssToOverwrite.marginTop = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
     cssToOverwrite.marginBottom = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
     cssToOverwrite.marginRight = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-    ButtonGroupCompositionAPIUtils.setMarginLeft(borderWidthNumber, cssToOverwrite);
+    cssToOverwrite.marginLeft = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
   }
 
-  private static setSideBorders(borderWidthNumber: number, borderWidth: string, cssToOverwrite: WorkshopComponentCss): void {
+  private static setSideBorders(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
+    const borderWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
+    const borderWidthNumber = Number.parseFloat(borderWidth);
     const newSideBorderWidth = borderWidthNumber > 2 ? '2px' : borderWidth;
     cssToOverwrite.borderLeftWidth = newSideBorderWidth;
     cssToOverwrite.borderRightWidth = newSideBorderWidth;
   }
 
   private static setBorderAndMarginCss(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    const borderWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
-    const borderWidthNumber = Number.parseFloat(borderWidth);
-    ButtonGroupCompositionAPIUtils.setSideBorders(borderWidthNumber, borderWidth, cssToOverwrite);
-    ButtonGroupCompositionAPIUtils.setMargin(borderWidthNumber, cssToOverwrite);
+    ButtonGroupCompositionAPIUtils.setSideBorders(component, cssToOverwrite);
+    ButtonGroupCompositionAPIUtils.setMargin(cssToOverwrite);
   }
 
   private static canPropertiesBeOverwritten(component: WorkshopComponent): boolean {
@@ -162,5 +154,24 @@ export class ButtonGroupCompositionAPIUtils {
       });
       delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent;
     }
+  }
+
+  // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths
+  private static getMarginLeft(borderWidthNumber: number): string {
+    if (borderWidthNumber === 0) {
+      return '-2px';
+    }
+    const newBorderWidthNumber = borderWidthNumber > 2 ? 2 : borderWidthNumber;
+    return `-${newBorderWidthNumber}px`;
+  }
+
+  public static getButtonComponentParentContainerDivCss(baseSubcomponent: Subcomponent): WorkshopComponentCss {
+    const buttonComponentParentContainerDivCss: WorkshopComponentCss = {};
+    const borderWidth = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
+    const borderWidthNumber = Number.parseFloat(borderWidth);
+    const marginLeft = ButtonGroupCompositionAPIUtils.getMarginLeft(borderWidthNumber);
+    buttonComponentParentContainerDivCss.marginLeft = marginLeft;
+    buttonComponentParentContainerDivCss.zIndex = DisplayInFrontOfSiblings.getZIndex(baseSubcomponent);
+    return buttonComponentParentContainerDivCss;
   }
 }

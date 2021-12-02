@@ -1,6 +1,5 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from '../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
-import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 
 export class DisplayInFrontOfSiblings {
@@ -72,15 +71,14 @@ export class DisplayInFrontOfSiblings {
     }
   }
 
-  public static getZIndexCss(baseSubcomponent: Subcomponent): WorkshopComponentCss {
+  public static getZIndex(baseSubcomponent: Subcomponent): number {
     const { customStaticFeatures, activeCssPseudoClassesDropdownItem } = baseSubcomponent || {};
     if (customStaticFeatures?.displayInFrontOfSiblingsState) {
       if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK) {
-        return { zIndex: DisplayInFrontOfSiblings.MAX_Z_INDEX };
-      } else {
-        return { zIndex: customStaticFeatures.displayInFrontOfSiblingsState.zIndex };
+        return DisplayInFrontOfSiblings.MAX_Z_INDEX;
       }
+      return customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
     }
-    return {};
+    return 0;
   }
 }

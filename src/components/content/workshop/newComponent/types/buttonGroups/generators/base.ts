@@ -24,8 +24,6 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-  private static readonly DEFAULT_MARGIN_LEFT = '-2px';
-
   public static setOverwriteCssForSyncedComponent(buttonComponent: WorkshopComponent): void {
     if (SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
@@ -54,24 +52,19 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
-    if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
-      // subcomponent is from button component
+      // subcomponent is button component base
+      if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponent.seedComponent,
         subcomponent.seedComponent.containerComponent);
     } else if (cssProperty === 'borderRightWidth') {
-      // subcomponent is from button component
       const { borderRightWidth } = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths
-      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = borderRightWidth === '0px' ? '-2px' : `-${borderRightWidth}`;
       subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = borderRightWidth;
     } else if (cssProperty === 'borderTopWidth') {
-      // subcomponent is from button component
       const borderTopWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
       subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = borderTopWidth;
       const buttonComponent = subcomponent.seedComponent;
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
     } else if (cssProperty === 'borderRadius') {
-      // subcomponent is from button component
       const borderRadius = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
       // this is used to get a curve for the button group base
       subcomponent.seedComponent.containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
@@ -128,15 +121,10 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.isRemovable = true;
   }
 
-  private static setMarginLeft(buttonComponent: WorkshopComponent): void {
-    ComponentBuilder.setCustomAndDefaultCssProperty(buttonComponent.baseSubcomponent, CSS_PSEUDO_CLASSES.DEFAULT, 'marginLeft', ButtonGroupBase.DEFAULT_MARGIN_LEFT);
-  }
-
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
-          ButtonGroupBase.setMarginLeft,
           ButtonGroupBase.setComponentToRemovable,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,

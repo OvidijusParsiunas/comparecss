@@ -103,8 +103,11 @@ export default {
     fontAwesomeIconColor: FONT_AWESOME_COLORS.DEFAULT,
   }),
   setup(props: Props): UseDropdownComponent {
+    const customEventHandlers = props.customEventHandlers
+      ? CompositionAPIUtils.createCompositionAPI(props.customEventHandlers, props, ['objectContainingActiveItem', 'activeItemPropertyKeyName'])
+      : {} as UseDropdownComponent;
     return {
-      ...CompositionAPIUtils.createCompositionAPI(props.customEventHandlers, props, ['objectContainingActiveItem', 'activeItemPropertyKeyName']),
+      ...customEventHandlers,
     };
   },
   computed: {
