@@ -1,5 +1,4 @@
 button group button position option
-when synced button component has a border radius - the base of the button component group does not use it in the overlay
 
 night diving
 

@@ -138,6 +138,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     if (!isChildComponent.value) subcomponentCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
     if (component.value.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
     if (!component.value.linkedComponents?.base && !isChildComponent.value) subcomponentCss.marginTop = '0px';
+    if (component.value.type === COMPONENT_TYPES.BUTTON_GROUP) subcomponentCss.marginLeft = ButtonGroupCompositionAPIUtils.getOverlayMarginLeftCss(component.value);
     if (isIcon()) subcomponentCss.height = subcomponentCss.width;
     return subcomponentCss;
   }

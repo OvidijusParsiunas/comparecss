@@ -2,8 +2,8 @@ import { Ref, ref, UnwrapRef, watch } from '@vue/runtime-core';
 
 export class CompositionAPIUtils {
   
-  public static createCompositionAPI<T, Y extends keyof T, R, F extends (...params: unknown[]) => R>
-    (compositionAPIFunc: F, propsObj: T, propsValuesToBeUsedInFunc: Y[]): any {
+  public static createCompositionAPI<F extends (...params: unknown[]) => unknown, T, Y extends keyof T, R = ReturnType<F>>
+    (compositionAPIFunc: F, propsObj: T, propsValuesToBeUsedInFunc: Y[]): R {
     const refObjects = [];
     propsValuesToBeUsedInFunc.forEach((propertyValue: Y) => {
       const refObject: Ref<UnwrapRef<T[Y]>> = ref(propsObj[propertyValue]);
@@ -12,6 +12,6 @@ export class CompositionAPIUtils {
       });
       refObjects.push(refObject);
     })
-    return compositionAPIFunc(...refObjects);
+    return compositionAPIFunc(...refObjects) as R;
   }
 }

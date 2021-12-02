@@ -174,4 +174,10 @@ export class ButtonGroupCompositionAPIUtils {
     buttonComponentParentContainerDivCss.zIndex = DisplayInFrontOfSiblings.getZIndex(baseSubcomponent);
     return buttonComponentParentContainerDivCss;
   }
+
+  public static getOverlayMarginLeftCss(buttonGroupComponent: WorkshopComponent): string {
+    const { marginLeft } = buttonGroupComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const marginLeftNumber = Number.parseFloat(marginLeft);
+    return `${marginLeftNumber - 2}px`;
+  }
 }
