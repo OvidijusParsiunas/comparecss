@@ -25,14 +25,14 @@
       <div v-if="isIcon()"
         :id="getBaseId('subcomponentId')"
         :style="getOverlayStyleProperties()"
-        :class="getLayerCssClasses(true)"
+        :class="getOverlayCssClasses(true)"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
       <div ref="componentPreviewOverlay"
         :id="getBaseId('overlayId')"
         style="display: none"
         :style="getOverlayStyleProperties()"
-        :class="getLayerCssClasses()">
+        :class="getOverlayCssClasses()">
           {{ getSubcomponentText() }}
           <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
             enter event can be fired before the mouse actually reaches the actual subcomponent content -->

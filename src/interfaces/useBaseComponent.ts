@@ -4,7 +4,7 @@ export interface UseBaseComponent {
   isIcon: () => boolean;
   isXButtonText: () => boolean;
   getSubcomponentText: () => string;
-  getLayerCssClasses: (isIconOverlayTrigger?: boolean) => string[];
+  getOverlayCssClasses: (isIconOverlayTrigger?: boolean) => string[];
   getComponentCssClasses: () => string[]|Set<string>;
   getBaseContainerCssClasses: () => string[];
   getComponentStyleProperties: () => WorkshopComponentCss[];

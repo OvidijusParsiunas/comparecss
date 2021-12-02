@@ -44,7 +44,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
 
   const getBaseContainerCssClasses = (): string[] => {
     const classes = [];
-    classes.push(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS);
+    classes.push(isChildComponent.value ? 'child-component' : STATIC_POSITION_CLASS);
     if (component.value.cssClasses?.containerClasses) classes.push(...component.value.cssClasses.containerClasses);
     return classes;
   }
@@ -53,9 +53,9 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     return component.value.cssClasses?.componentClasses || [];
   }
 
-  const getLayerCssClasses = (isIconOverlayTrigger?: boolean): string[] => {
+  const getOverlayCssClasses = (isIconOverlayTrigger?: boolean): string[] => {
     const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
-    if (isChildComponent) {
+    if (isChildComponent.value) {
       classes.push('child-component');
     } else {
       classes.push(STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height');
@@ -135,9 +135,9 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
       ...getBaseContainerStyleProperties(),
       ...getButtonGroupButtonOverwrittenCss(),
     };
-    if (!isChildComponent) subcomponentCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
+    if (!isChildComponent.value) subcomponentCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
     if (component.value.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-    if (!component.value.linkedComponents?.base && !isChildComponent) subcomponentCss.marginTop = '0px';
+    if (!component.value.linkedComponents?.base && !isChildComponent.value) subcomponentCss.marginTop = '0px';
     if (isIcon()) subcomponentCss.height = subcomponentCss.width;
     return subcomponentCss;
   }
@@ -156,7 +156,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   return {
     isIcon,
     isXButtonText,
-    getLayerCssClasses,
+    getOverlayCssClasses,
     getComponentCssClasses,
     getBaseContainerCssClasses,
     getSubcomponentText,
