@@ -2,7 +2,7 @@
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div :id="getLayerId(layer.subcomponent.name, 'subcomponentId')"
-        :style="getComponentStyleProperties(layer, index === layers.length - 1)"
+        :style="getComponentStyleProperties(layer, Number(index) === layers.length - 1)"
         :class="[...jsClasses, COMPONENT_PREVIEW_MARKER]"
         @mouseenter="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseLeave')"
@@ -18,15 +18,15 @@
             :mouseEvents="mouseEvents"/>
       </div>
       <!-- zIndex is used for the shadow and overlay to be placed above the next layer's border -->
-      <div :style="[{ zIndex: layers.length - index + 1}]"
+      <div :style="{ zIndex: layers.length - Number(index) + 1 }"
         class="layer-shadow-overlay-container"
         :class="SUBCOMPONENT_OVERLAY_CLASSES.BASE">
-          <div :style="getLayerShadowOverlayStyleProperties(layer, index === layers.length - 1)"
+          <div :style="getLayerShadowOverlayStyleProperties(layer, Number(index) === layers.length - 1)"
             class="layer-shadow-overlay"></div>
       </div>
       <div :id="getLayerId(layer.subcomponent.name, 'overlayId')"
         style="display: none"
-        :style="getOverlayStyleProperties(layer, layers, index)"
+        :style="getOverlayStyleProperties(layer, Number(index))"
         :class="getLayerCssClasses(layer)"></div>
     </div>
   </div>

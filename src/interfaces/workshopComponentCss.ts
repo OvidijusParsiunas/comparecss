@@ -66,6 +66,11 @@ export type WorkshopComponentCss = {
   order?: string;
 } & BorderRadiusCss;
 
+// WORK 2 - remove this file and use CSSProperties
+// export interface WorkshopComponentCss extends CSSProperties {
+//   hello?: string;
+// }
+
 // DOC: 7880
 // borderWidth has been removed due to a browser (agnostic) bug that displays a border (1.2...px width) on the newly
 // selected component if the previous component had a side specific border and a new one did not have the same one
