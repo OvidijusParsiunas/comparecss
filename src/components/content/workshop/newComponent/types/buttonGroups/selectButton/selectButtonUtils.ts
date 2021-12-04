@@ -8,7 +8,7 @@ export class SelectButtonUtils {
 
   private static setNewSelectedComponentOnButtonGroup(buttonBaseSubcomponent: Subcomponent): void {
     const { customStaticFeatures } = buttonBaseSubcomponent.seedComponent.containerComponent.baseSubcomponent;
-    SelectButtonUtils.unselectCurrentButton(customStaticFeatures);
+    if (customStaticFeatures.selectedChildComponent) SelectButtonUtils.unselectCurrentButton(customStaticFeatures);
     customStaticFeatures.selectedChildComponent = buttonBaseSubcomponent.seedComponent;
   }
 
