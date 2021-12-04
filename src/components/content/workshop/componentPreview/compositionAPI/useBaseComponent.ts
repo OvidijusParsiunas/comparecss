@@ -101,6 +101,10 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
       ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component.value) : {};
   }
 
+  function getSelectedComponentCss(subcomponentCss: CustomCss): WorkshopComponentCss {
+    return component.value.baseSubcomponent.customStaticFeatures?.isCurrentlySelected ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
+  }
+
   function getSelectedDropdownMenuTextCss(subcomponentCss: CustomCss): WorkshopComponentCss {
     return SelectDropdownUtils.isTextSelected(component.value) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
@@ -112,6 +116,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(subcomponentCss);
+    const selectedComponentCss = getSelectedComponentCss(subcomponentCss);
     const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss();
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
@@ -123,6 +128,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
       inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
+      selectedComponentCss,
       buttonGroupButtonOverwrittenCss,
       overflowHiddenCss,
     ];

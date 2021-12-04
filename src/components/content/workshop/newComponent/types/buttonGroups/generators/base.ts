@@ -1,5 +1,6 @@
+import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
-import { CustomCss, CustomFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { DisplayInFrontOfSiblingsContainerState } from '../../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { ButtonGroupButtonDisplayInFrontOfSiblings } from '../utils/buttonGroupButtonDisplayInFrontOfSiblings';
@@ -20,6 +21,7 @@ import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ButtonGroupGenericUtils } from '../utils/buttonGroupGenericUtils';
 import { ButtonGroupBorderUtils } from '../utils/buttonGroupBorderUtils';
+import { SelectButtonUtils } from '../selectButton/selectButtonUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
@@ -28,16 +30,6 @@ class ButtonGroupBase extends ComponentBuilder {
     if (SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
     }
-  }
-
-  public static setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent: WorkshopComponent): void {
-    buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures = {
-      displayInFrontOfSiblingsContainerState: {
-        highestZIndex: 0,
-        numberOfCurrentlyHighlightedButtons: 0,
-        conditionalFunc: ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeMovedToFront,
-      },
-    };
   }
 
   private static onComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -87,6 +79,10 @@ class ButtonGroupBase extends ComponentBuilder {
     layerComponent.sync.siblingChildComponentsAutoSynced = { siblingComponentTypes: {} };
   }
 
+  private static setIsCurrentlySelected(buttonComponent: WorkshopComponent): void {
+    buttonComponent.baseSubcomponent.customStaticFeatures.isCurrentlySelected = false;
+  }
+
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
     if (buttonGroupComponent.componentPreviewStructure.layers[0]
         .alignmentSectionToComponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION].length === 1) {
@@ -124,6 +120,12 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.isRemovable = true;
   }
 
+  private static setButtonMouseEvents(buttonComponent: WorkshopComponent): void {
+    buttonComponent.baseSubcomponent.customFeatures.mouseEventCallbacks = {
+      click: SelectButtonUtils.select,
+    };
+  }
+
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
@@ -132,6 +134,8 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
+          ButtonGroupBase.setIsCurrentlySelected,
+          ButtonGroupBase.setButtonMouseEvents,
           ButtonGroupBorderUtils.setBorderProperties,
           ButtonGroupButtonSpecificSettings.set,
         ],
@@ -147,6 +151,26 @@ class ButtonGroupBase extends ComponentBuilder {
     const childComponentMinCount = { min: { [BUTTON_COMPONENTS_BASE_NAMES.BUTTON]: 1 }};
     ComponentBuilder.setNewChildComponentsItemsProperties(buttonGroupBaseComponent,
       baseComponentItems, baseComponentItems, childComponentMinCount);
+  }
+
+  private static createDisplayInFrontOfSiblingsContainerState(): DisplayInFrontOfSiblingsContainerState {
+    return {
+      highestZIndex: 0,
+      numberOfCurrentlyHighlightedButtons: 0,
+      conditionalFunc: ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeMovedToFront,
+    };
+  }
+
+  private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
+    return {
+      displayInFrontOfSiblingsContainerState: ButtonGroupBase.createDisplayInFrontOfSiblingsContainerState(),
+    };
+  }
+
+  private static createDefaultCustomFeatures(): CustomFeatures {
+    return {
+      animations: ComponentBuilder.createDisplayAnimationsProperties(),
+    };
   }
 
   private static createDefaultCss(): CustomCss {
@@ -176,12 +200,6 @@ class ButtonGroupBase extends ComponentBuilder {
     };
   }
 
-  private static createDefaultCustomFeatures(): CustomFeatures {
-    return {
-      animations: ComponentBuilder.createDisplayAnimationsProperties(),
-    };
-  }
-
   public static createBaseSubcomponent(name: string): Subcomponent {
     return {
       name,
@@ -195,6 +213,8 @@ class ButtonGroupBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: ButtonGroupBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: ButtonGroupBase.createDefaultCustomFeatures(),
+      customStaticFeatures: ButtonGroupBase.createDefaultCustomStaticFeatures(),
+      defaultCustomStaticFeatures: ButtonGroupBase.createDefaultCustomStaticFeatures(),
     };
   }
 }
@@ -210,7 +230,6 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.setOnChildComponentRemovalFunc(buttonGroupBaseComponent);
     ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
     ButtonGroupBase.setOnComponentDisplayFunc(buttonGroupBaseComponent);
-    ButtonGroupBase.setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },

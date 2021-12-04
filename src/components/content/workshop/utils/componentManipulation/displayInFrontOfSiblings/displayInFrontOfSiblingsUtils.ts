@@ -71,9 +71,12 @@ export class DisplayInFrontOfSiblings {
     }
   }
 
-  public static getZIndex(baseSubcomponent: Subcomponent): number {
+  public static getZIndex(baseSubcomponent: Subcomponent, isChildComponentSelected = false): number {
     const { customStaticFeatures, activeCssPseudoClassesDropdownItem } = baseSubcomponent || {};
     if (customStaticFeatures?.displayInFrontOfSiblingsState) {
+      if (isChildComponentSelected) {
+        return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;
+      }
       if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK) {
         return DisplayInFrontOfSiblings.MAX_Z_INDEX;
       }

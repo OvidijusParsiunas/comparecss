@@ -39,7 +39,7 @@ export default function useLayerComponent(layers: Ref<Layer[]>): UseLayerCompone
     return [
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[activeCssPseudoClassesDropdownItem],
-      { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : '' },
+      { backgroundImage: customStaticFeatures?.image?.data ? `url(${customStaticFeatures.image.data})` : '' },
       { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponentCss, 'backgroundColor') },
       { boxShadow: CSS_PROPERTY_VALUES.UNSET },
       isLastLayer ? { borderBottomWidth: '0px' } : {}, // can alternatively use nth class

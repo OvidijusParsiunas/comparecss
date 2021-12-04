@@ -107,8 +107,11 @@ interface TempCustomProperties {
 
 export interface CustomStaticFeatures {
   alignment?: Alignment;
+  // WORK 2 - potentially rework selectDropdownText to use isCurrentlySelected
   // applied to the dropdown padding component
   selectDropdownText?: SelectDropdownText;
+  isCurrentlySelected?: boolean;
+  selectedChildComponent?: WorkshopComponent;
   // applied to the dropdown menu component
   dropdownMenuData?: DropdownMenuData;
   jsClasses?: ComponentJavascriptClasses;

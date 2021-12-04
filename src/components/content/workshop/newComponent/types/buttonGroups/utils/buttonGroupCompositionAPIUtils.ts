@@ -81,6 +81,17 @@ export class ButtonGroupCompositionAPIUtils {
     return cssToOverwrite;
   }
 
+  private static setOverwrittenBoxShadow(baseSubcomponent: Subcomponent, subcomponentCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES,
+      buttonGroupButtonContainerCss: WorkshopComponentCss): void {
+    let subcomponentCssClass = activeCssPseudoClassesDropdownItem;
+    if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT && baseSubcomponent.customStaticFeatures?.isCurrentlySelected) {
+      subcomponentCssClass = CSS_PSEUDO_CLASSES.HOVER;
+    }
+    // important to remember that we are passing subcomponentCss and not customCss
+    const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(subcomponentCssClass, subcomponentCss);
+    buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
+  }
+
   private static setOverwrittenBoundingBox(component: WorkshopComponent, buttonGroupButtonContainerCss: WorkshopComponentCss): void {
     const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
     buttonGroupButtonContainerCss.boxShadow = overwriteCssForSyncedComponent
@@ -95,9 +106,8 @@ export class ButtonGroupCompositionAPIUtils {
     if (ButtonGroupCompositionAPIUtils.canPropertiesBeOverwritten(component)) {
       ButtonGroupCompositionAPIUtils.setOverwrittenBoundingBox(component, buttonGroupButtonContainerCss);
     } else {
-      // important to remember that we are passing subcomponentCss and not customCss
-      const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss);
-      buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
+      ButtonGroupCompositionAPIUtils.setOverwrittenBoxShadow(component.baseSubcomponent, subcomponentCss,
+        activeCssPseudoClassesDropdownItem, buttonGroupButtonContainerCss);
     }
     buttonGroupButtonContainerCss.transition = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].transition;
     buttonGroupButtonContainerCss.borderRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
@@ -171,7 +181,7 @@ export class ButtonGroupCompositionAPIUtils {
     const borderWidthNumber = Number.parseFloat(borderWidth);
     const marginLeft = ButtonGroupCompositionAPIUtils.getMarginLeft(borderWidthNumber);
     buttonComponentParentContainerDivCss.marginLeft = marginLeft;
-    buttonComponentParentContainerDivCss.zIndex = DisplayInFrontOfSiblings.getZIndex(baseSubcomponent);
+    buttonComponentParentContainerDivCss.zIndex = DisplayInFrontOfSiblings.getZIndex(baseSubcomponent, baseSubcomponent.customStaticFeatures?.isCurrentlySelected);
     return buttonComponentParentContainerDivCss;
   }
 

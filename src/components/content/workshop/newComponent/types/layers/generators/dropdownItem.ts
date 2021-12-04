@@ -75,7 +75,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
-  private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
+  private static createDefaultItemBaseCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createStationaryAnimations({}),
       mouseEventCallbacks: DropdownItemLayer.createMouseEventCallbacks(),
@@ -84,8 +84,8 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   public static overwriteBase(itemComponent: WorkshopComponent): void {
     const baseSubcomponent = itemComponent.baseSubcomponent;
-    baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
-    baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
+    baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultItemBaseCustomFeatures();
+    baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultItemBaseCustomFeatures();
     baseSubcomponent.customStaticFeatures = { jsClasses: new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) };
     baseSubcomponent.defaultCustomStaticFeatures = { jsClasses: new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) };
     baseSubcomponent.otherSubcomponentTriggers = DropdownItemLayer.createOtherSubcomponentTriggersTemplate(),
