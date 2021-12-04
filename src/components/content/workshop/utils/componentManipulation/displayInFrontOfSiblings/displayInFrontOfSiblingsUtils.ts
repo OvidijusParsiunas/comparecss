@@ -85,7 +85,7 @@ export class DisplayInFrontOfSiblings {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX;
         }
       }
-      if (isChildComponentSelected && (!displayInFrontOfSiblingsContainerState.conditionalFunc)) {
+      if (isChildComponentSelected) {
         // WORK 2 - change to be something dynamic
         if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER)) {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;
