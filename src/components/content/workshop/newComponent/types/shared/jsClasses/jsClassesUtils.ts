@@ -24,9 +24,9 @@ export class JsClassesUtils {
   private static addJsClasses(subcomponent: Subcomponent, overwriteDefaultProperties: boolean,
       jsClasses: Set<JAVASCRIPT_CLASSES>, staticJsClasses: Set<JAVASCRIPT_CLASSES>): void {
     if (jsClasses) JsClassesUtils.addJsClassesToFeatures(subcomponent, overwriteDefaultProperties, jsClasses,
-      'customFeatures', 'defaultCustomFeatures')
+      'customFeatures', 'defaultCustomFeatures');
     if (staticJsClasses) JsClassesUtils.addJsClassesToFeatures(subcomponent, overwriteDefaultProperties, staticJsClasses,
-      'customStaticFeatures', 'defaultCustomStaticFeatures')
+      'customStaticFeatures', 'defaultCustomStaticFeatures');
   }
 
   private static addCustomFeaturesObjects(subcomponent: Subcomponent, overwriteDefaultProperties: boolean): void {
