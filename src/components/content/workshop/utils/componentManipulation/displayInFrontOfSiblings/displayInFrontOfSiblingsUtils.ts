@@ -55,6 +55,11 @@ export class DisplayInFrontOfSiblings {
     }
   }
 
+  private static shouldComponentBeInFront(displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState,
+      subcomponent: Subcomponent, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    return !displayInFrontOfSiblingsContainerState.conditionalFunc || displayInFrontOfSiblingsContainerState.conditionalFunc(subcomponent, cssPseudoClass);
+  }
+
   // the strategy here is to continuously keep increasing the zIndex of the newly activated components via the use of the highestZIndex
   // the number of currently highlighted components is tracked and when there are no more - the highestZIndex is set back to 0
   public static changeSubcomponentZIndex(toFront: boolean, subcomponent: Subcomponent, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
@@ -62,7 +67,7 @@ export class DisplayInFrontOfSiblings {
     if (displayInFrontOfSiblingsContainerState) {
       const { displayInFrontOfSiblingsState } = subcomponent.customStaticFeatures;
       if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK && displayInFrontOfSiblingsState.isInFrontOnHover) return;
-      if (!displayInFrontOfSiblingsContainerState.conditionalFunc || displayInFrontOfSiblingsContainerState.conditionalFunc(subcomponent, cssPseudoClass)) {
+      if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, subcomponent, cssPseudoClass)) {
         if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) displayInFrontOfSiblingsState.isInFrontOnHover = toFront;
         DisplayInFrontOfSiblings.clearSetZIndexTimeout(displayInFrontOfSiblingsState, displayInFrontOfSiblingsContainerState);
         DisplayInFrontOfSiblings.initializeSetZIndexTimeout(toFront, subcomponent, displayInFrontOfSiblingsContainerState,
@@ -74,11 +79,17 @@ export class DisplayInFrontOfSiblings {
   public static getZIndex(baseSubcomponent: Subcomponent, isChildComponentSelected = false): number {
     const { customStaticFeatures, activeCssPseudoClassesDropdownItem } = baseSubcomponent || {};
     if (customStaticFeatures?.displayInFrontOfSiblingsState) {
-      if (isChildComponentSelected) {
-        return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;
-      }
+      const { displayInFrontOfSiblingsContainerState } = baseSubcomponent.seedComponent.containerComponent?.baseSubcomponent.customStaticFeatures || {};
       if (activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK) {
-        return DisplayInFrontOfSiblings.MAX_Z_INDEX;
+        if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent, activeCssPseudoClassesDropdownItem)) {
+          return DisplayInFrontOfSiblings.MAX_Z_INDEX;
+        }
+      }
+      if (isChildComponentSelected && (!displayInFrontOfSiblingsContainerState.conditionalFunc)) {
+        // WORK 2 - change to be something dynamic
+        if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER)) {
+          return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;
+        }
       }
       return customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
     }
