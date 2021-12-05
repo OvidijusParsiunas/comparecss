@@ -29,35 +29,33 @@ export class SyncChildComponent {
     };
   }
 
-  private static syncAllCustomProperties(targetSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
+  private static syncCustomProperties(targetSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(targetSubcomponent.seedComponent, 2);
+    // for components that have different subcomponentToBeSyncedTo.customFeatures we need to create a new object as otherwise
+    // tempOriginalCustomProperties would be overwritten by a normal traversal
+    const customFeaturesToBeSyncedTo = Object.keys(subcomponentToBeSyncedTo.customFeatures).length === Object.keys(targetSubcomponent.customFeatures).length
+      ? subcomponentToBeSyncedTo.customFeatures
+      : JSONUtils.createObjectUsingObject1AndSameObject2Properties(targetSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
     if (siblingComponentTypes) {
       // this is used to sync custom properties for auto synced components like buttons in a button group
-      Object.assign(targetSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
+      Object.assign(targetSubcomponent.customFeatures, customFeaturesToBeSyncedTo);
       Object.assign(targetSubcomponent.customCss, subcomponentToBeSyncedTo.customCss);
     } else {
       // this is the default way for syncing custom properties for child components as the one above causes the following issue:
       // upon adding a child dropdown to card then syncing the dropdown button and syncing the whole dropdown after that still
       // keeps the synced to button custom properties reference
-      // hence the above implementation restricts auto synced components to be in a component that can be a syncable child
-      targetSubcomponent.customFeatures = subcomponentToBeSyncedTo.customFeatures;
+      // however the above implementation currently restricts auto synced components to be in a component that can be syncable as a child
+      targetSubcomponent.customFeatures = customFeaturesToBeSyncedTo;
       targetSubcomponent.customCss = subcomponentToBeSyncedTo.customCss;
     }
   }
 
   private static syncAllCustomPropertiesAndAddTop(targetSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent, ): void {
-    SyncChildComponent.syncAllCustomProperties(targetSubcomponent, subcomponentToBeSyncedTo);
+    SyncChildComponent.syncCustomProperties(targetSubcomponent, subcomponentToBeSyncedTo);
     const componentToBeSyncedCustomCss = subcomponentToBeSyncedTo.customCss;
     if (!componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top && subcomponentToBeSyncedTo.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddContainerComponent.DEFAULT_TOP_PROPERTY;
     }
-  }
-
-  private static syncPropertiesThatOnlyExistInActiveComponent(targetSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
-    targetSubcomponent.customCss = subcomponentToBeSyncedTo.customCss;
-    // need to create a new object as otherwise tempOriginalCustomProperties would be overwritten by a normal traversal
-    targetSubcomponent.customFeatures = JSONUtils.createObjectUsingObject1AndSameObject2Properties(
-      targetSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
   }
 
   public static syncBaseSubcomponent(targetSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent, addTemporaryProperties: boolean): boolean {
@@ -66,13 +64,7 @@ export class SyncChildComponent {
       SyncChildComponent.setAreChildrenComponentsTemporarilySynced(targetSubcomponent);
     }
     if (!subcomponentToBeSyncedTo) return true;
-    // this is a naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent
-    // all features from being traversed all the time (used for components like dropdown button)
-    if (Object.keys(subcomponentToBeSyncedTo.customFeatures).length !== Object.keys(targetSubcomponent.customFeatures).length) {
-      SyncChildComponent.syncPropertiesThatOnlyExistInActiveComponent(targetSubcomponent, subcomponentToBeSyncedTo);
-    } else {
-      SyncChildComponent.syncAllCustomPropertiesAndAddTop(targetSubcomponent, subcomponentToBeSyncedTo);
-    }
+    SyncChildComponent.syncAllCustomPropertiesAndAddTop(targetSubcomponent, subcomponentToBeSyncedTo);
   }
 
   // if a subcomponent does not exist in the componentToBeSyncedTo, but does in its siblings - add it

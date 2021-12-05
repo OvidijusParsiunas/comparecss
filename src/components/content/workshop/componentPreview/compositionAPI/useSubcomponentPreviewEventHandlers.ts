@@ -61,7 +61,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcom
         customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
       }, Number.parseFloat(stationaryAnimations.fade.duration) * 1000);
       // this is used to prevent a bug where sibling components that share customCss have their transition property
-      // unset by the timeout when the user moves their mouse from one component to another.
+      // unset by the timeout when the user moves their mouse from one component to another
       stationaryAnimations.fade.isTransitionCssPropertySet = false;
     }
     if (stationaryAnimations.backgroundZoom?.zoomLevels) {

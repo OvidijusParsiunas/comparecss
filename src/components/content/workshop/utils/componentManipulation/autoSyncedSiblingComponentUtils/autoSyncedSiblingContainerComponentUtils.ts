@@ -30,9 +30,9 @@ export class AutoSyncedSiblingContainerComponentUtils {
 
   private static incrementAndCopy(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
     if (!siblingComponentTypes[component.type]) {
-      siblingComponentTypes[component.type] = { currentCount: 1, customDynamicProperties: component.baseSubcomponent };
+      siblingComponentTypes[component.type] = { components: new Set([component]), customDynamicProperties: component.baseSubcomponent };
     } else {
-      siblingComponentTypes[component.type].currentCount += 1;
+      siblingComponentTypes[component.type].components.add(component);
       AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
         component.baseSubcomponent, siblingComponentTypes[component.type].customDynamicProperties);
     }
@@ -45,9 +45,9 @@ export class AutoSyncedSiblingContainerComponentUtils {
 
   private static decrementAndRemoveIfNoneLeft(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
     if (siblingComponentTypes[component.type]) {
-      siblingComponentTypes[component.type].currentCount -= 1;
+      siblingComponentTypes[component.type].components.delete(component);
     }
-    if (siblingComponentTypes[component.type]?.currentCount === 0) {
+    if (siblingComponentTypes[component.type]?.components.size === 0) {
       delete siblingComponentTypes[component.type];
     }
   }

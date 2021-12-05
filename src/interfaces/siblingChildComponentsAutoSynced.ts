@@ -2,7 +2,7 @@ import { CustomCss, CustomDynamicProperties, WorkshopComponent } from './worksho
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 
 export interface SiblingComponentState {
-  currentCount: number;
+  components: Set<WorkshopComponent>;
   customDynamicProperties: CustomDynamicProperties;
 }
 

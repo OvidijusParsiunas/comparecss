@@ -62,6 +62,9 @@ export class ButtonGroupCompositionAPIUtils {
     if (subcomponent.activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT) {
       return overwrittenCss[subcomponent.activeCssPseudoClassesDropdownItem];
     }
+    if (subcomponent.customStaticFeatures?.isCurrentlySelected) {
+      return overwrittenCss[CSS_PSEUDO_CLASSES.HOVER];
+    }
     return overwrittenCss[CSS_PSEUDO_CLASSES.DEFAULT];
   }
 
@@ -156,14 +159,7 @@ export class ButtonGroupCompositionAPIUtils {
 
   public static unsetOverwriteCssForSyncedComponent(component: WorkshopComponent): void {
     const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
-    if (siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent) {
-      const { customCss } = component.baseSubcomponent;
-      Object.keys(siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent).forEach((cssPseudoClass) => {
-        const workshopCss: WorkshopComponentCss = siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent[cssPseudoClass];
-        Object.assign(customCss[cssPseudoClass], workshopCss);
-      });
-      delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent;
-    }
+    delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent;
   }
 
   // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths

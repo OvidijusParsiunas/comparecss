@@ -26,7 +26,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-  public static setOverwriteCssForSyncedComponent(buttonComponent: WorkshopComponent): void {
+  private static setOverwriteCssForSyncedComponent(buttonComponent: WorkshopComponent): void {
     if (SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
     }
@@ -96,14 +96,16 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (isPermanentSync) {
+    if (buttonComponent.containerComponent.baseSubcomponent.customStaticFeatures.selectedChildComponent || isPermanentSync) {
       ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
     }
   }
 
   private static onSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (isPermanentSync) {
+    if (buttonComponent.containerComponent.baseSubcomponent.customStaticFeatures.selectedChildComponent || isPermanentSync) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
+    }
+    if (isPermanentSync) {
       ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
       ButtonGroupStylePropertiesUtils.setButtonGroupBorderRadiusViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
     }
