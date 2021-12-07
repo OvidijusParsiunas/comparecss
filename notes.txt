@@ -1,5 +1,4 @@
 button text align does not work
-temp sync overwrites selected hover shadow blur 
 allow any icon to be added to button
 
 night diving

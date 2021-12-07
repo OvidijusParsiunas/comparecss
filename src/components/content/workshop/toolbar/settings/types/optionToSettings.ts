@@ -6,6 +6,7 @@ import buttonGroupButtonShadow from './buttonGroupButtonShadow';
 import dropdownButtonPosition from './dropdownButtonPosition';
 import childComponentPosition from './childComponentPosition';
 import selectDropdownButtonSize from './dropdownButtonSize';
+import selectChildComponents from './selectChildComponents';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownMenuPosition';
 import childComponentOrder from './childComponentOrder';
@@ -87,6 +88,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN]: selectDropdown,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_BUTTON_SIZE]: selectDropdownButtonSize,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_CHILD_COMPONENTS]: selectChildComponents,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: icon,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_BORDER]: buttonGroupButtonBorder,

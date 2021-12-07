@@ -15,5 +15,9 @@ export const buttonGroupBaseOptions: SubcomponentOptions<ButtonGroupBaseOptionsM
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SELECT,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_CHILD_COMPONENTS,
+    },
   ],
 };
