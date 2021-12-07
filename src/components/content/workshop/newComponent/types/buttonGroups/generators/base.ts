@@ -1,5 +1,6 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
+import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { DisplayInFrontOfSiblingsContainerState } from '../../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
@@ -79,10 +80,6 @@ class ButtonGroupBase extends ComponentBuilder {
     layerComponent.sync.siblingChildComponentsAutoSynced = { siblingComponentTypes: {} };
   }
 
-  private static setIsCurrentlySelected(buttonComponent: WorkshopComponent): void {
-    buttonComponent.baseSubcomponent.customStaticFeatures.isCurrentlySelected = false;
-  }
-
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
     if (buttonGroupComponent.componentPreviewStructure.layers[0]
         .alignmentSectionToComponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION].length === 1) {
@@ -91,18 +88,23 @@ class ButtonGroupBase extends ComponentBuilder {
     }
   }
 
+  private static setSelectComponentOnChildComponents(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
+    const textComponent = buttonComponent.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
+    ComponentBuilder.createSelectComponentChild([buttonComponent, textComponent], buttonGroupComponent);
+  }
+
   private static setDisplayInFrontOfSiblingsState(buttonComponent: WorkshopComponent): void {
     buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (buttonComponent.containerComponent.baseSubcomponent.customStaticFeatures.selectedChildComponent || isPermanentSync) {
+    if (SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || isPermanentSync) {
       ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
     }
   }
 
   private static onSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (buttonComponent.containerComponent.baseSubcomponent.customStaticFeatures.selectedChildComponent || isPermanentSync) {
+    if (SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || isPermanentSync) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
     }
     if (isPermanentSync) {
@@ -132,12 +134,12 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
+          ButtonGroupBase.setButtonMouseEvents,
           ButtonGroupBase.setComponentToRemovable,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
-          ButtonGroupBase.setIsCurrentlySelected,
-          ButtonGroupBase.setButtonMouseEvents,
+          ButtonGroupBase.setSelectComponentOnChildComponents,
           ButtonGroupBorderUtils.setBorderProperties,
           ButtonGroupButtonSpecificSettings.set,
         ],
@@ -166,6 +168,7 @@ class ButtonGroupBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       displayInFrontOfSiblingsContainerState: ButtonGroupBase.createDisplayInFrontOfSiblingsContainerState(),
+      selectComponent: ComponentBuilder.createSelectComponentContainer(),
     };
   }
 

@@ -12,6 +12,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClas
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
+import { SelectComponent } from '../../../../../../interfaces/selectedChildComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { PresetProperties } from '../../../../../../interfaces/componentGenerator';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
@@ -166,6 +167,26 @@ export class ComponentBuilder {
       cssPseudoClass: CSS_PSEUDO_CLASSES, cssProperty: T, value: WorkshopComponentCss[T]): void {
     subcomponent.customCss[cssPseudoClass][cssProperty] = value;
     subcomponent.defaultCss[cssPseudoClass][cssProperty] = value;
+  }
+
+  protected static createSelectComponentChild(childComponents: WorkshopComponent[], container: WorkshopComponent): void {
+    childComponents.forEach((childComponent) => {
+      childComponent.baseSubcomponent.customStaticFeatures.selectComponent = {
+        child: {
+          isSelected: false,
+          containerSelectComponentObj: container.baseSubcomponent.customStaticFeatures.selectComponent.container,
+        },
+      };
+    });
+  }
+
+  protected static createSelectComponentContainer(): SelectComponent {
+    return {
+      container: {
+        selectedComponent: null,
+        activeCssPseudoClass: CSS_PSEUDO_CLASSES.HOVER,
+      },
+    };
   }
 
   private static toggleSelectDropdownTypeSetting(subcomponent: Subcomponent): void {

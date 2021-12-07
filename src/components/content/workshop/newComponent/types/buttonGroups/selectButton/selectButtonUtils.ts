@@ -1,4 +1,5 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
+import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { ComponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 
@@ -6,7 +7,8 @@ export class SelectButtonUtils {
 
   private static traversalCallback(traversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
     const isCurrentlySelected = this as any as boolean;
-    traversalState.component.baseSubcomponent.customStaticFeatures.isCurrentlySelected = isCurrentlySelected;
+    const { child } = traversalState.component.baseSubcomponent.customStaticFeatures.selectComponent || {};
+    if (child) child.isSelected = isCurrentlySelected;
     return { stopTraversal: false };
   }
 
@@ -19,14 +21,14 @@ export class SelectButtonUtils {
       selectedChildComponent.baseSubcomponent.seedComponent);
   }
 
-  private static setNewSelectedComponentOnButtonGroup(buttonBaseSubcomponent: Subcomponent): void {
-    const { customStaticFeatures } = buttonBaseSubcomponent.seedComponent.containerComponent.baseSubcomponent;
-    if (customStaticFeatures.selectedChildComponent) SelectButtonUtils.unselectCurrentButton(customStaticFeatures.selectedChildComponent);
-    customStaticFeatures.selectedChildComponent = buttonBaseSubcomponent.seedComponent;
+  private static setNewSelectedComponentOnButtonGroup(newButton: WorkshopComponent): void {
+    const selectedChildComponentContainer = SelectedChildComponentUtil.getChildContainerSelectComponentObj(newButton);
+    if (selectedChildComponentContainer.selectedComponent) SelectButtonUtils.unselectCurrentButton(selectedChildComponentContainer.selectedComponent);
+    selectedChildComponentContainer.selectedComponent = newButton;
   }
 
   public static select(buttonBaseSubcomponent: Subcomponent): void {
-    SelectButtonUtils.setNewSelectedComponentOnButtonGroup(buttonBaseSubcomponent);
+    SelectButtonUtils.setNewSelectedComponentOnButtonGroup(buttonBaseSubcomponent.seedComponent);
     SelectButtonUtils.selectNewButton(buttonBaseSubcomponent.seedComponent);
   }
 }

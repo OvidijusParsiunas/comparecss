@@ -86,8 +86,9 @@ export class DisplayInFrontOfSiblings {
         }
       }
       if (isChildComponentSelected) {
-        // WORK 2 - change to be something dynamic
-        if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER)) {
+        // WORK 2 - change as zIndex does not work
+        if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent,
+            customStaticFeatures.selectComponent.child.containerSelectComponentObj.activeCssPseudoClass)) {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;
         }
       }

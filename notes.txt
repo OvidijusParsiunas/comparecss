@@ -1,12 +1,16 @@
+button text align does not work
+temp sync overwrites selected hover shadow blur 
 allow any icon to be added to button
 
 night diving
 
+ripple animation bug fix options:
 overflow
 try with button tags
 check to see if text can be placed into another div
 the dropdown button bottom border issue fixed via auxiliary overlay with no pointer events
 
+npm update and fix all of the types
 lock button for dropdown menu (additionally could do the same for modal component)
 dropdown menu should switch upwards when there is not enough screen space
 for sync to be effective (especially buttons) need to have width property as staticCss - probably need other properties as well

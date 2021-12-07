@@ -1,3 +1,4 @@
+import { SelectedChildComponentUtil } from '../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
@@ -103,8 +104,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
 
   function getInheritedCss(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, subcomponentCss: CustomCss): WorkshopComponentCss {
     return activeCssPseudoClassesDropdownItem !== CSS_PSEUDO_CLASSES.DEFAULT
-      ? ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss)
-      : {};
+      ? ComponentPreviewUtils.getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem, subcomponentCss) : {};
   }
 
   function getSelectedDropdownMenuTextCss(subcomponentCss: CustomCss): WorkshopComponentCss {
@@ -112,8 +112,10 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   }
 
   function getCssPseudoClass(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): CSS_PSEUDO_CLASSES {
-    return activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT && component.value.baseSubcomponent.customStaticFeatures?.isCurrentlySelected ?
-      CSS_PSEUDO_CLASSES.HOVER : activeCssPseudoClassesDropdownItem;
+    return activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT
+        && SelectedChildComponentUtil.isSelected(component.value.baseSubcomponent)
+      ? SelectedChildComponentUtil.getChildContainerSelectComponentObj(component.value).activeCssPseudoClass
+      : activeCssPseudoClassesDropdownItem;
   }
 
   const getComponentStyleProperties = (): WorkshopComponentCss[] => {

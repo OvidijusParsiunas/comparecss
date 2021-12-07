@@ -13,6 +13,7 @@ import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { ChildComponentHandlers } from './childComponentHandlers';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
+import { SelectComponent } from './selectedChildComponent';
 import { LinkedComponents } from './linkedComponents';
 import { CloseTriggers } from './closeTriggers';
 import { TempCustomCss } from './tempCustomCss';
@@ -110,8 +111,8 @@ export interface CustomStaticFeatures {
   // WORK 2 - potentially rework selectDropdownText to use isCurrentlySelected
   // applied to the dropdown padding component
   selectDropdownText?: SelectDropdownText;
-  isCurrentlySelected?: boolean;
-  selectedChildComponent?: WorkshopComponent;
+  // state management of selected child components - e.g. button group buttons
+  selectComponent?: SelectComponent;
   // applied to the dropdown menu component
   dropdownMenuData?: DropdownMenuData;
   jsClasses?: ComponentJavascriptClasses;
