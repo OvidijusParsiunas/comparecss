@@ -3,3 +3,5 @@ export enum CSS_PSEUDO_CLASSES {
   HOVER = 'Hover',
   CLICK = 'Click',
 }
+
+export type ACTIVE_CSS_PSEUDO_CLASSES = Exclude<CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES.DEFAULT>;

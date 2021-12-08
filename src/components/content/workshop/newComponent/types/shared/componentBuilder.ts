@@ -1,6 +1,7 @@
 import { Alignment, BackdropProperties, ComponentCenteringInScreen, Image, Subcomponent, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { SelectComponent, SELECT_CHILD_COMPONENT_STYLE_OPTIONS } from '../../../../../../interfaces/selectedChildComponent';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { ChildComponentCountLimitsState } from '../../../../../../interfaces/childComponentCountLimitsState';
 import { DROPDOWN_MENU_Z_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
@@ -12,7 +13,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClas
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
-import { SelectComponent } from '../../../../../../interfaces/selectedChildComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { PresetProperties } from '../../../../../../interfaces/componentGenerator';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
@@ -180,12 +180,12 @@ export class ComponentBuilder {
     });
   }
 
-  protected static createSelectComponentContainer(): SelectComponent {
+  protected static createSelectComponentContainer(activeStyle = SELECT_CHILD_COMPONENT_STYLE_OPTIONS.None): SelectComponent {
     return {
       container: {
         isModeActive: true,
         selectedComponent: null,
-        activeCssPseudoClass: CSS_PSEUDO_CLASSES.HOVER,
+        activeStyle,
       },
     };
   }

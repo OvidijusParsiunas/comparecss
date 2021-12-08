@@ -5,6 +5,7 @@ import { DisplayInFrontOfSiblingsContainerState } from '../../../../../../../int
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { ButtonGroupButtonDisplayInFrontOfSiblings } from '../utils/buttonGroupButtonDisplayInFrontOfSiblings';
+import { SELECT_CHILD_COMPONENT_STYLE_OPTIONS } from '../../../../../../../interfaces/selectedChildComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -168,7 +169,7 @@ class ButtonGroupBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       displayInFrontOfSiblingsContainerState: ButtonGroupBase.createDisplayInFrontOfSiblingsContainerState(),
-      selectComponent: ComponentBuilder.createSelectComponentContainer(),
+      selectComponent: ComponentBuilder.createSelectComponentContainer(SELECT_CHILD_COMPONENT_STYLE_OPTIONS.Hover),
     };
   }
 

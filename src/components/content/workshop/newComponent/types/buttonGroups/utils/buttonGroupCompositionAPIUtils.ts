@@ -1,12 +1,12 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
+import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import ComponentPreviewUtils from '../../../../componentPreview/utils/componentPreviewUtils';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -57,8 +57,8 @@ export class ButtonGroupCompositionAPIUtils {
 
   private static getOverwrittenCss(subcomponent: Subcomponent, overwrittenCss: CustomCss): WorkshopComponentCss {
     if (!overwrittenCss) return;
-    if (SelectedChildComponentUtil.isSelected(subcomponent)) {
-      return overwrittenCss[SelectedChildComponentUtil.getActivePseudoClass(subcomponent)];
+    if (SelectedChildComponentUtil.isSelectedAndStyleActive(subcomponent)) {
+      return overwrittenCss[SelectedChildComponentUtil.getStyle(subcomponent)];
     }
     if (subcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT) {
       return overwrittenCss[subcomponent.activeCssPseudoClassViaUserAction];
@@ -89,8 +89,8 @@ export class ButtonGroupCompositionAPIUtils {
       buttonGroupButtonContainerCss: WorkshopComponentCss): void {
     let cssPseudoClass = baseSubcomponent.activeCssPseudoClassesDropdownItem;
     let currentSubcomponentCss = subcomponentCss;
-    if (SelectedChildComponentUtil.isSelected(baseSubcomponent)) {
-      cssPseudoClass = SelectedChildComponentUtil.getActivePseudoClass(baseSubcomponent);
+    if (SelectedChildComponentUtil.isSelectedAndStyleActive(baseSubcomponent)) {
+      cssPseudoClass = SelectedChildComponentUtil.getStyle(baseSubcomponent) as ACTIVE_CSS_PSEUDO_CLASSES;
       currentSubcomponentCss = baseSubcomponent.customCss;
     }
     // important to remember that we are passing subcomponentCss and not customCss
@@ -181,7 +181,7 @@ export class ButtonGroupCompositionAPIUtils {
     const borderWidthNumber = Number.parseFloat(borderWidth);
     const marginLeft = ButtonGroupCompositionAPIUtils.getMarginLeft(borderWidthNumber);
     buttonComponentParentContainerDivCss.marginLeft = marginLeft;
-    buttonComponentParentContainerDivCss.zIndex = DisplayInFrontOfSiblings.getZIndex(baseSubcomponent, SelectedChildComponentUtil.isSelected(baseSubcomponent));
+    buttonComponentParentContainerDivCss.zIndex = DisplayInFrontOfSiblings.getZIndex(baseSubcomponent);
     return buttonComponentParentContainerDivCss;
   }
 

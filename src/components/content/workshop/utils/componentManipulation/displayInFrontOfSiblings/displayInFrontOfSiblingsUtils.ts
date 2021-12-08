@@ -1,5 +1,6 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from '../../../../../../interfaces/displayInFrontOfSiblingsState';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { SelectedChildComponentUtil } from '../selectedChildComponent/selectedChildComponentUtil';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 
 export class DisplayInFrontOfSiblings {
@@ -76,7 +77,7 @@ export class DisplayInFrontOfSiblings {
     }
   }
 
-  public static getZIndex(baseSubcomponent: Subcomponent, isChildComponentSelected = false): number {
+  public static getZIndex(baseSubcomponent: Subcomponent): number {
     const { customStaticFeatures, activeCssPseudoClassesDropdownItem } = baseSubcomponent || {};
     if (customStaticFeatures?.displayInFrontOfSiblingsState) {
       const { displayInFrontOfSiblingsContainerState } = baseSubcomponent.seedComponent.containerComponent?.baseSubcomponent.customStaticFeatures || {};
@@ -85,9 +86,9 @@ export class DisplayInFrontOfSiblings {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX;
         }
       }
-      if (isChildComponentSelected) {
+      if (SelectedChildComponentUtil.isSelectedAndStyleActive(baseSubcomponent)) {
         if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent,
-            customStaticFeatures.selectComponent.child.containerSelectComponentObj.activeCssPseudoClass)) {
+            customStaticFeatures.selectComponent.child.containerSelectComponentObj.activeStyle as ACTIVE_CSS_PSEUDO_CLASSES)) {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;
         }
       }

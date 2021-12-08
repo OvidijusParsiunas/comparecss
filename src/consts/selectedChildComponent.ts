@@ -1,0 +1,1 @@
+export const SELECT_CHILD_COMPONENT_STYLE_DISABLED = 'None';

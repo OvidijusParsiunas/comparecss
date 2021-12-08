@@ -1,12 +1,12 @@
 import { SelectedChildComponentUtil } from '../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
-import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
@@ -113,8 +113,8 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
 
   function getCssPseudoClass(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): CSS_PSEUDO_CLASSES {
     return activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT
-        && SelectedChildComponentUtil.isSelected(component.value.baseSubcomponent)
-      ? SelectedChildComponentUtil.getChildContainerSelectComponentObj(component.value).activeCssPseudoClass
+        && SelectedChildComponentUtil.isSelectedAndStyleActive(component.value.baseSubcomponent)
+      ? SelectedChildComponentUtil.getChildContainerSelectComponentObj(component.value).activeStyle as ACTIVE_CSS_PSEUDO_CLASSES
       : activeCssPseudoClassesDropdownItem;
   }
 
