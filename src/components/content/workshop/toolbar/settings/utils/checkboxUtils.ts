@@ -1,5 +1,6 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { CustomSettingTriggerFunction } from '../../../../../../interfaces/CustomSettingTriggerFunction';
+import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { componentTypeToOptions } from '../../options/componentOptions/componentTypeToOptions';
 import { SettingsRefreshEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
@@ -11,8 +12,8 @@ export default class CheckboxUtils {
   private static updateCustomFeatureViaTrigger(trigger: any, subcomponent: Subcomponent): void {
     if (trigger.updateUsingValueFromAnotherObjectKeys) {
       const keys = trigger.updateUsingValueFromAnotherObjectKeys;
-      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
-      SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponent, valueFromAnotherObject);
+      const valueFromAnotherObject = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
+      CustomFeaturesUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponent, valueFromAnotherObject);
     }
   }
 
@@ -30,7 +31,7 @@ export default class CheckboxUtils {
   }
   
   private static triggerCustomFunction(trigger: any, subcomponent: Subcomponent): void {
-    const customFunction = SharedUtils.getCustomFeatureValue(
+    const customFunction = CustomFeaturesUtils.getCustomFeatureValue(
       trigger.customFunctionKeys, subcomponent[trigger.customFunctionKeys[0]]) as CustomSettingTriggerFunction;
     customFunction(subcomponent);
   }
@@ -52,7 +53,7 @@ export default class CheckboxUtils {
 
   private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, customFeatureObjectKeys: string[],
       subcomponent: Subcomponent): void {
-    const property = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]) as Set<undefined>;
+    const property = CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]) as Set<undefined>;
     if (newCheckboxValue) {
       property.add(valueInSetObject);
     } else {
@@ -65,7 +66,7 @@ export default class CheckboxUtils {
     if (valueInSetObject) {
       CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, customFeatureObjectKeys, subcomponent);
     } else {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, newCheckboxValue);
+      CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, newCheckboxValue);
     }
   }
 
@@ -88,9 +89,9 @@ export default class CheckboxUtils {
     const { spec, triggers } = settingToBeUpdated;
     const keys = spec.customFeatureObjectKeys
     if (spec.valueInSetObject) {
-      spec.default = (SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as Set<undefined>).has(spec.valueInSetObject);
+      spec.default = (CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as Set<undefined>).has(spec.valueInSetObject);
     } else {
-      spec.default = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
+      spec.default = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
       (triggers?.[spec.default] || []).forEach((trigger) => {
         if (trigger.customFunctionKeys) { CheckboxUtils.triggerCustomFunction(trigger, subcomponent); }
       });

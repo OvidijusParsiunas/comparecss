@@ -1,6 +1,7 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
+import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { CustomCss, Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
 
 export default class SharedUtils {
@@ -28,43 +29,17 @@ export default class SharedUtils {
     }
   }
 
-  private static traverseCustomFeatureValueObject(customFeatureObjectKeys: string[], customFeatures: CustomFeatures|CustomStaticFeatures,
-      newValue?: unknown): unknown {
-    if (newValue !== undefined) {
-      if (customFeatureObjectKeys.length === 1) {
-        return customFeatures[customFeatureObjectKeys[0]] = newValue;
-      }
-    } else {
-      if (customFeatureObjectKeys.length === 0) {
-        return customFeatures;
-      }
-    }
-    const innerCustomFeaturesObject = customFeatures[customFeatureObjectKeys[0]];
-    const newCustomFeatureObjectKeysArray = customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length);
-    return SharedUtils.traverseCustomFeatureValueObject(newCustomFeatureObjectKeysArray, innerCustomFeaturesObject, newValue);
-  }
-
-  public static getCustomFeatureValue(customFeatureObjectKeys: string[], customFeatures: CustomFeatures|CustomStaticFeatures): unknown {
-    return SharedUtils.traverseCustomFeatureValueObject(customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length), customFeatures);
-  }
-
-  public static setCustomFeatureValue(customFeatureObjectKeys: string[], subcomponent: Subcomponent|CustomFeatures,
-      newValue: unknown): void {
-    const keys = customFeatureObjectKeys;
-    SharedUtils.traverseCustomFeatureValueObject(keys.slice(1, keys.length), subcomponent[keys[0]], newValue);
-  }
-
   public static setCustomFeatureSetting(trigger: any, subcomponent: Subcomponent, allSettings: any): void {
     const { customFeatureObjectKeys, defaultValue } = trigger;
     for (let i = 0; i < allSettings.options.length; i += 1) {
       if (GeneralUtils.areArraysEqual(allSettings.options[i].spec.customFeatureObjectKeys, customFeatureObjectKeys)) {
         allSettings.options[i].spec.default = defaultValue;
-        SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, defaultValue);
+        CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, defaultValue);
         return;
       }
     }
   }
-  
+
   public static convertAlphaDecimalToHexString(decimaAlpha: number): string {
     const hexAlpha = Math.round(decimaAlpha * 255).toString(16);
     return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;

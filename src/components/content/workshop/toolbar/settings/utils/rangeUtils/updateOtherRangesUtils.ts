@@ -1,11 +1,11 @@
 import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
 import { CustomCss, Subcomponent, UpdateOtherCssProperties } from '../../../../../../../interfaces/workshopComponent';
+import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../../types/optionToSettings';
 import { FindSettings } from '../../types/utils/findSetting';
 import { UpdateRange } from './updateRange';
-import SharedUtils from '../sharedUtils';
 
 // Functionality here is currently being used for Range values, but it can be reutilized for other settings and their properties
 export class UpdateOtherRangesUtils extends UpdateRange {
@@ -20,7 +20,7 @@ export class UpdateOtherRangesUtils extends UpdateRange {
   private static updateOtherCustomFeatureValue(rangeValue: number|string, otherCssProperties: UpdateOtherCssProperties): void {
     const { customFeatures, customFeatureKeys, postfix } = otherCssProperties;
     const resultRangeValue = typeof rangeValue === 'string' ? rangeValue : `${rangeValue.toString()}${postfix}`;
-    SharedUtils.setCustomFeatureValue(customFeatureKeys, customFeatures, resultRangeValue);
+    CustomFeaturesUtils.setCustomFeatureValue(customFeatureKeys, customFeatures, resultRangeValue);
   }
 
   private static updateOtherCustomCssProperty(rangeValue: number, otherCssProperties: UpdateOtherCssProperties): void {
@@ -33,7 +33,7 @@ export class UpdateOtherRangesUtils extends UpdateRange {
         currentCssPropertyValue);
     } else {
       const keys = ['customFeatures', 'lastSelectedCssValues', cssProperty];
-      const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, customFeatures);
+      const customFeatureValue = CustomFeaturesUtils.getCustomFeatureValue(keys, customFeatures);
       const lastSelectedValue = UpdateRange.parseString(customFeatureValue as string, 1);
       // increase
       if (postDivisionRangeValue <= Math.abs(lastSelectedValue)) {
@@ -91,7 +91,7 @@ export class UpdateOtherRangesUtils extends UpdateRange {
   private static resetLastSelectedCustomFeatureValue(scaleBoundaryValue: number, targetSettingRangeValue: number,
       targetSettingSpec: any, subcomponent: Subcomponent, refreshSettingsCallback?: () => void): void {
     const keys = targetSettingSpec.lastSelectedValueObjectKeys;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
+    const customFeatureValue = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
     const lastSelectedValue = UpdateRange.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
     // Remember that this gets called when the scaleBoundaryValue is higher than the targetSettingRangeValue
     if (targetSettingRangeValue < lastSelectedValue) {
@@ -111,7 +111,7 @@ export class UpdateOtherRangesUtils extends UpdateRange {
       UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponent);
     } else if (targetSettingSpec.isAutoObjectKeys) {
       const keys = targetSettingSpec.isAutoObjectKeys;
-      const isAuto = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
+      const isAuto = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
       if (isAuto) {
         UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponent);
         if (refreshSettingsCallback) refreshSettingsCallback();

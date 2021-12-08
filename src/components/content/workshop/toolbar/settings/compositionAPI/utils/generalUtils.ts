@@ -1,5 +1,5 @@
+import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
-import SharedUtils from '../../utils/sharedUtils';
 
 export default class GeneralUtils {
 
@@ -7,7 +7,7 @@ export default class GeneralUtils {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     return customFeatureObjectKeys
-      ? SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]])
+      ? CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]])
       : customCss[activeCssPseudoClassesDropdownItem][cssProperty];
   }
 }

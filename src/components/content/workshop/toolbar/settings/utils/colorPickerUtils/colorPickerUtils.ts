@@ -1,3 +1,4 @@
+import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateOtherColorsUtils } from './updateOtherColorsUtils';
@@ -21,10 +22,10 @@ export class ColorPickerUtils {
     const { customFeatureObjectKeys, alphaValueCustomFeatureObjectKeys } = updatedSettingSpec;
     if (alphaValueCustomFeatureObjectKeys) {
       const keys = alphaValueCustomFeatureObjectKeys;
-      const alphaValue = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as number;
+      const alphaValue = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as number;
       hexColor += SharedUtils.convertAlphaDecimalToHexString(alphaValue);
     }
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, hexColor);
+    CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, hexColor);
   }
 
   public static updateProperties(event: MouseEvent, updatedSettingSpec: any, subcomponent: Subcomponent): void {
@@ -57,7 +58,7 @@ export class ColorPickerUtils {
 
   private static updateCustomFeatureSetting(settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
     const keys = settingToBeUpdatedSpec.customFeatureObjectKeys;
-    const hexColorValue = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as string;
+    const hexColorValue = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as string;
     settingToBeUpdatedSpec.default = settingToBeUpdatedSpec.alphaValueCustomFeatureObjectKeys && hexColorValue !== CSS_PROPERTY_VALUES.UNSET
       ? hexColorValue.substring(0, hexColorValue.length - 2) : hexColorValue;
   }
@@ -85,7 +86,7 @@ export class ColorPickerUtils {
   private static setCustomFeatureToUnset(updatedSettingSpec: any, subcomponent: Subcomponent): void {
     const { customFeatureObjectKeys } = updatedSettingSpec;
     updatedSettingSpec.default = CSS_PROPERTY_VALUES.UNSET;
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, CSS_PROPERTY_VALUES.UNSET);
+    CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, CSS_PROPERTY_VALUES.UNSET);
   }
 
   public static removeColor(updatedSettingSpec: any, removeColorTriggers: any,

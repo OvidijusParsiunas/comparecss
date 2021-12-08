@@ -171,6 +171,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { EnabledIfChildComponentPresent, Option } from '../../../../../interfaces/componentOptions';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
+import { CustomFeaturesUtils } from '../../utils/componentManipulation/utils/customFeaturesUtils';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { Subcomponent, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
@@ -189,7 +190,6 @@ import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { SyncedComponent } from './syncChildComponent/syncedComponent';
 import BrowserType from '../../utils/generic/browserType';
-import SharedUtils from '../settings/utils/sharedUtils';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
@@ -340,7 +340,7 @@ export default {
     },
     getActiveSubcomponentCustomFeatureValue(customFeatureObjectKeys: string[]): unknown {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      return SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, activeSubcomponent[customFeatureObjectKeys[0]]);
+      return CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, activeSubcomponent[customFeatureObjectKeys[0]]);
     },
     isOptionDisabled(option: Option): boolean {
       if (option.enabledIfCustomFeaturePresentWithKeys) {

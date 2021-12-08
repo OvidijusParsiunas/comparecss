@@ -1,5 +1,5 @@
+import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { ComponentOptions } from '@vue/runtime-core';
-import SharedUtils from './sharedUtils';
 
 interface HTMLInputEvent extends Event {
   target: HTMLInputElement & EventTarget;
@@ -20,8 +20,8 @@ export default class ImageUtils {
     const result = event.target.result;
     const image = new Image();
     image.src = result;
-    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, result);
-    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, file.name);
+    CustomFeaturesUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, result);
+    CustomFeaturesUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, file.name);
     settingsComponent.imageNames[spec.name] = file.name;
   }
 
@@ -34,8 +34,8 @@ export default class ImageUtils {
   }
 
   public static removeImage(settingsComponent: ComponentOptions, spec: any): void {
-    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, null);
-    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, null);
+    CustomFeaturesUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, null);
+    CustomFeaturesUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, null);
     delete settingsComponent.imageNames[spec.name];
   }
 }

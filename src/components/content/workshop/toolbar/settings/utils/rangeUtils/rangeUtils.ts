@@ -1,3 +1,4 @@
+import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
@@ -35,7 +36,7 @@ export default class RangeUtils extends UpdateRange {
   private static activateTriggersForCustomFeature(trigger: any, subcomponent: Subcomponent,
       allSettings: any): void {
     const { conditions, customFeatureObjectKeys } = trigger;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
+    const customFeatureValue = CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
     if (!conditions.has(customFeatureValue)) return;
     SharedUtils.setCustomFeatureSetting(trigger, subcomponent, allSettings);
   }

@@ -1,10 +1,10 @@
 import { MouseClickNewItemEvent, MouseClickItemEvent, MouseEnterItemEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
+import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { UseActionsDropdown } from '../../../../../../interfaces/useActionsDropdownComposition';
 import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
 import { animationState } from '../../../componentPreview/utils/animations/state';
 import { Subcomponent, } from '../../../../../../interfaces/workshopComponent';
 import ActionsDropdownUtils from './utils/actionsDropdownUtils';
-import CustomFeaturesUtils from './utils/customFeaturesUtils';
 import GeneralUtils from './utils/generalUtils';
 import { ComponentOptions } from 'vue';
 
@@ -15,7 +15,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
   const getObjectContainingActiveOption = (settingSpec: any, subcomponent: Subcomponent): unknown => {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (customFeatureObjectKeys) {
-      return CustomFeaturesUtils.getObjectContainingActiveOption(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
+      return CustomFeaturesUtils.getObjectContainingCustomFeature(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
     }
     return ActionsDropdownUtils.getObjectContainingActiveOption(subcomponent, cssProperty);
   }

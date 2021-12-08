@@ -1,10 +1,10 @@
+import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import { SetUtils } from '../../../utils/generic/setUtils';
 import { UpdateRange } from './rangeUtils/updateRange';
-import SharedUtils from './sharedUtils';
 
 export default class SettingsUtils {
 
@@ -53,8 +53,8 @@ export default class SettingsUtils {
 
   private static resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys: string[], subcomponent: Subcomponent,
       defaultKey: 'defaultCustomFeatures'|'defaultCustomStaticFeatures'): void {
-    const defaultValue = SharedUtils.getCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponent[defaultKey]);
-    SharedUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponent, defaultValue);
+    const defaultValue = CustomFeaturesUtils.getCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponent[defaultKey]);
+    CustomFeaturesUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponent, defaultValue);
   }
 
   private static updateOtherOptionSettingViaTrigger(triggers: any, spec: any, subcomponent: Subcomponent): void {
@@ -92,8 +92,8 @@ export default class SettingsUtils {
   private static resetCustomFeatures(option: any, subcomponent: Subcomponent, customFeatureObjectKeys: string[]): void {
     const { spec: { valueInSetObject, mouseClickItemCallback, auxiliaryCustomFeatureObjectKeys, resetCustomCss } } = option;
     const defaultKey = customFeatureObjectKeys[0] === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
-    const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[defaultKey]);
-    const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
+    const defaultValue = CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[defaultKey]);
+    const currentValue = CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
     if (valueInSetObject) {
       SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>);
     } else if (mouseClickItemCallback) {
@@ -101,7 +101,7 @@ export default class SettingsUtils {
       mouseClickItemCallback({subcomponent,
         previousItemName: currentValue as string, triggeredItemName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
     else {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, defaultValue);
+      CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, defaultValue);
       SettingsUtils.activateTriggers(option, subcomponent);
     }
     if (auxiliaryCustomFeatureObjectKeys) {

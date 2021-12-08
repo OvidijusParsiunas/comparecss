@@ -194,6 +194,7 @@
 import { ComponentDOMElementUtils } from '../../utils/componentManipulation/componentDOMElementUtils/componentDOMElementUtils'
 import { RemoveInSyncOptionButton, SettingsRefreshEvent } from '../../../../../interfaces/settingsComponentEvents';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
+import { CustomFeaturesUtils } from '../../utils/componentManipulation/utils/customFeaturesUtils';
 import { UseActionsDropdown } from '../../../../../interfaces/useActionsDropdownComposition';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
@@ -270,7 +271,7 @@ export default {
               ColorPickerUtils.updateSettings(setting.spec, this.subcomponent);
             } else if (setting.type === SETTINGS_TYPES.INPUT) {
               const keys = setting.spec.customFeatureObjectKeys;
-              this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
+              this.inputsValues[setting.spec.name] = CustomFeaturesUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
               if (!settingsRefreshEvent) SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponent)
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, setting.spec.cssProperty);
@@ -284,7 +285,7 @@ export default {
               CheckboxUtils.updateSettings(setting, this.subcomponent);
             } else if (setting.type === SETTINGS_TYPES.UPLOAD_FILE) {
               const keys = setting.spec.auxiliaryCustomFeatureObjectKeys;
-              this.imageNames[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
+              this.imageNames[setting.spec.name] = CustomFeaturesUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
             }
           });
           // this is a bug fix where the range would not re-render even though setting.spec.default was updated correctly
@@ -334,12 +335,12 @@ export default {
       RangeUtils.updateProperties(event, setting, this.settings, this.subcomponent, this.actionsDropdownsObjects,
         this.refreshSettings.bind(this));
       const keys = setting.spec.customFeatureObjectKeys;
-      if (keys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
+      if (keys) this.customFeatureRangeValue = CustomFeaturesUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
     },
     rangeMouseDown(event: KeyboardEvent, settingSpec: any): void {
       const keys = settingSpec.customFeatureObjectKeys;
       if (keys) { 
-        this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
+        this.customFeatureRangeValue = CustomFeaturesUtils.getCustomFeatureValue(keys, this.subcomponent[keys[0]]);
       } else {
         SharedUtils.addDefaultValueIfCssModeMissing(settingSpec.cssProperty, this.subcomponent);
       }
@@ -375,7 +376,7 @@ export default {
     },
     inputEventForInput(event: KeyboardEvent, customFeatureObjectKeys: string[]): void {
       SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponent);
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponent, (event.target as HTMLInputElement).value);
+      CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponent, (event.target as HTMLInputElement).value);
     },
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();

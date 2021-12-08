@@ -1,4 +1,5 @@
 import { CustomSettingTriggerFunction } from '../../../../../../../interfaces/CustomSettingTriggerFunction';
+import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { TemporaryDropdownValue } from '../../../../../../../interfaces/temporaryDropdownValue';
 import { MouseClickItemEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
@@ -59,12 +60,12 @@ export default class ActionsDropdownUtils {
   public static mouseEnterActionsDropdownItemCustomFeature(temporaryDropdownValue: TemporaryDropdownValue, triggeredItemName: string,
       subcomponent: Subcomponent, settingSpec: any, settingsComponent: ComponentOptions): void {
     const { customFeatureObjectKeys, mouseEnterItemCallback } = settingSpec;
-    const previousItemName = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]) as string;
+    const previousItemName = CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]) as string;
     if (temporaryDropdownValue.initial === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       temporaryDropdownValue.initial = previousItemName;
     }
     if (mouseEnterItemCallback) mouseEnterItemCallback({subcomponent, settingsComponent, previousItemName, triggeredItemName});
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, triggeredItemName);
+    CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, triggeredItemName);
     temporaryDropdownValue.new = triggeredItemName;
   }
 
@@ -75,7 +76,7 @@ export default class ActionsDropdownUtils {
       const { customFeatureObjectKeys, mouseLeaveDropdownCallback } = settingSpec;
       if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponent, settingsComponent,
         previousItemName: temporaryDropdownValue.new, triggeredItemName: temporaryDropdownValue.initial, isDropdownHidden});
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, temporaryDropdownValue.initial);
+      CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, temporaryDropdownValue.initial);
     }
     temporaryDropdownValue.new = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
     temporaryDropdownValue.initial = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
@@ -113,7 +114,7 @@ export default class ActionsDropdownUtils {
       customCss[activeCssPseudoClassesDropdownItem][cssProperty] = triggeredItemName;
       activeOptionsObject[cssProperty] = triggeredItemName;
     } else if (customFeatureObjectKeys) {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, triggeredItemName);
+      CustomFeaturesUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, triggeredItemName);
     }
   }
 
@@ -139,7 +140,7 @@ export default class ActionsDropdownUtils {
       const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
       settingsComponent.actionsDropdownsButtonText[name] = customCss[activeCssPseudoClassesDropdownItem][cssProperty];
     } else if (customFeatureObjectKeys) {
-      settingsComponent.actionsDropdownsButtonText[name] = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys,
+      settingsComponent.actionsDropdownsButtonText[name] = CustomFeaturesUtils.getCustomFeatureValue(customFeatureObjectKeys,
         subcomponent[customFeatureObjectKeys[0]]);
     }
   }
@@ -147,7 +148,7 @@ export default class ActionsDropdownUtils {
   // called when setting is reset
   public static callSettingCustomFunction(settingSpec: any, subcomponent: Subcomponent, newValue: string): void {
     if (settingSpec.customFunctionKeys) {
-      const customFunction = SharedUtils.getCustomFeatureValue(
+      const customFunction = CustomFeaturesUtils.getCustomFeatureValue(
         settingSpec.customFunctionKeys, subcomponent[settingSpec.customFunctionKeys[0]]) as CustomSettingTriggerFunction;
       customFunction(subcomponent, newValue);
     }
