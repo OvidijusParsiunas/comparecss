@@ -1,4 +1,7 @@
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { CustomSettingTriggerFunction } from '../../../../../../interfaces/CustomSettingTriggerFunction';
+import { componentTypeToOptions } from '../../options/componentOptions/componentTypeToOptions';
+import { SettingsRefreshEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
@@ -100,5 +103,12 @@ export default class CheckboxUtils {
     } else {
       CheckboxUtils.updateCustomCssSetting(settingToBeUpdated.spec, subcomponent);
     }
+  }
+
+  public static getSettingsRefreshEvent(subcomponent: Subcomponent, settingsButtonOptionName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES): SettingsRefreshEvent {
+    const { seedComponent, activeCssPseudoClassesDropdownItem, subcomponentType } = subcomponent;
+    const options = componentTypeToOptions[seedComponent.masterComponent.type](subcomponentType, seedComponent);
+    const result = options[activeCssPseudoClassesDropdownItem].find((option) => option.buttonName === settingsButtonOptionName);
+    return { optionButtonName: settingsButtonOptionName, optionType: result.type };
   }
 }

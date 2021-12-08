@@ -183,6 +183,7 @@ export class ComponentBuilder {
   protected static createSelectComponentContainer(): SelectComponent {
     return {
       container: {
+        isModeActive: true,
         selectedComponent: null,
         activeCssPseudoClass: CSS_PSEUDO_CLASSES.HOVER,
       },

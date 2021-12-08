@@ -157,6 +157,7 @@ import { ComponentDOMElementUtils } from '../../utils/componentManipulation/comp
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { SyncableComponentCardOverlaysToDisplay } from '../../../../../interfaces/syncableComponentCardOverlaysToDisplay';
 import { RemoveChildComponentOverlay } from '../../componentPreview/utils/elements/overlays/removeChildComponentOverlay';
+import { RemoveChildComponentEvent, SettingsRefreshEvent } from '../../../../../interfaces/settingsComponentEvents';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
@@ -172,7 +173,6 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/subcompone
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { Subcomponent, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { RemoveChildComponentEvent } from '../../../../../interfaces/settingsComponentEvents';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { AddChildComponentEvent } from '../../../../../interfaces/addChildComponentEvent';
@@ -386,7 +386,8 @@ export default {
         return;
       }
       this.setNewActiveOption(option);
-      this.$emit('trigger-settings-refresh', option.type);
+      const settingsRefreshEvent: SettingsRefreshEvent = { optionButtonName: option.buttonName, optionType: option.type };
+      this.$emit('trigger-settings-refresh', settingsRefreshEvent);
       this.resetComponentPreviewMarginAssistance();
     },
     setNewActiveOption(newOption: Option): void {

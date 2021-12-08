@@ -34,10 +34,9 @@
 import ToolbarToggles from '../componentPreview/utils/animations/expandedModalPreviewMode/toggleAnimations/toolbarToggles';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
-import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { TOOLBAR_CONTAINER_GENERAL_CLASSES } from '../../../../consts/toolbarClasses';
-import { optionToSettings } from './settings/types/optionToSettings';
+import { SettingsRefreshEvent } from '../../../../interfaces/settingsComponentEvents';
 import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
@@ -71,11 +70,10 @@ export default {
     saveLastActiveOptionPriorToAllComponentsDeletion(): void {
       this.lastActiveOptionPriorToAllComponentsDeletion = this.$refs.options.getActiveOption();
     },
-    triggerSettingsRefresh(newOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
-      const newSettings = optionToSettings[newOptionType];
+    triggerSettingsRefresh(settingsRefreshEvent: SettingsRefreshEvent): void {
       this.isSettingsDisplayed = true;
       this.$nextTick(() => {
-        this.$refs.settings.refreshSettings(newSettings, newOptionType);
+        this.$refs.settings.refreshSettings(settingsRefreshEvent);
       });
     },
     hideSettings(): void {
