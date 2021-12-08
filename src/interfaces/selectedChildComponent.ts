@@ -12,7 +12,6 @@ export const SELECT_CHILD_COMPONENT_STYLE_OPTIONS = {
 } as { [key in SELECT_CHILD_COMPONENT_STYLE_OPTIONS]: SELECT_CHILD_COMPONENT_STYLE_OPTIONS };
 
 export interface SelectComponentContainer {
-  isModeActive: boolean;
   selectedComponent: WorkshopComponent;
   activeStyle: SELECT_CHILD_COMPONENT_STYLE_OPTIONS;
 }

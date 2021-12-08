@@ -1,18 +1,40 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { PreventDeepCopy } from '../../../../../../interfaces/preventDeepCopy';
+import { CustomFeaturesUtils } from '../utils/customFeaturesUtils';
 import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticFeatures;
 
 export class CopySubcomponents {
 
+  private static copyExclusiveProperty(targetCopyableProperties: CopyableSubcomponentProperties,
+      copyablePropertiesBeingCopied: CopyableSubcomponentProperties, objectKey: string): void {
+    const targetObject = targetCopyableProperties[objectKey];
+    const copyableKeys = (targetObject as PreventDeepCopy).preventDeepCopy.copyableKeys;
+    const copyableObject = copyablePropertiesBeingCopied[objectKey];
+    (copyableKeys || []).forEach((copyableKeys) => {
+      if (copyableKeys.value) {
+        const customTargetValue = CustomFeaturesUtils.getCustomFeatureValue(copyableKeys.value, copyableObject);
+        CustomFeaturesUtils.setCustomFeatureValue(copyableKeys.value.slice(1), targetObject, customTargetValue);
+      } else if (copyableKeys.object) {
+        // this has never been tested so some recalibration may be requried
+        const customTargetObject = CustomFeaturesUtils.getObjectContainingCustomFeature(copyableKeys.object, copyableObject);
+        CustomFeaturesUtils.setCustomFeatureValue(copyableKeys.object.slice(1), targetObject, customTargetObject);
+      }
+    })
+  }
+
   // copying property values instead of the objects containing them because their references are assigned via addUpdateOtherCssProperties method
   // in the InterconnectedSettings class when creating/copying a subcomponent, hence they cannot be directly overwritten
   private static copyProperties(targetCopyableProperties: CopyableSubcomponentProperties = {},
       copyablePropertiesBeingCopied: CopyableSubcomponentProperties = {}): void {
-    Object.keys(targetCopyableProperties).forEach((pseudoCssClass) => {
-      if (copyablePropertiesBeingCopied[pseudoCssClass]) return;
-      targetCopyableProperties[pseudoCssClass] = JSONUtils.deepCopy(copyablePropertiesBeingCopied[pseudoCssClass]);
+    Object.keys(targetCopyableProperties).forEach((objectKey) => {
+      if ((copyablePropertiesBeingCopied[objectKey] as PreventDeepCopy).preventDeepCopy) {
+        CopySubcomponents.copyExclusiveProperty(targetCopyableProperties, copyablePropertiesBeingCopied, objectKey);
+      } else {
+        targetCopyableProperties[objectKey] = JSONUtils.deepCopy(copyablePropertiesBeingCopied[objectKey]);
+      }
     });
   }
 

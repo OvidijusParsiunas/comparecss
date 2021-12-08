@@ -22,6 +22,7 @@ import { Animations } from '../../../../../../interfaces/animations';
 import { Sync, Syncables } from '../../../../../../interfaces/sync';
 import { DEFAULT_TEXT } from '../../../../../../consts/defaultText';
 import { defaultImage } from './images/default';
+import { CopyableKeys, PreventDeepCopy } from '../../../../../../interfaces/preventDeepCopy';
 
 interface StationaryAnimationsArgs {
   isBackgroundZoomPresent?: boolean;
@@ -169,26 +170,33 @@ export class ComponentBuilder {
     subcomponent.defaultCss[cssPseudoClass][cssProperty] = value;
   }
 
+  private static createPreventDeepCopy(copyableKeys?: CopyableKeys[]): PreventDeepCopy {
+    const preventDeepCopy: PreventDeepCopy = { preventDeepCopy: {} };
+    if (copyableKeys) {
+      preventDeepCopy.preventDeepCopy.copyableKeys = copyableKeys;
+    }
+    return preventDeepCopy;
+  }
+
   protected static createSelectComponentChild(childComponents: WorkshopComponent[], container: WorkshopComponent): void {
     childComponents.forEach((childComponent) => {
       childComponent.baseSubcomponent.customStaticFeatures.selectComponent = {
-        preventDeepCopy: true,
         child: {
           isSelected: false,
           containerSelectComponentObj: container.baseSubcomponent.customStaticFeatures.selectComponent.container,
         },
+        ...ComponentBuilder.createPreventDeepCopy(),
       };
     });
   }
 
   protected static createSelectComponentContainer(activeStyle = SELECT_CHILD_COMPONENT_STYLE_OPTIONS.None): SelectComponent {
     return {
-      preventDeepCopy: true,
       container: {
-        isModeActive: true,
-        selectedComponent: null,
         activeStyle,
+        selectedComponent: null,
       },
+      ...ComponentBuilder.createPreventDeepCopy([{ value: ['selectComponent', 'container', 'activeStyle'] }]),
     };
   }
 
