@@ -172,6 +172,7 @@ export class ComponentBuilder {
   protected static createSelectComponentChild(childComponents: WorkshopComponent[], container: WorkshopComponent): void {
     childComponents.forEach((childComponent) => {
       childComponent.baseSubcomponent.customStaticFeatures.selectComponent = {
+        preventDeepCopy: true,
         child: {
           isSelected: false,
           containerSelectComponentObj: container.baseSubcomponent.customStaticFeatures.selectComponent.container,
@@ -182,6 +183,7 @@ export class ComponentBuilder {
 
   protected static createSelectComponentContainer(activeStyle = SELECT_CHILD_COMPONENT_STYLE_OPTIONS.None): SelectComponent {
     return {
+      preventDeepCopy: true,
       container: {
         isModeActive: true,
         selectedComponent: null,

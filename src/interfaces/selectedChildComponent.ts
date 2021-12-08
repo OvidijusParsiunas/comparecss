@@ -1,6 +1,7 @@
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { SELECT_CHILD_COMPONENT_STYLE_DISABLED } from '../consts/selectedChildComponent';
 import { WorkshopComponent } from './workshopComponent';
+import { PreventDeepCopy } from './preventDeepCopy';
 
 export type SELECT_CHILD_COMPONENT_STYLE_OPTIONS = ACTIVE_CSS_PSEUDO_CLASSES | typeof SELECT_CHILD_COMPONENT_STYLE_DISABLED;
 
@@ -21,9 +22,9 @@ export interface ChildComponent {
   containerSelectComponentObj: SelectComponentContainer;
 }
 
-export interface SelectComponent {
+export type SelectComponent = {
   // used by individual child components that can be selected
   child?: ChildComponent;
   // used by the componenter that contains the selectable child components
   container?: SelectComponentContainer;
-}
+} & PreventDeepCopy;

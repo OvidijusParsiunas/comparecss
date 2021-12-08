@@ -1,4 +1,3 @@
-copy does not work on button group component
 button text align does not work
 allow any icon to be added to button
 

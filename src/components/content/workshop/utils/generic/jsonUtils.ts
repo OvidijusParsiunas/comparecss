@@ -1,7 +1,7 @@
 export default class JSONUtils {
 
   private static createNewObject(object: unknown): unknown {
-    if (null == object || "object" != typeof object) {
+    if (null == object || 'object' != typeof object) {
       return object;
     }
     if (object instanceof Date) {
@@ -26,7 +26,7 @@ export default class JSONUtils {
       }
       return copy;
     }
-    throw new Error("Unable to copy object! Its type isn't supported.");
+    throw new Error(`Unable to copy object! Its type isn't supported.`);
   }
 
   public static deepCopy<T>(object: Exclude<T, string>): T  {

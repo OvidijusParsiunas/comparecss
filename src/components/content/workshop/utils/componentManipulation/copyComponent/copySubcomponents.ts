@@ -11,6 +11,7 @@ export class CopySubcomponents {
   private static copyProperties(targetCopyableProperties: CopyableSubcomponentProperties = {},
       copyablePropertiesBeingCopied: CopyableSubcomponentProperties = {}): void {
     Object.keys(targetCopyableProperties).forEach((pseudoCssClass) => {
+      if (copyablePropertiesBeingCopied[pseudoCssClass]) return;
       targetCopyableProperties[pseudoCssClass] = JSONUtils.deepCopy(copyablePropertiesBeingCopied[pseudoCssClass]);
     });
   }
