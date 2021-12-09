@@ -23,7 +23,6 @@ import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ButtonGroupGenericUtils } from '../utils/buttonGroupGenericUtils';
 import { ButtonGroupBorderUtils } from '../utils/buttonGroupBorderUtils';
-import { SelectButtonUtils } from '../selectButton/selectButtonUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
@@ -42,8 +41,11 @@ class ButtonGroupBase extends ComponentBuilder {
     ButtonGroupBase.setOverwriteCssForSyncedComponent(firstButton);
   }
 
-  public static setOnComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
-    buttonGroupBaseComponent.onComponentDisplayFunc = ButtonGroupBase.onComponentDisplayFunc;
+  public static setComponentSwitchFuncs(buttonGroupBaseComponent: WorkshopComponent): void {
+    buttonGroupBaseComponent.componentSwitchFuncs = {
+      onDisplay: ButtonGroupBase.onComponentDisplayFunc,
+      onLeave: SelectedChildComponentUtil.unselectChildViaContainerIfSelected,
+    };
   }
 
   private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
@@ -127,7 +129,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setButtonMouseEvents(buttonComponent: WorkshopComponent): void {
     buttonComponent.baseSubcomponent.customFeatures.mouseEventCallbacks = {
-      click: SelectButtonUtils.select,
+      click: SelectedChildComponentUtil.select,
     };
   }
 
@@ -235,7 +237,7 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
     ButtonGroupBase.setOnChildComponentRemovalFunc(buttonGroupBaseComponent);
     ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
-    ButtonGroupBase.setOnComponentDisplayFunc(buttonGroupBaseComponent);
+    ButtonGroupBase.setComponentSwitchFuncs(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },

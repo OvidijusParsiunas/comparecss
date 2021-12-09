@@ -1,12 +1,47 @@
+import { TraverseComponentViaPreviewStructureParentFirst } from '../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { SelectComponentContainer, SELECT_CHILD_COMPONENT_STYLE_OPTIONS } from '../../../../../../interfaces/selectedChildComponent';
+import { ComponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SELECT_CHILD_COMPONENT_STYLE_DISABLED } from '../../../../../../consts/selectedChildComponent';
 import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 
 export class SelectedChildComponentUtil {
 
+  private static childComponentTraversalCallback(traversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
+    const isCurrentlySelected = this as any as boolean;
+    const { child } = traversalState.component.baseSubcomponent.customStaticFeatures.selectComponent || {};
+    if (child) child.isSelected = isCurrentlySelected;
+    return { stopTraversal: false };
+  }
+
+  private static unselectButton(selectedChildComponentContainer: SelectComponentContainer): void {
+    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtil.childComponentTraversalCallback.bind(false),
+      selectedChildComponentContainer.selectedComponent.baseSubcomponent.seedComponent);
+    selectedChildComponentContainer.selectedComponent = null;
+  }
+
+  public static unselectChildViaContainerIfSelected(buttonGroupBaseComponent: WorkshopComponent): void {
+    const { container } = buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures.selectComponent;
+    if (container.selectedComponent) SelectedChildComponentUtil.unselectButton(container);
+  }
+
   public static getChildContainerSelectComponentObj(childComponent: WorkshopComponent): SelectComponentContainer {
     return childComponent.baseSubcomponent.customStaticFeatures.selectComponent.child.containerSelectComponentObj;
+  }
+
+  private static setNewSelectedComponentOnContainer(childComponent: WorkshopComponent): void {
+    const selectedChildComponentContainer = SelectedChildComponentUtil.getChildContainerSelectComponentObj(childComponent);
+    if (selectedChildComponentContainer.selectedComponent) SelectedChildComponentUtil.unselectButton(selectedChildComponentContainer);
+    selectedChildComponentContainer.selectedComponent = childComponent;
+  }
+
+  private static selectNewChild(childComponent: WorkshopComponent): void {
+    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtil.childComponentTraversalCallback.bind(true), childComponent);
+  }
+
+  public static select(childSubcomponent: Subcomponent): void {
+    SelectedChildComponentUtil.selectNewChild(childSubcomponent.seedComponent);
+    SelectedChildComponentUtil.setNewSelectedComponentOnContainer(childSubcomponent.seedComponent);
   }
 
   public static doesContainerHaveSelectedChildren(containerComponent: WorkshopComponent): boolean {

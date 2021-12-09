@@ -21,9 +21,11 @@ export class SetActiveComponentUtils {
   }
 
   public static switchActiveComponent(workshopComponent: ComponentOptions, component: WorkshopComponent): void {
-    SetActiveComponentUtils.resetComponentModes(workshopComponent.currentlySelectedComponent);
-    if (workshopComponent.currentlySelectedComponent && workshopComponent.currentlySelectedComponent.type !== component.type) {
-      ComponentJs.manipulateJSClasses(workshopComponent.currentlySelectedComponent.type, 'revokeJS');
+    const previousComponent: WorkshopComponent = workshopComponent.currentlySelectedComponent;
+    setTimeout(() => previousComponent?.componentSwitchFuncs?.onLeave?.(previousComponent))
+    SetActiveComponentUtils.resetComponentModes(previousComponent);
+    if (previousComponent && previousComponent.type !== component.type) {
+      ComponentJs.manipulateJSClasses(previousComponent.type, 'revokeJS');
     }
     workshopComponent.currentlySelectedComponent = component;
     ComponentJs.manipulateJSClasses(workshopComponent.currentlySelectedComponent.type, 'initializeJS');
@@ -45,6 +47,6 @@ export class SetActiveComponentUtils {
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       SetActiveComponentUtils.switchActiveComponent(workshopComponent, component);
     }
-    workshopComponent.currentlySelectedComponent.onComponentDisplayFunc?.(workshopComponent.currentlySelectedComponent);
+    (workshopComponent.currentlySelectedComponent as WorkshopComponent).componentSwitchFuncs?.onDisplay?.(workshopComponent.currentlySelectedComponent);
   }
 }

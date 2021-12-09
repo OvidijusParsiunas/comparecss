@@ -13,6 +13,7 @@ import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { ChildComponentHandlers } from './childComponentHandlers';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
+import { ComponentSwitchFuncs } from './componentSwitchFuncs';
 import { SelectComponent } from './selectedChildComponent';
 import { LinkedComponents } from './linkedComponents';
 import { CloseTriggers } from './closeTriggers';
@@ -226,7 +227,7 @@ export interface WorkshopComponent {
   // properties for performing additional functionality when adding/removing child components, also management of state that supports
   // generation of add/remove buttons
   childComponentHandlers: ChildComponentHandlers;
-  onComponentDisplayFunc?: (component: WorkshopComponent) => void;
+  componentSwitchFuncs?: ComponentSwitchFuncs;
 }
 
 // Component Architecture Information:
