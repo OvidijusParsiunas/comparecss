@@ -22,6 +22,12 @@ import { ITEM_TEXT_OPTIONS } from '../itemText/itemTextOptions';
 
 export class DropdownMenuBase extends ComponentBuilder {
 
+  public static setContainerCssClass(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.cssClasses = {
+      containerClasses: new Set(['menu-component']),
+    };
+  }
+
   public static setNewChildComponents(dropdownMenuComponent: WorkshopComponent): void {
     const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
     dropdownMenuComponent.childComponentHandlers.addRemoveButtonSuppState = { dropdownItems };
@@ -195,6 +201,7 @@ export const dropdownMenuBase: ComponentGenerator = {
     DropdownMenuBase.setPropertyOverwritables(dropdownMenuComponent);
     DropdownMenuBase.setSyncableComponents(dropdownMenuComponent);
     DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);
+    DropdownMenuBase.setContainerCssClass(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
     return dropdownMenuComponent;
   },

@@ -1,10 +1,11 @@
 import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 
 const vars = {
-  dropdownButtonClassName: 'csssymphony-dropdown-button',
+  menuComponentClassName: 'menu-component',
   auxiliaryComponentClassName: 'auxiliary-component',
+  dropdownButtonClassName: 'csssymphony-dropdown-button',
   componentPreviewMarkerClassName: 'component-preview-marker',
-  componentPreviewContinerClassName: 'component-preview-container-default',
+  componentPreviewContainerClassName: 'component-preview-container-default',
 };
 
 function setMenuElementDisplayProperty(menuElement) {
@@ -12,40 +13,46 @@ function setMenuElementDisplayProperty(menuElement) {
   style.display = style.display ? '' : 'none';
 }
 
-function toggleMenus(menuElement) {
-  const auxiliaryComponents = document.getElementsByClassName(vars.auxiliaryComponentClassName) as HTMLCollection;
-  for (const auxiliaryComponent of auxiliaryComponents) {
-    if (auxiliaryComponent !== menuElement && (auxiliaryComponent as HTMLElement).style.display !== 'none') {
-      setMenuElementDisplayProperty(auxiliaryComponent);
+function hideMenus(mouseTargetMenuElement) {
+  const menuElements = document.getElementsByClassName(vars.menuComponentClassName) as HTMLCollection;
+  for (const menuElement of menuElements) {
+    if (menuElement !== mouseTargetMenuElement && (menuElement as HTMLElement).style.display !== 'none') {
+      setMenuElementDisplayProperty(menuElement);
     }
   }
 }
 
 function componentPreviewContainerClick() {
-  toggleMenus(null);
+  hideMenus(null);
 }
 
-function isMenuElement(element) {
+function getContainerElementFromAuxiliaryComponent(auxiliaryComponent) {
+  return auxiliaryComponent.childNodes[1].childNodes[0];
+}
+
+function isAuxiliaryMenuElement(element) {
   if (element.classList) {
-    return element.classList.contains(vars.auxiliaryComponentClassName)
+    return (element.classList.contains(vars.auxiliaryComponentClassName)
+      && getContainerElementFromAuxiliaryComponent(element).classList.contains(vars.menuComponentClassName));
   }
   return undefined;
 }
 
-function findMenuElementFromButtonChildElement(element) {
+function findAuxiliaryMenuElement(element) {
   const { parentElement } = element;
   const childElementsArr = Array.from(parentElement.childNodes);
-  const result = childElementsArr.find((element) => isMenuElement(element));
-  return result || findMenuElementFromButtonChildElement(parentElement);
+  const result = childElementsArr.find((element) => isAuxiliaryMenuElement(element));
+  return result || findAuxiliaryMenuElement(parentElement);
 }
 
 function componentClick(targetElement) {
   if (targetElement.classList.contains(vars.dropdownButtonClassName)) {
-    const menuElement = findMenuElementFromButtonChildElement(targetElement);
-    toggleMenus(menuElement);
-    setMenuElementDisplayProperty(menuElement);
+    const menuAuxElement = findAuxiliaryMenuElement(targetElement);
+    const mouseTargetMenuElement = getContainerElementFromAuxiliaryComponent(menuAuxElement);
+    hideMenus(mouseTargetMenuElement);
+    setMenuElementDisplayProperty(mouseTargetMenuElement);
   } else {
-    toggleMenus(null);
+    hideMenus(null);
   }
 }
 
@@ -53,7 +60,7 @@ function toggleMenu(event) {
   const targetElement = event.target;
   if (targetElement.classList.contains(vars.componentPreviewMarkerClassName)) {
     componentClick(targetElement);
-  } else if (targetElement.classList.contains(vars.componentPreviewContinerClassName)) {
+  } else if (targetElement.classList.contains(vars.componentPreviewContainerClassName)) {
     componentPreviewContainerClick();
   }
 }
