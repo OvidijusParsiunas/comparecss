@@ -1,4 +1,3 @@
-button text align does not work
 allow any icon to be added to button
 
 night diving

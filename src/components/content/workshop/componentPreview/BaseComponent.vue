@@ -44,10 +44,10 @@
       </div>
       <div v-if="component.linkedComponents && component.linkedComponents.auxiliary" class="auxiliary-component">
         <base-component v-for="auxiliaryComponent in component.linkedComponents.auxiliary" :key="auxiliaryComponent"
-        :style="getAuxiliaryComponentParentElementStyleProperties(auxiliaryComponent)"
-        :component="auxiliaryComponent"
-        :mouseEvents="mouseEvents"
-        :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
+          :style="getAuxiliaryComponentParentElementStyleProperties(auxiliaryComponent)"
+          :component="auxiliaryComponent"
+          :mouseEvents="mouseEvents"
+          :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
       </div>
     </div>
   </div>

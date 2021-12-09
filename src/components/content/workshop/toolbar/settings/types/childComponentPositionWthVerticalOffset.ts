@@ -6,7 +6,7 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 // create an optional interface
 export default {
   options: [
-    ChildComponentAlignSetting.get('section', ['customStaticFeatures', 'alignedLayerSection', 'section']),
+    ChildComponentAlignSetting.get('horizontalSection', ['customStaticFeatures', 'alignment', 'horizontalSection']),
     ChildComponentOrderSetting.get([CHANGE_COMPONENT_ORDER_DIRECTIONS.LEFT, CHANGE_COMPONENT_ORDER_DIRECTIONS.RIGHT]),
     {
       type: SETTINGS_TYPES.RANGE,
