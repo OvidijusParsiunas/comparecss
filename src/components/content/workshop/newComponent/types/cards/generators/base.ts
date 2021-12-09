@@ -7,6 +7,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { DropdownRefreshUtils } from '../../dropdowns/utils/dropdownRefreshUtils';
 import { CardBaseSpecificSettings } from '../settings/cardBaseSpecificSettings';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { inheritedCardBaseCss } from '../inheritedCss/inheritedCardCss';
@@ -19,7 +20,7 @@ class CardBase extends ComponentBuilder {
   }
 
   public static setPropertyOverwritables(cardComponent: WorkshopComponent): void {
-  cardComponent.childComponentHandlers.onAddOverwritables = {
+    cardComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.LAYER]: [CardBase.setComponentToRemovable],
       },
@@ -91,6 +92,7 @@ export const cardBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
     CardBase.setChildComponentsItems(cardBaseComponent);
     CardBase.setPropertyOverwritables(cardBaseComponent);
+    DropdownRefreshUtils.setOnComponentLeaveFunc(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);
     return cardBaseComponent;
   },

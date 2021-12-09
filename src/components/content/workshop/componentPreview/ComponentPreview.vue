@@ -66,7 +66,6 @@ import { subcomponentAndOverlayElementIdsState } from './utils/elements/subcompo
 import { SubcomponentSelectModeSubOverlay } from './utils/elements/overlays/subcomponentSelectModeSubOverlay';
 import { masterComponentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
-import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils'
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
 import { CustomFeatures, WorkshopComponent } from '../../../../interfaces/workshopComponent';
@@ -209,19 +208,14 @@ export default {
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
       this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
     },
-    refreshPreviousComponent(previousComponent: WorkshopComponent): void {
-      // the reason why refreshed when moving away from component is because it can take to process upfront
-      SelectDropdownUtils.refresh(previousComponent, true);
-    }
   },
   props: {
     component: Object,
     componentPreviewAssistance: Object,
   },
   watch: {
-    component(currentComponent: WorkshopComponent, previousComponent: WorkshopComponent): void {
+    component(currentComponent: WorkshopComponent): void {
       if (currentComponent) this.refreshCurrentComponent();
-      if (previousComponent) this.refreshPreviousComponent(previousComponent);
     }
   }
 };

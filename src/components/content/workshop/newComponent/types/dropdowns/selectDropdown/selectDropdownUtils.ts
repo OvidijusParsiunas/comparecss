@@ -5,7 +5,7 @@ import { Layer } from '../../../../../../../interfaces/componentPreviewStructure
 
 export class SelectDropdownUtils {
 
-  private static refreshItemTextState(dropdownBaseSubcomponent: Subcomponent, checkBeforeProceeding: boolean): void {
+  private static refreshItemTextState(dropdownBaseSubcomponent: Subcomponent, checkBeforeProceeding = true): void {
     const { customFeatures: { dropdown: { select }}, customStaticFeatures } = dropdownBaseSubcomponent;
     if (select.enabled || !checkBeforeProceeding) {
       customStaticFeatures.selectDropdownText.lastHoveredItemText = null;
@@ -13,7 +13,7 @@ export class SelectDropdownUtils {
     }
   }
 
-  public static refresh(component: WorkshopComponent, checkBeforeProceeding = false): void {
+  public static refreshAllDropdowns(component: WorkshopComponent, checkBeforeProceeding = false): void {
     const { subcomponents } = component.masterComponent;
     const dropdownSubcomponentNames = Object.keys(subcomponents)
       .filter((subcomponentName) => subcomponents[subcomponentName].seedComponent.type === COMPONENT_TYPES.DROPDOWN);
@@ -38,7 +38,7 @@ export class SelectDropdownUtils {
     if (select.enabled) {
       SelectDropdownUtils.setMouseEventText(seedComponent, selectDropdownText, itemTextKey);
     } else if (canBeUnset) {
-      SelectDropdownUtils.refresh(dropdownPaddingComponent);
+      SelectDropdownUtils.refreshItemTextState(dropdownPaddingComponent.baseSubcomponent);
     }
   }
 

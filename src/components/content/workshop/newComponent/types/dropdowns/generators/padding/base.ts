@@ -14,6 +14,7 @@ import { SelectDropdownText } from '../../../../../../../../interfaces/dropdownF
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
+import { DropdownRefreshUtils } from '../../utils/dropdownRefreshUtils';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
 import { DropdownMenuBase } from '../menu/base';
@@ -107,6 +108,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
     DropdownPaddingBase.overwriteBase(paddingComponent);
     DropdownPaddingBase.setSyncableComponents(paddingComponent);
     DropdownPaddingBase.setAndExecutePropertyReferenceSharingFuncs(paddingComponent);
+    DropdownRefreshUtils.setOnComponentLeaveFunc(paddingComponent);
     return paddingComponent;
   }
 }
