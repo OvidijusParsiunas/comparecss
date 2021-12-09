@@ -2,14 +2,27 @@ import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 
 const vars = {
   dropdownButtonClassName: 'csssymphony-dropdown-button',
-  dropdownMenuClassName: 'csssymphony-dropdown-menu',
   auxiliaryComponentClassName: 'auxiliary-component',
-  dropdownMenuElement: null,
+  componentPreviewMarkerClassName: 'component-preview-marker',
+  componentPreviewContinerClassName: 'component-preview-container-default',
 };
 
 function setMenuElementDisplayProperty(menuElement) {
   const { style } = menuElement;
   style.display = style.display ? '' : 'none';
+}
+
+function toggleMenus(menuElement) {
+  const auxiliaryComponents = document.getElementsByClassName(vars.auxiliaryComponentClassName) as HTMLCollection;
+  for (const auxiliaryComponent of auxiliaryComponents) {
+    if (auxiliaryComponent !== menuElement && (auxiliaryComponent as HTMLElement).style.display !== 'none') {
+      setMenuElementDisplayProperty(auxiliaryComponent);
+    }
+  }
+}
+
+function componentPreviewContainerClick() {
+  toggleMenus(null);
 }
 
 function isMenuElement(element) {
@@ -26,28 +39,23 @@ function findMenuElementFromButtonChildElement(element) {
   return result || findMenuElementFromButtonChildElement(parentElement);
 }
 
-function findMenuElementFromChildElement(element) {
-  const { parentElement } = element;
-  if (parentElement.classList.contains(vars.auxiliaryComponentClassName)) {
-    return parentElement;
+function componentClick(targetElement) {
+  if (targetElement.classList.contains(vars.dropdownButtonClassName)) {
+    const menuElement = findMenuElementFromButtonChildElement(targetElement);
+    toggleMenus(menuElement);
+    setMenuElementDisplayProperty(menuElement);
+  } else {
+    toggleMenus(null);
   }
-  return findMenuElementFromChildElement(parentElement);
-}
-
-function getMenuElement(targetElement) {
-  if (targetElement.classList.contains(vars.dropdownMenuClassName)) {
-    return findMenuElementFromChildElement(targetElement);
-  } else if (targetElement.classList.contains(vars.dropdownButtonClassName)) {
-    return findMenuElementFromButtonChildElement(targetElement);
-  }
-  return null;
 }
 
 function toggleMenu(event) {
   const targetElement = event.target;
-  const menuElement = getMenuElement(targetElement);
-  if (!menuElement) return;
-  setMenuElementDisplayProperty(menuElement);
+  if (targetElement.classList.contains(vars.componentPreviewMarkerClassName)) {
+    componentClick(targetElement);
+  } else if (targetElement.classList.contains(vars.componentPreviewContinerClassName)) {
+    componentPreviewContainerClick();
+  }
 }
 
 function removeScript() {
