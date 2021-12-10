@@ -94,8 +94,8 @@ export class ButtonGroupCompositionAPIUtils {
       currentSubcomponentCss = baseSubcomponent.customCss;
     }
     // important to remember that we are passing subcomponentCss and not customCss
-    // WORK 2 - just pass 1 value down
-    const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(cssPseudoClass, currentSubcomponentCss);
+    const inheritedCssFromCustomCss = ComponentPreviewUtils.getInheritedValuesFromCustomCss(cssPseudoClass,
+      currentSubcomponentCss, 'boxShadow');
     buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
   }
 

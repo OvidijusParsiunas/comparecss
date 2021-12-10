@@ -1,9 +1,11 @@
 import useSubcomponentSelectModeEventHandlers from '../compositionAPI/useSubcomponentSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
+import { ALL_INHERITABLE_CSS_PROPERTY_KEYS } from '../../../../../consts/inheritableCssPropertyKeys.enum';
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
+import { InheritableCssProperties } from '../../../../../interfaces/inheritableCssProperties';
 import { CustomCss, Subcomponents } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
@@ -55,33 +57,33 @@ export default class ComponentPreviewUtils {
   // when inheriting during a default class - return 'inherit' to make the element transparent
   // currently utilised for background and text color properties only
   public static getInheritedCustomCssValue<T extends keyof WorkshopComponentCss>(cssPseudoClass: CSS_PSEUDO_CLASSES, customCss: CustomCss,
-      cssProperty: T): WorkshopComponentCss[T] {
+      cssPropertyKey: T): WorkshopComponentCss[T] {
     switch (cssPseudoClass) {
       case (CSS_PSEUDO_CLASSES.CLICK):
-        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
-          return customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
+        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK][cssPropertyKey] !== CSS_PROPERTY_VALUES.INHERIT) {
+          return customCss[CSS_PSEUDO_CLASSES.CLICK][cssPropertyKey];
         }
       case (CSS_PSEUDO_CLASSES.HOVER):
-        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
-          return customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
+        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER][cssPropertyKey] !== CSS_PROPERTY_VALUES.INHERIT) {
+          return customCss[CSS_PSEUDO_CLASSES.HOVER][cssPropertyKey];
         }
       default:
-        return customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
+        return customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssPropertyKey];
     }
   }
 
   private static setInheritedCustomCssValue<T extends WorkshopComponentCss, Y extends keyof WorkshopComponentCss>(inheritedValues: T,
-      activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssProperty: Y): void {
-    if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]) {
-      inheritedValues[cssProperty] = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, cssProperty) as T[Y];
+      activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssPropertyKey: Y): void {
+    if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssPropertyKey]) {
+      inheritedValues[cssPropertyKey] = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, cssPropertyKey) as T[Y];
     }
   }
 
-  public static getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss): WorkshopComponentCss {
-    const inheritedValues: WorkshopComponentCss = {}
-    const inheritableCssProperties: (keyof WorkshopComponentCss)[] = ['backgroundColor', 'color', 'borderColor', 'boxShadow'];
-    inheritableCssProperties.forEach((cssProperty) => {
-      ComponentPreviewUtils.setInheritedCustomCssValue(inheritedValues, activeCssPseudoClassesDropdownItem, customCss, cssProperty);
+  public static getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss,
+      ...inheritableCssPropertyKeys: (keyof InheritableCssProperties)[]): WorkshopComponentCss {
+    const inheritedValues: WorkshopComponentCss = {};
+    (inheritableCssPropertyKeys || ALL_INHERITABLE_CSS_PROPERTY_KEYS).forEach((cssPropertyKey) => {
+      ComponentPreviewUtils.setInheritedCustomCssValue(inheritedValues, activeCssPseudoClassesDropdownItem, customCss, cssPropertyKey);
     });
     return inheritedValues;
   }
