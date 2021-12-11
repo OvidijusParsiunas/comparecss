@@ -20,7 +20,7 @@
                     
 <script lang="ts">
 import { UseLayerAlignmentSectionComponent } from '../../../../../interfaces/useLayerAlignmentSectionComponent';
-import useLayerAlignmentSectionComponent from '../compositionAPI/useLayerSectionComponent';
+import useLayerAlignmentSectionComponent from '../compositionAPI/useLayerAlignmentSectionComponent';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { Subcomponent } from '../../../../../interfaces/workshopComponent';

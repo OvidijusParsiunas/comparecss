@@ -102,7 +102,6 @@ export class ButtonGroupCompositionAPIUtils {
   private static setOverwrittenBoundingBox(component: WorkshopComponent, buttonGroupButtonContainerCss: WorkshopComponentCss): void {
     const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
     buttonGroupButtonContainerCss.boxShadow = overwriteCssForSyncedComponent
-      // WORK 2 - just pass 1 value down
       ? ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponent).boxShadow
       : '';
   }
