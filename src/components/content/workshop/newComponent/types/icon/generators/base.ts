@@ -55,9 +55,7 @@ export class IconBase extends ComponentBuilder {
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
-    //  WORK 3 - check if autoSize is needed
     return {
-      autoSize: ComponentBuilder.createAutoSize(true, false),
       animations: ComponentBuilder.createStationaryAnimations({}),
     };
   }

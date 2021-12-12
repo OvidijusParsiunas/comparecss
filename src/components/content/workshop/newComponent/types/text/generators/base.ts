@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -43,12 +43,6 @@ class TextBase extends ComponentBuilder {
     };
   }
 
-  private static createDefaultTextCustomFeatures(): CustomFeatures {
-    return {
-      autoSize: ComponentBuilder.createAutoSize(true, false),
-    };
-  }
-
   private static createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
     return {
       subcomponentText: ComponentBuilder.createText(),
@@ -66,8 +60,6 @@ class TextBase extends ComponentBuilder {
       activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES.DEFAULT,
       activeCssPseudoClassViaUserAction: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: TextBase.createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: TextBase.createDefaultTextCustomFeatures(),
       customStaticFeatures: TextBase.createDefaultTextCustomStaticFeatures(),
       defaultCustomStaticFeatures: TextBase.createDefaultTextCustomStaticFeatures(),
     };
