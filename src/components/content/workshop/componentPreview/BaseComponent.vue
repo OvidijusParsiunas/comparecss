@@ -3,7 +3,7 @@
     <div :style="getBaseContainerStyleProperties()" :class="getBaseContainerCssClasses()">
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
-        :icon="getIconName()"
+        :icon="getSVGIconName()"
         :style="getComponentStyleProperties()"
         :class="[COMPONENT_PREVIEW_MARKER,
           ...getJsClasses(), ...getComponentCssClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
@@ -22,7 +22,7 @@
       </component>
       <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
       <div v-else :style="getComponentStyleProperties()"></div>
-      <div v-if="isIcon()"
+      <div v-if="getSVGIconName()"
         :id="getBaseId('subcomponentId')"
         :style="getOverlayStyleProperties()"
         :class="getOverlayCssClasses(true)"
@@ -58,7 +58,6 @@ import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../con
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import useSubcomponentSelectModeEventHandlers from './compositionAPI/useSubcomponentSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
-import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { Subcomponent, WorkshopComponent } from '../../../../interfaces/workshopComponent';
@@ -68,8 +67,10 @@ import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCs
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
 import { CompositionAPIUtils } from '../compositionAPI/compositionAPIUtils';
 import { UseBaseComponent } from '../../../../interfaces/useBaseComponent';
+import { UseIconComponent } from '../../../../interfaces/useIconComponent';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import useBaseComponent from './compositionAPI/useBaseComponent';
+import useIconComponent from './compositionAPI/useIconComponent';
 import { SetUtils } from '../utils/generic/setUtils';
 import layers from './layers/Layers.vue';
 
@@ -89,8 +90,10 @@ interface Props {
 }
 
 export default {
-  setup(props: Props): Consts & UseBaseComponent {
-    const useBaseComponentCompositionAPI = CompositionAPIUtils.createCompositionAPI(useBaseComponent, props, ['component', 'isChildComponent']);
+  setup(props: Props): Consts & UseBaseComponent & UseIconComponent {
+    const useIconComponentCopositionAPI = CompositionAPIUtils.createCompositionAPI(useIconComponent, props, ['component']);
+    const useBaseComponentCompositionAPI = CompositionAPIUtils.createCompositionAPI(useBaseComponent, props, ['component', 'isChildComponent'],
+      [useIconComponentCopositionAPI]);
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
@@ -98,6 +101,7 @@ export default {
       CSS_PSEUDO_CLASSES,
       useSubcomponentSelectModeEventHandlers: useSubcomponentSelectModeEventHandlers(),
       ...useBaseComponentCompositionAPI,
+      ...useIconComponentCopositionAPI,
     };
   },
   methods: {
@@ -130,11 +134,7 @@ export default {
       return { position: 'absolute', ...positions[position] };
     },
     getTag(): string {
-      return this.isIcon() ? 'font-awesome-icon' : 'div';
-    },
-    getIconName(): string {
-      const iconName = (this.component as WorkshopComponent).baseSubcomponent.customStaticFeatures?.icon?.name;
-      return iconName ? DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES[iconName] : null;
+      return this.isSVGIcon() ? 'font-awesome-icon' : 'div';
     },
     isComponentDisplayed(): boolean {
       const { customStaticFeatures } = (this.component as WorkshopComponent).baseSubcomponent;

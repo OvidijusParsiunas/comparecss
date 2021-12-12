@@ -8,22 +8,18 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponent
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { UseBaseComponent } from '../../../../../interfaces/useBaseComponent';
+import { UseIconComponent } from '../../../../../interfaces/useIconComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../../consts/sharedClasses';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { Ref } from 'vue';
 
-export default function useBaseComponent(component: Ref<WorkshopComponent>, isChildComponent: Ref<boolean>): UseBaseComponent {
+export default function useBaseComponent(component: Ref<WorkshopComponent>, isChildComponent: Ref<boolean>, useIconComponent: UseIconComponent): UseBaseComponent {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponent: null };
-
-  const isIcon = (): boolean => {
-    return component.value.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
-  };
 
   const isXButtonText = (): boolean => {
     return component.value.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
@@ -133,7 +129,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[cssPseudoClass],
       { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-      isIcon() ? { pointerEvents: 'none' } : {},
+      useIconComponent.isSVGIcon() ? { pointerEvents: 'none' } : {},
       inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
@@ -153,7 +149,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     if (component.value.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
     if (!component.value.linkedComponents?.base && !isChildComponent.value) subcomponentCss.marginTop = '0px';
     if (component.value.type === COMPONENT_TYPES.BUTTON_GROUP) subcomponentCss.marginLeft = ButtonGroupCompositionAPIUtils.getOverlayMarginLeftCss(component.value);
-    if (isIcon()) subcomponentCss.height = subcomponentCss.width;
+    if (useIconComponent.isSVGIcon()) subcomponentCss.height = subcomponentCss.width;
     return subcomponentCss;
   }
 
@@ -169,7 +165,6 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   }
 
   return {
-    isIcon,
     isXButtonText,
     getOverlayCssClasses,
     getComponentCssClasses,

@@ -41,6 +41,7 @@ export class IconBase extends ComponentBuilder {
         transition: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         left: '0px',
+        backgroundSize: '100% 100%',
       },
     };
   }
@@ -49,10 +50,12 @@ export class IconBase extends ComponentBuilder {
     return {
       icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true },
       alignment: ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.CENTER),
+      image: ComponentBuilder.createImage(),
     };
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
+    //  WORK 3 - check if autoSize is needed
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
       animations: ComponentBuilder.createStationaryAnimations({}),

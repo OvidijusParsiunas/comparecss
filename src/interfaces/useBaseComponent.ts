@@ -1,7 +1,6 @@
 import { WorkshopComponentCss } from './workshopComponentCss';
 
 export interface UseBaseComponent {
-  isIcon: () => boolean;
   isXButtonText: () => boolean;
   getSubcomponentText: () => string;
   getOverlayCssClasses: (isIconOverlayTrigger?: boolean) => string[];
