@@ -207,7 +207,8 @@ export interface WorkshopComponent {
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   interconnectedSettings?: InterconnectedSetting[];
-  // when a particular setting is changed (e.g. input or range) - call a particular function
+  // when a particular setting is changed by the user (e.g. input or range) - call a particular function
+  // usually placed on container components for if they have multiple same children
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
   // used to reference the linked component - where the base component refereneces the auxiliary component and vice versa
   linkedComponents?: LinkedComponents;

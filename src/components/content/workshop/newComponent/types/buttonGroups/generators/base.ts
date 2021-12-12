@@ -52,7 +52,7 @@ class ButtonGroupBase extends ComponentBuilder {
     // subcomponent is button component base
     if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
       ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(subcomponent.seedComponent,
-      subcomponent.seedComponent.containerComponent);
+        subcomponent.seedComponent.containerComponent);
     } else if (cssProperty === 'borderRightWidth') {
       const { borderRightWidth } = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = borderRightWidth;
