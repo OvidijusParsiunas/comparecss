@@ -4,9 +4,9 @@ import { LinkedComponentsUtils } from '../../../shared/linkedComponents/linkedCo
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { DropdownMenuAutoWidthUtils } from '../../utils/dropdownMenuAutoWidthUtils';
-import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
+import { TriggerFuncs } from '../../settings/triggerFuncs';
 
 export class ApplyDropdownButtonProperties extends ComponentBuilder {
 
@@ -64,24 +64,6 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     ApplyDropdownButtonProperties.populateReferences(buttonComponent);
   }
 
-  private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
-    const { type } = subcomponent.seedComponent;
-    // the reason why there is an if statement is because this can get triggered when margin left/right is changed in the button
-    if (type === COMPONENT_TYPES.BUTTON) return;
-    // width is used by icon size
-    if (cssProperty === 'fontSize' || cssProperty === 'marginLeft' || cssProperty === 'marginRight' || cssProperty === 'width') {
-      const buttonComponent = subcomponent.seedComponent.containerComponent;
-      const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
-      DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
-    }
-  }
-
-  public static setTriggerFuncOnSettingChange(buttonBaseComponent: WorkshopComponent): void {
-    buttonBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.RANGE]: ApplyDropdownButtonProperties.setWidthViaRange,
-    };
-  }
-
   private static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponent: Subcomponent): void {
     const buttonComponent = subcomponent.seedComponent;
     const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
@@ -104,6 +86,6 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     ApplyDropdownButtonProperties.setButtonAutoSize(buttonComponent);
     LinkedComponentsUtils.setAuxiliaryComponents(buttonComponent, menuComponent);
     ApplyDropdownButtonProperties.setAndExecutePropertyReferenceSharingFuncs(buttonComponent);
-    ApplyDropdownButtonProperties.setTriggerFuncOnSettingChange(buttonComponent);
+    TriggerFuncs.setTriggerFuncOnButtonTextSettingChange(buttonComponent);
   }
 }

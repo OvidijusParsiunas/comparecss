@@ -19,11 +19,11 @@ import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildC
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ButtonGroupGenericUtils } from '../utils/buttonGroupGenericUtils';
 import { ButtonGroupBorderUtils } from '../utils/buttonGroupBorderUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
+import { TriggerFuncs } from '../settings/triggerFuncs';
 
 class ButtonGroupBase extends ComponentBuilder {
 
@@ -45,32 +45,6 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonGroupBaseComponent.componentSwitchFuncs = {
       onDisplay: ButtonGroupBase.onComponentDisplayFunc,
       onLeave: SelectedChildComponentUtil.unselectChildViaContainerIfSelected,
-    };
-  }
-
-  private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
-    // subcomponent is button component base
-    if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
-      ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(subcomponent.seedComponent,
-        subcomponent.seedComponent.containerComponent);
-    } else if (cssProperty === 'borderRightWidth') {
-      const { borderRightWidth } = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = borderRightWidth;
-    } else if (cssProperty === 'borderTopWidth') {
-      const borderTopWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
-      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = borderTopWidth;
-      const buttonComponent = subcomponent.seedComponent;
-      ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
-    } else if (cssProperty === 'borderRadius') {
-      const borderRadius = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-      // this is used to get a curve for the button group base
-      subcomponent.seedComponent.containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
-    }
-  }
-
-  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
-    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.RANGE]: ButtonGroupBase.setWidthViaRange,
     };
   }
 
@@ -133,6 +107,7 @@ class ButtonGroupBase extends ComponentBuilder {
     };
   }
 
+  // WOKR 2 - should have an if statement to call particular ones for temp and non temp
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
@@ -143,6 +118,7 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
           ButtonGroupBase.setSelectComponentOnChildComponents,
+          TriggerFuncs.setTriggerFuncOnButtonSettingChange,
           ButtonGroupBorderUtils.setBorderProperties,
           ButtonGroupButtonSpecificSettings.set,
         ],
@@ -236,7 +212,6 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
     ButtonGroupBase.addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
     ButtonGroupBase.setOnChildComponentRemovalFunc(buttonGroupBaseComponent);
-    ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
     ButtonGroupBase.setComponentSwitchFuncs(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;

@@ -126,7 +126,7 @@ export default class SettingsUtils {
 
   public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponent: Subcomponent, cssProperty?: string): void {
     const { seedComponent } = subcomponent;
-    const containerComponent = seedComponent.containerComponent || seedComponent;
+    const containerComponent = seedComponent;
     const funcs = containerComponent.triggerFuncOnSettingChange;
     funcs?.[settingType]?.(subcomponent, cssProperty);
   }

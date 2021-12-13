@@ -9,16 +9,16 @@ import { DropdownUtils } from '../../../../../utils/componentManipulation/utils/
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
-import { SetTextSubcomponentContext } from '../../../layers/generators/dropdownItem';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
-import { DropdownMenuAutoWidthUtils } from '../../utils/dropdownMenuAutoWidthUtils';
+import { SetTextSubcomponentContext } from '../../../layers/generators/dropdownItem';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
-import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
+import { DropdownMenuAutoWidthUtils } from '../../utils/dropdownMenuAutoWidthUtils';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
 import { ApplyDropdownMenuItemTextProperties } from '../itemText/applyProperties';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { ITEM_TEXT_OPTIONS } from '../itemText/itemTextOptions';
+import { TriggerFuncs } from '../../settings/triggerFuncs';
 
 export class DropdownMenuBase extends ComponentBuilder {
 
@@ -38,47 +38,27 @@ export class DropdownMenuBase extends ComponentBuilder {
       [COMPONENT_TYPES.DROPDOWN_MENU]: dropdownMenuComponent });
   }
 
-  private static incrementItemTextOptionIndex(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+  private static incrementItemTextOptionIndex(menuComponent: WorkshopComponent): void {
+    const { dropdownMenuData: dropdownMenu } = menuComponent.baseSubcomponent.customStaticFeatures;
+    if (dropdownMenu.itemTextOptionIndex < ITEM_TEXT_OPTIONS.length - 1) {
+      dropdownMenu.itemTextOptionIndex += 1;
+    } else {
+      dropdownMenu.itemTextOptionIndex = 0;
+    }
+  }
+
+  private static overwriteItemProperties(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     if (itemComponent.activeSubcomponentName !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
-      const { dropdownMenuData: dropdownMenu } = menuComponent.baseSubcomponent.customStaticFeatures;
-      if (dropdownMenu.itemTextOptionIndex < ITEM_TEXT_OPTIONS.length - 1) {
-        dropdownMenu.itemTextOptionIndex += 1;  
-      } else {
-        dropdownMenu.itemTextOptionIndex = 0;
-      }
+      DropdownMenuBase.incrementItemTextOptionIndex(menuComponent);
+      TriggerFuncs.setTriggerFuncForItemSettingChanges(itemComponent);
     }
   }
 
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
     menuComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.LAYER]: [DropdownMenuBase.incrementItemTextOptionIndex],
+        [COMPONENT_TYPES.LAYER]: [DropdownMenuBase.overwriteItemProperties],
       },
-    };
-  }
-
-  private static setMenuWidthViaMenuItemOrTextChange(subcomponent: Subcomponent): void {
-    const menuComponent = subcomponent.seedComponent.containerComponent || subcomponent.seedComponent;
-    DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
-  }
-
-  private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
-    if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight' || cssProperty === 'fontSize' || cssProperty === 'fontWeight') {
-      DropdownMenuBase.setMenuWidthViaMenuItemOrTextChange(subcomponent);
-    }
-  }
-
-  private static setDropdownButtonAndMenuWidthsViaItemTextContentChange(itemSubcomponent: Subcomponent): void {
-    const menuComponent = itemSubcomponent.seedComponent.containerComponent;
-    DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
-    DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
-  }
-
-  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
-    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.INPUT]: DropdownMenuBase.setDropdownButtonAndMenuWidthsViaItemTextContentChange,
-      [SETTINGS_TYPES.RANGE]: DropdownMenuBase.setWidthViaRange,
-      [SETTINGS_TYPES.ACTIONS_DROPDOWN]: DropdownMenuBase.setWidthViaRange,
     };
   }
 
@@ -197,7 +177,6 @@ export const dropdownMenuBase: ComponentGenerator = {
     const dropdownMenuComponent = DropdownMenuBase.createBaseComponent(presetProperties, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setSiblingChildComponentsAutoSynced(dropdownMenuComponent);
     DropdownMenuBase.setOnChildComponentRemovalFunc(dropdownMenuComponent);
-    DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     DropdownMenuBase.setPropertyOverwritables(dropdownMenuComponent);
     DropdownMenuBase.setSyncableComponents(dropdownMenuComponent);
     DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);

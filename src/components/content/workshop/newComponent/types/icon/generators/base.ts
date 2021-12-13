@@ -10,6 +10,7 @@ import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { IconSpecificSettings } from '../settings/iconSpecificSettings';
 import { inheritedTextCss } from '../inheritedCss/inheritedTextCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
+import { TriggerFuncs } from '../settings/triggerFuncs';
 
 export class IconBase extends ComponentBuilder {
 
@@ -82,6 +83,7 @@ export const iconBase: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     presetProperties.componentType = COMPONENT_TYPES.ICON;
     const iconBaseComponent = IconBase.createBaseComponent(presetProperties, IconBase.createBaseSubcomponent);
+    TriggerFuncs.setTriggerFuncOnItemSettingChange(iconBaseComponent);
     IconSpecificSettings.set(iconBaseComponent);
     return iconBaseComponent;
   },
