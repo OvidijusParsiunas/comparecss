@@ -9,9 +9,11 @@ import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizont
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { ComponentTypeToProperties } from '../../../../../../interfaces/componentTypeToProperties';
 import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
+import { CopyableKeys, PreventDeepCopy } from '../../../../../../interfaces/preventDeepCopy';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
+import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../consts/dropdownArrowIcons';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { PresetProperties } from '../../../../../../interfaces/componentGenerator';
@@ -19,10 +21,11 @@ import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
+import { ICON_TYPES } from '../../../../../../consts/iconTypes.enum';
 import { Sync, Syncables } from '../../../../../../interfaces/sync';
 import { DEFAULT_TEXT } from '../../../../../../consts/defaultText';
+import { Icon } from '../../../../../../interfaces/icon';
 import { defaultImage } from './images/default';
-import { CopyableKeys, PreventDeepCopy } from '../../../../../../interfaces/preventDeepCopy';
 
 interface StationaryAnimationsArgs {
   isBackgroundZoomPresent?: boolean;
@@ -32,6 +35,14 @@ interface StationaryAnimationsArgs {
 
 // TO-DO should be using a builder pattern
 export class ComponentBuilder {
+
+  protected static createIcon(): Icon {
+    return {
+      name: DROPDOWN_ARROW_ICON_TYPES.CARET,
+      isComponentDisplayed: true,
+      type: ICON_TYPES.BASIC,
+    };
+  }
 
   protected static createHorizontalAlignmentSection(horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS): Alignment {
     return { horizontalSection };

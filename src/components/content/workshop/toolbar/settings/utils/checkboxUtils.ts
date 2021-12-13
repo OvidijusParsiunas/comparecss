@@ -110,6 +110,6 @@ export default class CheckboxUtils {
     const { seedComponent, activeCssPseudoClassesDropdownItem, subcomponentType } = subcomponent;
     const options = componentTypeToOptions[seedComponent.masterComponent.type](subcomponentType, seedComponent);
     const result = options[activeCssPseudoClassesDropdownItem].find((option) => option.buttonName === settingsButtonOptionName);
-    return { optionButtonName: settingsButtonOptionName, optionType: result.type };
+    return { newOption: { buttonName: settingsButtonOptionName, type: result.type } };
   }
 }

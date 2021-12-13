@@ -16,6 +16,7 @@ export enum SETTING_NAMES {
   ALIGN = 'Align',
   ORDER = 'Order',
   COLOR = 'Color',
+  BASIC_ICON = ' ',
   RADIUS = 'Radius',
   DIVIDER_WIDTH = 'Divider Width',
 }

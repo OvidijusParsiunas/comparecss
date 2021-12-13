@@ -2,6 +2,7 @@ import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdo
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../consts/dropdownArrowIcons';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
+import { ICON_TYPES } from '../../../../../../consts/iconTypes.enum';
 
 // create an optional interface
 export default {
@@ -10,9 +11,40 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.TYPE,
+        options: DropdownUtils.generateDropdownStructure(Object.values(ICON_TYPES)),
+        activeItemPropertyKeyName: 'type',
+        customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'type'],
+        refreshSetting: true,
+      },
+    },
+    {
+      type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
+      spec: {
+        name: SETTING_NAMES.BASIC_ICON,
         options: DropdownUtils.generateDropdownStructure(Object.values(DROPDOWN_ARROW_ICON_TYPES)),
         activeItemPropertyKeyName: 'name',
         customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'name'],
+        displayIfValueActive: {
+          customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'type'],
+          value: ICON_TYPES.BASIC,
+        },
+      },
+    },
+    {
+      type: SETTINGS_TYPES.UPLOAD_FILE,
+      spec: {
+        name: 'Image',
+        customFeatureObjectKeys: ['customStaticFeatures', 'image', 'data'],
+        auxiliaryCustomFeatureObjectKeys: ['customStaticFeatures', 'image', 'name'],
+        default: 'text',
+        displayIfValueActive: {
+          customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'type'],
+          value: ICON_TYPES.CUSTOM,
+        },
+        uploadFileButtonProps: {
+          text: 'Upload SVG',
+          fileTypes: '.svg',
+        },
       },
     },
   ]

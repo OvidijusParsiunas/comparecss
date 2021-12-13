@@ -1,8 +1,10 @@
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
+import { optionToSettings } from '../types/optionToSettings';
 import { SetUtils } from '../../../utils/generic/setUtils';
 import { UpdateRange } from './rangeUtils/updateRange';
 
@@ -129,5 +131,19 @@ export default class SettingsUtils {
     const containerComponent = seedComponent;
     const funcs = containerComponent.triggerFuncOnSettingChange;
     funcs?.[settingType]?.(subcomponent, cssProperty);
+  }
+
+  private static isSettingDisplayed(settingSpec: any, subcomponent: Subcomponent): boolean {
+    const { displayIfValueActive } = settingSpec;
+    if (!displayIfValueActive) return true;
+    const keys = displayIfValueActive.customFeatureObjectKeys;
+    const currentValue = CustomFeaturesUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
+    return displayIfValueActive.value === currentValue;
+  }
+
+  public static filterSettings(settingOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES, subcomponent: Subcomponent): any {
+    return { options: optionToSettings[settingOptionType].options.filter(
+      (settingOption) => SettingsUtils.isSettingDisplayed(settingOption.spec, subcomponent)),
+    };
   }
 }

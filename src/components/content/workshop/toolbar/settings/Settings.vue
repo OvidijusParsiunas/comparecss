@@ -140,16 +140,16 @@
                   @mousedown="selectSetting()"
                   @click="changeSetting(checkboxMouseClick.bind(this, setting.spec.default, setting.spec, setting.triggers))">
               </div>
-              
+
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.UPLOAD_FILE">
-                <input ref="uploadImage" type='file' @change="uploadImage($event, setting.spec)" accept="image/*" hidden/>
+                <input ref="uploadImage" type='file' @change="uploadImage($event, setting.spec)" :accept="setting.spec.uploadFileButtonProps.fileTypes" hidden/>
                 <button
                   class="btn btn-group-option"
                   :class="TOOLBAR_GENERAL_BUTTON_CLASS"
                   @mousedown="selectSetting()"
                   @click="triggerImageUpload(event)">
                     <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="sync-icon" icon="upload"/>
-                    Upload
+                    {{setting.spec.uploadFileButtonProps.text}}
                 </button>
                 <div>{{imageNames[setting.spec.name]}}</div>
                 <button class="unset-setting-button" id="dropdownMenuButton"
@@ -193,6 +193,7 @@
 <script lang="ts">
 import { ComponentDOMElementUtils } from '../../utils/componentManipulation/componentDOMElementUtils/componentDOMElementUtils'
 import { RemoveInSyncOptionButton, SettingsRefreshEvent } from '../../../../../interfaces/settingsComponentEvents';
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CustomFeaturesUtils } from '../../utils/componentManipulation/utils/customFeaturesUtils';
 import { UseActionsDropdown } from '../../../../../interfaces/useActionsDropdownComposition';
@@ -210,7 +211,6 @@ import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../consts/settingNames.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
-import { optionToSettings } from './types/optionToSettings';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import CheckboxUtils from './utils/checkboxUtils';
@@ -237,7 +237,8 @@ interface Data {
   actionsDropdownsButtonText: unknown; 
   customFeatureRangeValue: unknown;
   settingsVisible: boolean;
-  settingsButtonOptionName: WORKSHOP_TOOLBAR_OPTION_TYPES;
+  settingsButtonOptionName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES;
+  settingsButtonOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES;
 }
 
 // can be placed into composition API?
@@ -252,10 +253,16 @@ export default {
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
       refreshSettings(settingsRefreshEvent?: SettingsRefreshEvent): void {
         if (settingsRefreshEvent) {
-          this.settings = optionToSettings[settingsRefreshEvent.optionType];
-          this.settingsButtonOptionName = settingsRefreshEvent.optionButtonName;
-          SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(settingsRefreshEvent.optionType,
-            this.subcomponent.subcomponentSpecificSettings, this.settings.options);
+          if (settingsRefreshEvent.newOption) {
+            const { buttonName, type } = settingsRefreshEvent.newOption;
+            this.settings = SettingsUtils.filterSettings(type, this.subcomponent);
+            this.settingsButtonOptionName = buttonName;
+            this.settingsButtonOptionType = type;
+            SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(type, this.subcomponent.subcomponentSpecificSettings,
+              this.settings.options);
+          } else {
+            this.settings = SettingsUtils.filterSettings(this.settingsButtonOptionType, this.subcomponent);
+          }
         }
         this.$nextTick(() => {
           const { customCss, activeCssPseudoClassesDropdownItem } = this.subcomponent;
@@ -263,7 +270,7 @@ export default {
           this.inputsValues = {};
           this.inputDropdownsValues = {};
           this.actionsDropdownsObjects = {};
-          this.actionsDropdownsButtonText = {};
+          if (!settingsRefreshEvent || settingsRefreshEvent.newOption) this.actionsDropdownsButtonText = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
               RangeUtils.updateSettings(setting, this.subcomponent);
@@ -308,6 +315,7 @@ export default {
     settings: {},
     settingsVisible: true,
     settingsButtonOptionName: null,
+    settingsButtonOptionType: null,
   }),
   methods: {
     selectSetting(callback?: () => void): void {

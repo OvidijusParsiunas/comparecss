@@ -10,6 +10,10 @@ export default {
         customFeatureObjectKeys: ['customStaticFeatures', 'image', 'data'],
         auxiliaryCustomFeatureObjectKeys: ['customStaticFeatures', 'image', 'name'],
         default: 'text',
+        uploadFileButtonProps: {
+          text: 'Upload',
+          fileTypes: 'image/*',
+        }
       },
     },
   ]

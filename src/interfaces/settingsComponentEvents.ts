@@ -15,4 +15,9 @@ export type ChangeChildComponentOrderEvent = [CHANGE_COMPONENT_ORDER_DIRECTIONS,
 
 export type ChangeChildComponentAlignmentEvent = [HORIZONTAL_ALIGNMENT_SECTIONS, HORIZONTAL_ALIGNMENT_SECTIONS, WorkshopComponent, boolean];
 
-export type SettingsRefreshEvent = { optionButtonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES, optionType: WORKSHOP_TOOLBAR_OPTION_TYPES };
+interface NewOption {
+  buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES;
+  type: WORKSHOP_TOOLBAR_OPTION_TYPES;
+}
+
+export type SettingsRefreshEvent = { newOption?: NewOption };

@@ -2,6 +2,7 @@ import { MouseClickNewItemEvent, MouseClickItemEvent, MouseEnterItemEvent } from
 import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { UseActionsDropdown } from '../../../../../../interfaces/useActionsDropdownComposition';
 import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
+import { SettingsRefreshEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { animationState } from '../../../componentPreview/utils/animations/state';
 import { Subcomponent, } from '../../../../../../interfaces/workshopComponent';
 import ActionsDropdownUtils from './utils/actionsDropdownUtils';
@@ -11,6 +12,11 @@ import { ComponentOptions } from 'vue';
 export default function useActionsDropdown(): UseActionsDropdown {
 
   const temporaryDropdownValue: TemporaryDropdownValue = { new: ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED, initial: ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED };
+
+  function refreshSettings(settingsComponent: ComponentOptions): void {
+    const refreshEvent: SettingsRefreshEvent = {};
+    setTimeout(() => settingsComponent.refreshSettings(refreshEvent));
+  }
 
   const getObjectContainingActiveOption = (settingSpec: any, subcomponent: Subcomponent): unknown => {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
@@ -52,6 +58,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
       triggeredItemName, subcomponent, settingSpec);
     if (customFeatureObjectKeys) ActionsDropdownUtils.mouseEnterActionsDropdownItemCustomFeature(temporaryDropdownValue,
       triggeredItemName, subcomponent, settingSpec, settingsComponent);
+    if (settingSpec.refreshSetting) refreshSettings(settingsComponent);
   }
   
   const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, settingSpec: any, subcomponent: Subcomponent,
@@ -61,6 +68,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (cssProperty) ActionsDropdownUtils.mouseLeaveActionsDropdownCustomCss(temporaryDropdownValue, subcomponent, settingSpec);
     if (customFeatureObjectKeys) ActionsDropdownUtils.mouseLeaveActionsDropdownItemCustomFeature(temporaryDropdownValue,
       subcomponent, settingSpec, settingsComponent, isDropdownHidden);
+    if (settingSpec.refreshSetting) refreshSettings(settingsComponent);
   }
 
   const mouseClickActionsDropdownItem = (settingsComponent: ComponentOptions, mouseClickItemEvent: MouseClickItemEvent, setting: any,

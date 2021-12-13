@@ -386,7 +386,7 @@ export default {
         return;
       }
       this.setNewActiveOption(option);
-      const settingsRefreshEvent: SettingsRefreshEvent = { optionButtonName: option.buttonName, optionType: option.type };
+      const settingsRefreshEvent: SettingsRefreshEvent = { newOption: { buttonName: option.buttonName, type: option.type }};
       this.$emit('trigger-settings-refresh', settingsRefreshEvent);
       this.resetComponentPreviewMarginAssistance();
     },

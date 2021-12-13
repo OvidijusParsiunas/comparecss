@@ -29,7 +29,7 @@ export class IconSpecificSettings {
 
   private static readonly ICON_BASE_SPECIFIC_SETTINGS: SubcomponentSpecificSettings = {
     [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: {
-      [SETTING_NAMES.TYPE]: {
+      [SETTING_NAMES.BASIC_ICON]: {
         actionsDropdownMouseEvents: IconSpecificSettings.ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
     },
