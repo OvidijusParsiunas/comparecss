@@ -152,12 +152,6 @@
                     {{setting.spec.uploadFileButtonProps.text}}
                 </button>
                 <div>{{imageNames[setting.spec.name]}}</div>
-                <button class="unset-setting-button" id="dropdownMenuButton"
-                  v-if="isRemoveImageButtonDisplayed(setting.spec.name)"
-                  @mousedown="selectSetting()"
-                  @click="changeSetting(removeImage.bind(this, setting.spec))">
-                  &times;
-                </button>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.BUTTONS">
@@ -409,12 +403,6 @@ export default {
     },
     uploadImage(event: any, spec: any): void {
       ImageUtils.uploadImage(this, event, spec);
-    },
-    isRemoveImageButtonDisplayed(settingName: string): boolean {
-      return this.subcomponent.subcomponentType !== SUBCOMPONENT_TYPES.IMAGE && this.imageNames[settingName];
-    },
-    removeImage(spec: any): void {
-      ImageUtils.removeImage(this, spec);
     },
     openActionsDropdownMenu(hideDropdownMenuCallbackEvent: WorkshopEventCallback, spec: any): void {
       ActionsDropdownUtils.setConsistentButtonContent(this, spec, this.subcomponent);

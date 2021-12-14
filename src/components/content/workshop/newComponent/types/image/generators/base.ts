@@ -29,7 +29,7 @@ class ImageBase extends ComponentBuilder {
         marginTop: '0px',
         marginRight: '0px',
         marginBottom: '0px',
-        width: '40px',
+        width: '64px',
         height: '38px',
         boxSizing: 'content-box',
         color: '#ffffff',

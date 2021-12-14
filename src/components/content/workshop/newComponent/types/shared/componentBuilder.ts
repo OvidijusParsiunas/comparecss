@@ -70,9 +70,10 @@ export class ComponentBuilder {
   }
 
   protected static createImage(isSvgImage = false, addDefault = true): Image {
+    const imageName = isSvgImage ? 'default.svg' : 'default.png';
     const imageData = isSvgImage ? svgImage : defaultImage;
     return {
-      name: addDefault ? 'default' : null,
+      name: addDefault ? imageName : null,
       data: addDefault ? imageData : null,
       size: true,
     };
