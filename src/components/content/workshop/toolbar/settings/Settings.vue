@@ -178,7 +178,7 @@
           </div>
           <button v-if="isResetButtonDisplayed()"
             class="reset-button"
-            @click="selectSetting(changeSetting.bind(this, resetSubcomponent.bind(this, settings.options)))">
+            @click="selectSetting(changeSetting.bind(this, resetSubcomponent.bind(this)))">
               &#8634;
             <!-- <i :class="['fa', 'fa-history']"></i> -->
           </button>
@@ -424,9 +424,10 @@ export default {
       this.actionsDropdownsButtonText[spec.name] = null;
       this.mouseLeaveActionsDropdown(this, spec, this.subcomponent, true)
     },
-    resetSubcomponent(options: any): void {
-      SettingsUtils.resetSubcomponent(options, this.subcomponent);
-      this.refreshSettings();
+    resetSubcomponent(): void {
+      SettingsUtils.resetSubcomponent(this.settingsButtonOptionType, this.subcomponent);
+      const settingsEvent: SettingsRefreshEvent = {};
+      this.refreshSettings(settingsEvent);
     },
     isResetButtonDisplayed(): boolean {
       const notResettableOption = this.settings.options?.find((option) => {

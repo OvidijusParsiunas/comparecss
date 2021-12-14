@@ -112,8 +112,8 @@ export default class SettingsUtils {
     if (resetCustomCss) SettingsUtils.resetCustomCss(subcomponent, resetCustomCss);
   }
 
-  public static resetSubcomponent(options: any, subcomponent: Subcomponent): void {
-    options.forEach((option) => {
+  public static resetSubcomponent(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES, subcomponent: Subcomponent): void {
+    optionToSettings[optionType].options.forEach((option) => {
       if (!option.spec) return;
       const { cssProperty, customFeatureObjectKeys, lastSelectedValueObjectKeys } = option.spec;
       if (customFeatureObjectKeys) {
