@@ -20,6 +20,7 @@ import { CloseTriggers } from './closeTriggers';
 import { TempCustomCss } from './tempCustomCss';
 import { Animations } from './animations';
 import { AutoSize } from './autoSize';
+import { Image } from './image';
 import { Icon } from './icon';
 import { Sync } from './sync';
 
@@ -79,12 +80,6 @@ export interface Text {
 
 export interface Alignment {
   horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS;
-}
-
-export interface Image {
-  name: string;
-  data: string;
-  size: boolean;
 }
 
 // should not be primitives as these values are copied by key

@@ -34,8 +34,8 @@ export default {
       type: SETTINGS_TYPES.UPLOAD_FILE,
       spec: {
         name: 'Image',
-        customFeatureObjectKeys: ['customStaticFeatures', 'image', 'data'],
-        auxiliaryCustomFeatureObjectKeys: ['customStaticFeatures', 'image', 'name'],
+        customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'svgImage', 'data'],
+        auxiliaryCustomFeatureObjectKeys: ['customStaticFeatures', 'icon', 'svgImage', 'name'],
         default: 'text',
         displayIfValueActive: {
           customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'type'],

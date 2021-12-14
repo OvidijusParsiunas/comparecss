@@ -49,7 +49,6 @@ export class IconBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       alignment: ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.CENTER),
-      image: ComponentBuilder.createImage(),
       icon: ComponentBuilder.createIcon(),
     };
   }

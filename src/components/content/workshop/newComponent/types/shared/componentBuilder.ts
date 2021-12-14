@@ -1,4 +1,4 @@
-import { Alignment, BackdropProperties, ComponentCenteringInScreen, Image, Subcomponent, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Alignment, BackdropProperties, ComponentCenteringInScreen, Subcomponent, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { SelectComponent, SELECT_CHILD_COMPONENT_STYLE_OPTIONS } from '../../../../../../interfaces/selectedChildComponent';
@@ -24,8 +24,10 @@ import { Animations } from '../../../../../../interfaces/animations';
 import { ICON_TYPES } from '../../../../../../consts/iconTypes.enum';
 import { Sync, Syncables } from '../../../../../../interfaces/sync';
 import { DEFAULT_TEXT } from '../../../../../../consts/defaultText';
+import { Image } from '../../../../../../interfaces/image';
 import { Icon } from '../../../../../../interfaces/icon';
 import { defaultImage } from './images/default';
+import { svgImage } from './images/svg';
 
 interface StationaryAnimationsArgs {
   isBackgroundZoomPresent?: boolean;
@@ -41,6 +43,7 @@ export class ComponentBuilder {
       name: DROPDOWN_ARROW_ICON_TYPES.CARET,
       isComponentDisplayed: true,
       type: ICON_TYPES.BASIC,
+      svgImage: ComponentBuilder.createImage(true),
     };
   }
 
@@ -66,12 +69,13 @@ export class ComponentBuilder {
     return { text };
   }
 
-  protected static createImage(addDefault = true): Image {
+  protected static createImage(isSvgImage = false, addDefault = true): Image {
+    const imageData = isSvgImage ? svgImage : defaultImage;
     return {
       name: addDefault ? 'default' : null,
-      data: addDefault ? defaultImage : null,
+      data: addDefault ? imageData : null,
       size: true,
-    }
+    };
   }
 
   protected static createDisplayAnimationsProperties(closeAnimationType = GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT,

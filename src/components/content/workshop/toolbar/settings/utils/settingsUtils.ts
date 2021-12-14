@@ -141,9 +141,9 @@ export default class SettingsUtils {
     return displayIfValueActive.value === currentValue;
   }
 
-  public static filterSettings(settingOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES, subcomponent: Subcomponent): any {
-    return { options: optionToSettings[settingOptionType].options.filter(
-      (settingOption) => SettingsUtils.isSettingDisplayed(settingOption.spec, subcomponent)),
+  public static filterSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES, subcomponent: Subcomponent): any {
+    return { options: optionToSettings[optionType].options.filter(
+      (option) => SettingsUtils.isSettingDisplayed(option.spec, subcomponent)),
     };
   }
 }

@@ -1,9 +1,9 @@
 import { SelectedChildComponentUtil } from '../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
-import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
@@ -15,6 +15,7 @@ import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../../consts/sharedClasses';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
+import { ICON_TYPES } from '../../../../../consts/iconTypes.enum';
 import { Ref } from 'vue';
 
 export default function useBaseComponent(component: Ref<WorkshopComponent>, isChildComponent: Ref<boolean>, useIconComponent: UseIconComponent): UseBaseComponent {
@@ -70,6 +71,20 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     return [...classes, ...getComponentCssClasses()];
   }
 
+  function buildBackgroundImageURL(imageData: string): string {
+    return 'url(' + imageData + ')';
+  }
+
+  function getBackgroundImageCss(customStaticFeatures: CustomStaticFeatures): WorkshopComponentCss {
+    if (component.value.type === COMPONENT_TYPES.IMAGE) {
+      return { backgroundImage: buildBackgroundImageURL(customStaticFeatures.image.data) };
+    }
+    if (customStaticFeatures?.icon?.type === ICON_TYPES.CUSTOM) {
+      return { backgroundImage: buildBackgroundImageURL(customStaticFeatures.icon.svgImage.data) };
+    }
+    return { backgroundImage: '' };
+  }
+
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
     if (customFeatures?.jsClasses?.has(JAVASCRIPT_CLASSES.RIPPLES)) {
       return { overflow: 'hidden' };
@@ -119,6 +134,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.value.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const cssPseudoClass = getCssPseudoClass(activeCssPseudoClassesDropdownItem);
+    const backgroundImageCss = getBackgroundImageCss(customStaticFeatures);
     const inheritedCssFromCustomCss = getInheritedCss(cssPseudoClass, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(subcomponentCss);
@@ -128,7 +144,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
       inheritedCss || {},
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[cssPseudoClass],
-      { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
+      backgroundImageCss,
       useIconComponent.isSVGIcon() ? { pointerEvents: 'none' } : {},
       inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,

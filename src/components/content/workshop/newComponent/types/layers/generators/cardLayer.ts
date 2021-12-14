@@ -33,7 +33,7 @@ class CardLayer extends ComponentBuilder {
 
   private static createDefaultLayerCustomStaticFeatures(): CustomStaticFeatures {
     return {
-      image: ComponentBuilder.createImage(false),
+      image: ComponentBuilder.createImage(false, false),
     };
   }
 
