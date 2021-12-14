@@ -75,12 +75,20 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     return 'url(' + imageData + ')';
   }
 
-  function getBackgroundImageCss(customStaticFeatures: CustomStaticFeatures): WorkshopComponentCss {
+  function getIconCss(customStaticFeatures: CustomStaticFeatures, customCss: CustomCss): WorkshopComponentCss {
+    if (customStaticFeatures.icon.type === ICON_TYPES.CUSTOM) {
+      return { backgroundImage: buildBackgroundImageURL(customStaticFeatures.icon.svgImage.data) };
+    }
+    const heightNumber = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT].height);
+    return { height: `${heightNumber * 2}px` };
+  }
+
+  function getImageCss(customStaticFeatures: CustomStaticFeatures, customCss: CustomCss): WorkshopComponentCss {
     if (component.value.type === COMPONENT_TYPES.IMAGE) {
       return { backgroundImage: buildBackgroundImageURL(customStaticFeatures.image.data) };
     }
-    if (customStaticFeatures?.icon?.type === ICON_TYPES.CUSTOM) {
-      return { backgroundImage: buildBackgroundImageURL(customStaticFeatures.icon.svgImage.data) };
+    if (useIconComponent.isIcon()) {
+      return getIconCss(customStaticFeatures, customCss);
     }
     return { backgroundImage: '' };
   }
@@ -134,7 +142,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.value.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const cssPseudoClass = getCssPseudoClass(activeCssPseudoClassesDropdownItem);
-    const backgroundImageCss = getBackgroundImageCss(customStaticFeatures);
+    const backgroundImageCss = getImageCss(customStaticFeatures, customCss);
     const inheritedCssFromCustomCss = getInheritedCss(cssPseudoClass, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(subcomponentCss);
@@ -145,7 +153,6 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[cssPseudoClass],
       backgroundImageCss,
-      useIconComponent.isSVGIcon() ? { pointerEvents: 'none' } : {},
       inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,

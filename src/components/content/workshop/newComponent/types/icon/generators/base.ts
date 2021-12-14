@@ -31,7 +31,7 @@ export class IconBase extends ComponentBuilder {
         marginRight: '0px',
         marginTop: '0px',
         marginBottom: '0px',
-        height: '80px',
+        height: '10px',
         borderTopWidth: '0px',
         borderRightWidth: '0px',
         borderLeftWidth: '0px',

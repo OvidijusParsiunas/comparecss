@@ -1,6 +1,5 @@
-import { WorkshopComponent } from './workshopComponent';
-
 export interface UseIconComponent {
-  isSVGIcon: (componentArg?: WorkshopComponent) => boolean;
-  getSVGIconName: (componentArg?: WorkshopComponent) => string;
+  isIcon: () => boolean;
+  isSVGIcon: () => boolean;
+  getSVGIconName: () => string;
 }

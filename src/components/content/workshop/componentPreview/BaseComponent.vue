@@ -22,7 +22,7 @@
       </component>
       <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
       <div v-else :style="getComponentStyleProperties()"></div>
-      <div v-if="getSVGIconName()"
+      <div v-if="isIcon()"
         :id="getBaseId('subcomponentId')"
         :style="getOverlayStyleProperties()"
         :class="getOverlayCssClasses(true)"
