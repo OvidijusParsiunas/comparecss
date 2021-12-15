@@ -29,19 +29,16 @@ export class SelectedChildComponentUtil {
     return childComponent.baseSubcomponent.customStaticFeatures.selectComponent.child.containerSelectComponentObj;
   }
 
-  private static setNewSelectedComponentOnContainer(childComponent: WorkshopComponent): void {
-    const selectedChildComponentContainer = SelectedChildComponentUtil.getChildContainerSelectComponentObj(childComponent);
-    if (selectedChildComponentContainer.selectedComponent) SelectedChildComponentUtil.unselectButton(selectedChildComponentContainer);
+  private static selectNewChild(childComponent: WorkshopComponent, selectedChildComponentContainer: SelectComponentContainer): void {
+    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtil.childComponentTraversalCallback.bind(true), childComponent);
     selectedChildComponentContainer.selectedComponent = childComponent;
   }
 
-  private static selectNewChild(childComponent: WorkshopComponent): void {
-    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtil.childComponentTraversalCallback.bind(true), childComponent);
-  }
-
   public static select(childSubcomponent: Subcomponent): void {
-    SelectedChildComponentUtil.selectNewChild(childSubcomponent.seedComponent);
-    SelectedChildComponentUtil.setNewSelectedComponentOnContainer(childSubcomponent.seedComponent);
+    const childComponent = childSubcomponent.seedComponent;
+    const selectedChildComponentContainer = SelectedChildComponentUtil.getChildContainerSelectComponentObj(childComponent);
+    if (selectedChildComponentContainer.selectedComponent) SelectedChildComponentUtil.unselectButton(selectedChildComponentContainer);
+    SelectedChildComponentUtil.selectNewChild(childComponent, selectedChildComponentContainer);
   }
 
   public static doesContainerHaveSelectedChildren(containerComponent: WorkshopComponent): boolean {
