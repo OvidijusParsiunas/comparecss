@@ -28,9 +28,13 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  private static incrementAndCopy(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
+  private static addAndCopy(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
     if (!siblingComponentTypes[component.type]) {
-      siblingComponentTypes[component.type] = { components: new Set([component]), customDynamicProperties: component.baseSubcomponent };
+      siblingComponentTypes[component.type] = { components: new Set([]), customDynamicProperties: null };
+    }
+    if (siblingComponentTypes[component.type].components.size === 0) {
+      siblingComponentTypes[component.type].components.add(component);
+      siblingComponentTypes[component.type].customDynamicProperties = component.baseSubcomponent;
     } else {
       siblingComponentTypes[component.type].components.add(component);
       AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
@@ -40,21 +44,21 @@ export class AutoSyncedSiblingContainerComponentUtils {
 
   public static copySiblingIfAutoSynced(childComponent: WorkshopComponent): void {
     AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(childComponent,
-      AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
+      AutoSyncedSiblingContainerComponentUtils.addAndCopy);
   }
 
-  private static decrementAndRemoveIfNoneLeft(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
+  private static remove(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
     if (siblingComponentTypes[component.type]) {
       siblingComponentTypes[component.type].components.delete(component);
     }
     if (siblingComponentTypes[component.type]?.components.size === 0) {
-      delete siblingComponentTypes[component.type];
+      siblingComponentTypes[component.type].customDynamicProperties = null;
     }
   }
 
   public static decrementSiblingComponentCount(childComponent: WorkshopComponent): void {
     AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(childComponent,
-      AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
+      AutoSyncedSiblingContainerComponentUtils.remove);
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {

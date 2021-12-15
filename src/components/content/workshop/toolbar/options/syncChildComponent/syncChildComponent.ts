@@ -73,7 +73,7 @@ export class SyncChildComponent {
     const subcomponentToBeSyncedTo = componentToBeSyncedTo?.sync.syncables.onSyncComponents.uniqueComponents[componentType]?.baseSubcomponent;
     // when neither the component to be synced to nor the exact sibling component has a particular subcomponent
     // (if sibling component does have the subcomponent it is added by the normal syncSubcomponent process)
-    if (!subcomponentToBeSyncedTo || !siblingComponentTypes[componentType]) return;
+    if (!subcomponentToBeSyncedTo || siblingComponentTypes[componentType].components.size === 0) return;
     const { customDynamicProperties: siblingComponentProperties } = siblingComponentTypes[componentType] as SiblingComponentState;
     if (isTemporary) SyncChildComponent.moveCustomPropertiesToTempProperties(siblingComponentProperties);
     Object.assign(siblingComponentProperties.customCss, subcomponentToBeSyncedTo.customCss);

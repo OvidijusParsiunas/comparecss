@@ -54,7 +54,7 @@ export class SyncChildComponentUtils {
       siblingComponentTypes?: SiblingComponentTypes): void {
     const { uniqueComponents } = childComponent.sync.syncables.onSyncComponents || {};
     if (uniqueComponents) {
-      Object.keys(uniqueComponents).forEach((componentType) => {
+      Object.keys(uniqueComponents).forEach((componentType: COMPONENT_TYPES) => {
         const component: WorkshopComponent = uniqueComponents[componentType];
         if (component) callback(component, siblingComponentTypes);
       });
