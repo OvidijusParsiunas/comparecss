@@ -1,9 +1,14 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
-import { SiblingComponentState } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { SiblingComponentState, SiblingComponentTypes } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { ComponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+
+interface CleanPropertiesContext {
+  resetCustomProperties: boolean;
+  siblingComponentTypes: SiblingComponentTypes;
+}
 
 export class CleanSyncChildComponentMode {
 
@@ -19,9 +24,8 @@ export class CleanSyncChildComponentMode {
     });
   }
 
-  private static resetOriginalCustomProperties(baseSubcomponent: Subcomponent): void {
+  private static resetOriginalCustomProperties(baseSubcomponent: Subcomponent, siblingComponentTypes: SiblingComponentTypes): void {
     if (!baseSubcomponent.tempOriginalCustomProperties) return;
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(baseSubcomponent.seedComponent);
     if (siblingComponentTypes) {
       // this is used to unsync custom properties for synced auto synced components like buttons in a button group
       Object.assign(baseSubcomponent.customCss, baseSubcomponent.tempOriginalCustomProperties.customCss);
@@ -46,12 +50,12 @@ export class CleanSyncChildComponentMode {
     });
   }
 
-  private static resetBaseSubcomponent(activeComponentTraversal: ComponentPreviewTraversalState): ComponentPreviewTraversalState {
-    const resetBaseSubcomponent = this as any as boolean;
+  private static cleanProperties(activeComponentTraversal: ComponentPreviewTraversalState): ComponentPreviewTraversalState {
+    const { resetCustomProperties, siblingComponentTypes } = this as any as CleanPropertiesContext;
     const { component } = activeComponentTraversal;
     const { baseSubcomponent, sync: { syncExecutables } } = component;
-    if (resetBaseSubcomponent) {
-      CleanSyncChildComponentMode.resetOriginalCustomProperties(baseSubcomponent);
+    if (resetCustomProperties) {
+      CleanSyncChildComponentMode.resetOriginalCustomProperties(baseSubcomponent, siblingComponentTypes);
       syncExecutables?.off?.(component, false);
     }
     delete baseSubcomponent.tempOriginalCustomProperties;
@@ -59,10 +63,11 @@ export class CleanSyncChildComponentMode {
     return activeComponentTraversal;
   }
 
-  public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetBaseSubcomponent = true): void {
+  public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetCustomProperties = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
     TraverseComponentViaPreviewStructureParentFirst.traverse(
-      CleanSyncChildComponentMode.resetBaseSubcomponent.bind(resetBaseSubcomponent), activeComponent);
+      CleanSyncChildComponentMode.cleanProperties.bind({resetCustomProperties, siblingComponentTypes} as CleanPropertiesContext), activeComponent);
     CleanSyncChildComponentMode.unsetSiblingComponentPropertiesThatWereMissing(activeComponent);
   }
   

@@ -67,7 +67,7 @@ export class SyncChildComponentModeToggleOff {
     SyncChildComponentModeToggleOff.toggleOff(optionsComponent, false);
   }
 
-  public static resetComponent(activeComponent: WorkshopComponent, isWaitFadeAnimation: boolean): void {
+  private static resetComponent(activeComponent: WorkshopComponent, isWaitFadeAnimation: boolean): void {
     // timeout is used to not reset component immediately when the expanded modal mode has been closed by the sync child component mode
     setTimeout(() => {
       CleanSyncChildComponentMode.cleanComponent(activeComponent);
