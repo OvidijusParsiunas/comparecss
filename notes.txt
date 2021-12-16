@@ -6,6 +6,9 @@ when syncing button to button group - the border does not always tend to appear 
 
 after syncing button to one with item and then deleting the item from synced to component and adding a new item to the button group button does not have consistent size
 after syncing button to a component with item and then one without, the item still remains synced to the older component
+item should not change when copying (image/image)
+
+adding a dropdown layer does not remove temp layer
 
 night diving
 
