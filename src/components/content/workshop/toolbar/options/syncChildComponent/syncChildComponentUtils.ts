@@ -1,8 +1,9 @@
+import { CustomDynamicProperties, Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
-import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
+import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export type SyncableComponentTraversalCallback = (
   component: WorkshopComponent, siblingComponentTypes?: SiblingComponentTypes) => void;
@@ -61,5 +62,10 @@ export class SyncChildComponentUtils {
     } else {
       callback(childComponent, siblingComponentTypes);
     }
+  }
+  
+  public static dereferenceSubcomponent(subcomponent: CustomDynamicProperties): void {
+    subcomponent.customCss = JSONUtils.deepCopy(subcomponent.customCss);
+    subcomponent.customFeatures = JSONUtils.deepCopy(subcomponent.customFeatures);
   }
 }

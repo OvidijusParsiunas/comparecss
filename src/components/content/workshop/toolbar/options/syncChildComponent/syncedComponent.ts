@@ -2,58 +2,31 @@ import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/c
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { AutoSyncedSiblingComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
-import { SiblingComponentTypes, SiblingComponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { ComponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
-import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import { SyncChildComponent } from './syncChildComponent';
-import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
 
-  private static dereferenceSyncedComponentCustomProperties(componentTraversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
+  private static unsyncComponent(componentTraversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
     const { component } = componentTraversalState;
     const { baseSubcomponent, sync: { syncExecutables } } = component;
-    baseSubcomponent.customCss = JSONUtils.deepCopy(baseSubcomponent.customCss);
-    baseSubcomponent.customFeatures = JSONUtils.deepCopy(baseSubcomponent.customFeatures);
+    SyncChildComponentUtils.dereferenceSubcomponent(baseSubcomponent);
     const propertySharingFuncType = baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.LAYER ? 'layer' : 'container';
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(false, propertySharingFuncType, component);
     syncExecutables?.off?.(component, true);
     return {};
   }
 
-  private static removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent: WorkshopComponent,
-      siblingComponentTypes: SiblingComponentTypes): void {
-    const { alignmentSectionToComponents } = inSyncComponent.parentLayer;
-    Object.keys(alignmentSectionToComponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
-      alignmentSectionToComponents[alignmentSection].forEach((component) => {
-        component.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(component);
-        component.sync.componentThisIsSyncedTo = null;
-        SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingComponentUtils.copySiblingComponentSyncableTraversalCallback,
-          component, siblingComponentTypes);
-        component.sync.syncExecutables?.off?.(component, true);
-      });
-    });
-  }
-
-  private static dereferenceSiblingChildComponents(siblingComponentTypes: SiblingComponentTypes): void {
-    Object.keys(siblingComponentTypes).forEach((subcomponentType: keyof SUBCOMPONENT_TYPES) => {
-      const { customDynamicProperties } = siblingComponentTypes[subcomponentType] as SiblingComponentState;
-      customDynamicProperties.customCss = JSONUtils.deepCopy(customDynamicProperties.customCss);
-      customDynamicProperties.customFeatures = JSONUtils.deepCopy(customDynamicProperties.customFeatures);
-    });
-  }
-
   private static unsyncFromComponentCurrentlySyncedTo(inSyncComponent: WorkshopComponent): void {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(inSyncComponent);
     if (siblingComponentTypes) {
-      SyncedComponent.dereferenceSiblingChildComponents(siblingComponentTypes);
-      SyncedComponent.removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent, siblingComponentTypes);
+      AutoSyncedSiblingComponentUtils.dereferenceAllChildComponentsAndResyncTogether(inSyncComponent, siblingComponentTypes);
     } else {
-      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceSyncedComponentCustomProperties, inSyncComponent);
+      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.unsyncComponent, inSyncComponent);
     }
   }
 

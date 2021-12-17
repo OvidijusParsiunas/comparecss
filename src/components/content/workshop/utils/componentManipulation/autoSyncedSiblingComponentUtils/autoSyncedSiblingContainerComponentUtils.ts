@@ -1,5 +1,6 @@
 import { SyncableComponentTraversalCallback, SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { SyncChildComponent } from '../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -20,14 +21,6 @@ export class AutoSyncedSiblingContainerComponentUtils {
     return AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(component.containerComponent, numberOfLevels -= 1);
   }
 
-  private static callCountManipulationCallbackOnSubcomponents(childComponent: WorkshopComponent,
-      callback: SyncableComponentTraversalCallback): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(childComponent, 2);
-    if (siblingComponentTypes) {
-      SyncChildComponentUtils.callFuncOnSyncableComponents(callback, childComponent, siblingComponentTypes);
-    }
-  }
-
   private static addAndCopy(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
     if (!siblingComponentTypes[component.type]) {
       siblingComponentTypes[component.type] = { components: new Set([]), customDynamicProperties: null };
@@ -42,9 +35,34 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  public static copySiblingIfAutoSynced(childComponent: WorkshopComponent): void {
-    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(childComponent,
-      AutoSyncedSiblingContainerComponentUtils.addAndCopy);
+  private static callCountManipulationCallbackOnSubcomponents(callback: SyncableComponentTraversalCallback, childComponent: WorkshopComponent): void {
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(childComponent, 2);
+    if (siblingComponentTypes) {
+      SyncChildComponentUtils.callFuncOnSyncableComponents(callback, childComponent, siblingComponentTypes);
+    }
+  }
+
+  private static copy(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
+    const { customDynamicProperties } = siblingComponentTypes[component.type] || {};
+    if (customDynamicProperties) {
+      AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(component.baseSubcomponent, customDynamicProperties);
+    }
+  }
+
+  private static copyComponent(containerComponent: WorkshopComponent, childComponent: WorkshopComponent): void {
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(containerComponent, 1);
+    if (siblingComponentTypes) {
+      SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingContainerComponentUtils.copy, childComponent, siblingComponentTypes);
+    }
+  }
+
+  public static copySiblingIfAutoSynced(childComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    if (childComponent.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
+      AutoSyncedSiblingContainerComponentUtils.copyComponent(childComponent, containerComponent);
+    } else {
+      AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
+        AutoSyncedSiblingContainerComponentUtils.addAndCopy, childComponent);
+    }
   }
 
   private static remove(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
@@ -57,8 +75,8 @@ export class AutoSyncedSiblingContainerComponentUtils {
   }
 
   public static decrementSiblingComponentCount(childComponent: WorkshopComponent): void {
-    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(childComponent,
-      AutoSyncedSiblingContainerComponentUtils.remove);
+    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
+      AutoSyncedSiblingContainerComponentUtils.remove, childComponent);
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {
