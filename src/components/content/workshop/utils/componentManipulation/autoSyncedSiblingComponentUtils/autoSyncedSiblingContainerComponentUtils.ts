@@ -49,8 +49,9 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  private static copyComponent(containerComponent: WorkshopComponent, childComponent: WorkshopComponent): void {
-    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(containerComponent, 1);
+  private static copyComponent(childComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    const siblingComponentTypes = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(childComponent)?.siblingComponentTypes
+      || AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(containerComponent)?.siblingComponentTypes;
     if (siblingComponentTypes) {
       SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingContainerComponentUtils.copy, childComponent, siblingComponentTypes);
     }

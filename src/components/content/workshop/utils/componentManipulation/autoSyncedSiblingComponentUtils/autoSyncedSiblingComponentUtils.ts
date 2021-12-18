@@ -26,7 +26,7 @@ export class AutoSyncedSiblingComponentUtils {
   }
 
   public static getParentLayerSiblingChildComponentsAutoSyncedObject(component: WorkshopComponent): SiblingChildComponentsAutoSynced {
-    return component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
+    return component.parentLayer?.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
   }
 
   private static traverseAllSiblingComponents(callback: TraverseAllSiblingComponentsCallback, inSyncComponent: WorkshopComponent,
