@@ -5,11 +5,13 @@ import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../..
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
+import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
 import ComponentPreviewUtils from '../../../../componentPreview/utils/componentPreviewUtils';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 
 export class ButtonGroupCompositionAPIUtils {
 
@@ -188,5 +190,11 @@ export class ButtonGroupCompositionAPIUtils {
     const { marginLeft } = buttonGroupComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const marginLeftNumber = Number.parseFloat(marginLeft);
     return `${marginLeftNumber - 2}px`;
+  }
+
+  public static isButtonGroupComponentButton(component: WorkshopComponent): boolean {
+    return component.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP || 
+      (component.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY
+        && component.parentLayer.subcomponent.seedComponent.containerComponent.type === COMPONENT_TYPES.BUTTON_GROUP);
   }
 }

@@ -6,7 +6,6 @@ import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../co
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
-import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { UseBaseComponent } from '../../../../../interfaces/useBaseComponent';
@@ -27,7 +26,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   };
 
   const getBaseContainerParentStyleProperties = (): WorkshopComponentCss => {
-    return component.value.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP
+    return ButtonGroupCompositionAPIUtils.isButtonGroupComponentButton(component.value)
       ? ButtonGroupCompositionAPIUtils.getButtonComponentParentContainerDivCss(component.value.baseSubcomponent)
       : {};
   };
@@ -115,9 +114,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   }
 
   function getButtonGroupButtonOverwrittenCss(): WorkshopComponentCss {
-    return component.value.containerComponent?.type === COMPONENT_TYPES.BUTTON_GROUP || 
-        (component.value.activeSubcomponentName === TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY
-          && component.value.parentLayer.subcomponent.seedComponent.containerComponent.type === COMPONENT_TYPES.BUTTON_GROUP)
+    return ButtonGroupCompositionAPIUtils.isButtonGroupComponentButton(component.value)
       ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component.value) : {};
   }
 
