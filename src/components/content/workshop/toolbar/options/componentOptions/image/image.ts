@@ -8,8 +8,8 @@ type ImageOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 export const imageOptions: SubcomponentOptions<ImageOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,

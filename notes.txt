@@ -1,5 +1,4 @@
 allow any icon to be added to button
-change image background to image
 upon selecting a new button and quickly moving mouse up - the animation is cancelled
 add shadow to hover then select the active style to be click
 when syncing button to button group - the border does not always tend to appear - especially if try to sync other buttons

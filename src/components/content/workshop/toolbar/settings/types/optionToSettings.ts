@@ -17,7 +17,6 @@ import marginHorizontal from './marginHorizontal';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
-import backgroundImage from './backgroundImage';
 import paddingVertical from './paddingVertical';
 import selectDropdown from './selectDropdown';
 import closeAnimation from './closeAnimation';
@@ -38,6 +37,7 @@ import padding from './padding';
 import border from './border';
 import shadow from './shadow';
 import margin from './margin';
+import image from './image';
 import color from './color';
 import size from './size';
 import font from './font';
@@ -53,6 +53,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_COLOR]: borderColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM]: borderBottom,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.CIRCLE_BORDER]: circleBorder,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE]: image,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW]: shadow,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL]: shadowVertical,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
@@ -68,7 +69,6 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR]: backgroundColor,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE]: backgroundImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE]: backgroundColorImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
