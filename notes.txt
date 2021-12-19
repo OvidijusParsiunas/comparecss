@@ -1,7 +1,9 @@
 allow any icon to be added to button
 upon selecting a new button and quickly moving mouse up - the animation is cancelled
 add shadow to hover then select the active style to be click
-when syncing button to button group - the border does not always tend to appear - especially if try to sync other buttons
+after syncing to a button with borders and then clicking unsync displays the original border width
+after syncing to a button with borders then attempting to sync to a button without by hovering does not preview button group without borders and they are removed only after the user clicks on
+the button component card
 
 item should not change when copying (image/image)
 

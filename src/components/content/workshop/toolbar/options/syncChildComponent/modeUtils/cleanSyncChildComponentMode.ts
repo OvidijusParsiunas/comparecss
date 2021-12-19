@@ -40,14 +40,9 @@ export class CleanSyncChildComponentMode {
     }
   }
 
-  private static unsetSiblingChildComponentsAutoSynced(component: WorkshopComponent): void {
-    setTimeout(() => {
-      // the reason why this is in a timeout is because after confirming sync there is an intermidiate period when the dom has
-      // not refreshed to indicate that the component is in sync and the areChildrenComponentsTemporarilySynced are removed
-      // causing original properties that were overwritten in ButtonGroupCompositionAPIUtils to be briefly displayed
-      const { siblingChildComponentsAutoSynced } = component.parentLayer?.subcomponent.seedComponent.sync || {};
-      if (siblingChildComponentsAutoSynced) siblingChildComponentsAutoSynced.areChildrenComponentsTemporarilySynced = false;
-    });
+  private static unsetSiblingChildComponentsAutoSynced(component: WorkshopComponent): void {     
+    const { siblingChildComponentsAutoSynced } = component.parentLayer?.subcomponent.seedComponent.sync || {};
+    if (siblingChildComponentsAutoSynced) siblingChildComponentsAutoSynced.areChildrenComponentsTemporarilySynced = false;
   }
 
   private static cleanProperties(activeComponentTraversal: ComponentPreviewTraversalState): ComponentPreviewTraversalState {

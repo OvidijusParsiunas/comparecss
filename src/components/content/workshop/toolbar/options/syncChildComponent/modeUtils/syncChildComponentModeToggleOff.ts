@@ -62,7 +62,11 @@ export class SyncChildComponentModeToggleOff {
         SyncChildComponentModeToggleOff.finishSyncingComponent(activeComponent, lastSelectedComponentToSync);
       }, optionsComponent.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
-    CleanSyncChildComponentMode.cleanComponent(optionsComponent.component, false);
+    // the reason why cleanComponent is in a timeout is because after confirming sync there is an intermidiate period when the dom
+    // has not refreshed to indicate that the component is in sync and the areChildrenComponentsTemporarilySynced are removed
+    // causing original properties that were overwritten in ButtonGroupCompositionAPIUtils to be briefly displayed
+    // the issue can be replicated by attempting to sync to a button that has a lot of properties like borders and shadows
+    setTimeout(() => CleanSyncChildComponentMode.cleanComponent(optionsComponent.component, false));
     CleanSyncChildComponentMode.deleteLastSelectedComponentToSync(optionsComponent.component);
     SyncChildComponentModeToggleOff.toggleOff(optionsComponent, false);
   }
