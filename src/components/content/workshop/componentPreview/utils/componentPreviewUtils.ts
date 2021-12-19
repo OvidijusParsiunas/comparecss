@@ -82,7 +82,7 @@ export default class ComponentPreviewUtils {
   public static getInheritedValuesFromCustomCss(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss,
       ...inheritableCssPropertyKeys: (keyof InheritableCssProperties)[]): WorkshopComponentCss {
     const inheritedValues: WorkshopComponentCss = {};
-    (inheritableCssPropertyKeys || ALL_INHERITABLE_CSS_PROPERTY_KEYS).forEach((cssPropertyKey) => {
+    (inheritableCssPropertyKeys.length > 0 ? inheritableCssPropertyKeys : ALL_INHERITABLE_CSS_PROPERTY_KEYS).forEach((cssPropertyKey) => {
       ComponentPreviewUtils.setInheritedCustomCssValue(inheritedValues, activeCssPseudoClassesDropdownItem, customCss, cssPropertyKey);
     });
     return inheritedValues;

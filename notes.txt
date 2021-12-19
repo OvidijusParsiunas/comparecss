@@ -2,7 +2,6 @@ allow any icon to be added to button
 upon selecting a new button and quickly moving mouse up - the animation is cancelled
 add shadow to hover then select the active style to be click
 when syncing button to button group - the border does not always tend to appear - especially if try to sync other buttons
-border color does not display correctly when item selected
 
 item should not change when copying (image/image)
 
