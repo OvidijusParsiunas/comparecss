@@ -76,7 +76,8 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
     if (SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || isPermanentSync) {
-      ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
+      const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonComponent.containerComponent);
+      if (buttonComponents[0] === buttonComponent) ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
     }
   }
 

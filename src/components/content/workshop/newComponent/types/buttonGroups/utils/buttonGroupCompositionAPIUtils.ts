@@ -2,6 +2,7 @@ import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentMani
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { SiblingChildComponentsAutoSynced } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
@@ -162,8 +163,19 @@ export class ButtonGroupCompositionAPIUtils {
     siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent = overwriteCssForSyncedComponent;
   }
 
+  private static assignOverwriteCssForSyncedComponentToCustomCss(component: WorkshopComponent,
+      siblingChildComponentsAutoSynced: SiblingChildComponentsAutoSynced): void {
+    const { customCss } = component.baseSubcomponent;
+    Object.keys(customCss).forEach((pseudoClass) => {
+      Object.assign(customCss[pseudoClass], {
+        ...customCss[pseudoClass],
+        ...siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent[pseudoClass] });
+    });  
+  }
+
   public static unsetOverwriteCssForSyncedComponent(component: WorkshopComponent): void {
     const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
+    ButtonGroupCompositionAPIUtils.assignOverwriteCssForSyncedComponentToCustomCss(component, siblingChildComponentsAutoSynced);
     delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent;
   }
 
