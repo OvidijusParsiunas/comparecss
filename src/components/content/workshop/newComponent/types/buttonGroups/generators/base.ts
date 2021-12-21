@@ -74,15 +74,23 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
+  // need to note that when the user clicks the copy button again that it may need to resync with original sync
+  // also does not get called for all sibling components
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || isPermanentSync) {
+    console.log(!isPermanentSync && SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent));
+    if (isPermanentSync || SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
+      // when copy is unset, these properties unset the last selected overwriteCssForSyncedComponent
+      // the core issue is that unset is the last thing is triggered when the user leaves mouse
+      // from another card and then clicks copy. Also, putting css to custom css may
+      // not be the correct strategy
+      console.log(buttonComponent);
       const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonComponent.containerComponent);
       if (buttonComponents[0] === buttonComponent) ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
     }
   }
 
   private static onSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || isPermanentSync) {
+    if (isPermanentSync || SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
       ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
     }
     if (isPermanentSync) {

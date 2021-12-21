@@ -175,8 +175,10 @@ export class ButtonGroupCompositionAPIUtils {
 
   public static unsetOverwriteCssForSyncedComponent(component: WorkshopComponent): void {
     const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
-    ButtonGroupCompositionAPIUtils.assignOverwriteCssForSyncedComponentToCustomCss(component, siblingChildComponentsAutoSynced);
-    delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent;
+    if (siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent) {
+      ButtonGroupCompositionAPIUtils.assignOverwriteCssForSyncedComponentToCustomCss(component, siblingChildComponentsAutoSynced);
+      delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent; 
+    }
   }
 
   // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths

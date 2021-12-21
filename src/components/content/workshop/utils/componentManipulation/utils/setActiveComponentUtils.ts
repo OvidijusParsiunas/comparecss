@@ -30,6 +30,7 @@ export class SetActiveComponentUtils {
     workshopComponent.currentlySelectedComponent = component;
     ComponentJs.manipulateJSClasses(workshopComponent.currentlySelectedComponent.type, 'initializeJS');
     workshopComponent.$refs.toolbar.updateToolbarForNewComponent();
+    (workshopComponent.currentlySelectedComponent as WorkshopComponent).componentSwitchFuncs?.onDisplay?.(workshopComponent.currentlySelectedComponent);
   }
 
   public static setActiveComponent(workshopComponent: ComponentOptions, component?: WorkshopComponent): void {
@@ -47,6 +48,5 @@ export class SetActiveComponentUtils {
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       SetActiveComponentUtils.switchActiveComponent(workshopComponent, component);
     }
-    (workshopComponent.currentlySelectedComponent as WorkshopComponent).componentSwitchFuncs?.onDisplay?.(workshopComponent.currentlySelectedComponent);
   }
 }
