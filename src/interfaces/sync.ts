@@ -6,6 +6,8 @@ import { WorkshopComponent } from './workshopComponent';
 
 interface SyncExecutables {
   on?: (componentToBeSynced: WorkshopComponent, isPermanentSync: boolean) => void;
+  // this is triggered when the user clicks the unsync button, changes the settings of an synced component,
+  // clicks the copy button to turn of the sync mode and leaves an unselected component card
   off?: (componentToBeSynced: WorkshopComponent, isPermanentSync: boolean) => void;
 }
 

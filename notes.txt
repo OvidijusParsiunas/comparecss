@@ -4,7 +4,7 @@ add shadow to hover then select the active style to be click
 after syncing to a button with borders then attempting to sync to a button without by hovering does not preview button group without borders and they are removed only after the user clicks on
 the button component card
 
-item should not change when copying (image/image)
+item should not change when copying (image/icon)
 
 adding a dropdown layer does not remove temp layer
 
