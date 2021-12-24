@@ -1,3 +1,4 @@
+import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
@@ -29,7 +30,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setOverwriteCssForSyncedComponent(buttonComponent: WorkshopComponent): void {
     if (SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
-      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
+      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent, 'overwriteCssForSyncedComponent');
     }
   }
 
@@ -74,28 +75,24 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
-  // need to note that when the user clicks the copy button again that it may need to resync with original sync
-  // also does not get called for all sibling components
+  // identify if need to call it for all components all the time
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    console.log(!isPermanentSync && SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent));
-    if (isPermanentSync || SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
-      // when copy is unset, these properties unset the last selected overwriteCssForSyncedComponent
-      // the core issue is that unset is the last thing is triggered when the user leaves mouse
-      // from another card and then clicks copy. Also, putting css to custom css may
-      // not be the correct strategy
-      console.log(buttonComponent);
+    if (isPermanentSync) {
       const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonComponent.containerComponent);
       if (buttonComponents[0] === buttonComponent) ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
+    } else {
+      const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(buttonComponent);
+      delete siblingChildComponentsAutoSynced.tempOverwriteCssForSyncedComponent;
     }
   }
 
   private static onSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
-    if (isPermanentSync || SelectedChildComponentUtil.doesContainerHaveSelectedChildren(buttonComponent) || SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
-      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent);
-    }
     if (isPermanentSync) {
+      AutoSyncedSiblingComponentUtils.moveTempOverwriteCssForSyncedComponentToPerm(buttonComponent);
       ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
       ButtonGroupStylePropertiesUtils.setButtonGroupBorderRadiusViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+    } else {
+      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent, 'tempOverwriteCssForSyncedComponent');
     }
   }
 

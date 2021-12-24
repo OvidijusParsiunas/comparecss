@@ -1,6 +1,6 @@
 import { SiblingChildComponentsAutoSynced, SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { CustomCss, CustomDynamicProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
-import { CustomDynamicProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
@@ -27,6 +27,23 @@ export class AutoSyncedSiblingComponentUtils {
 
   public static getParentLayerSiblingChildComponentsAutoSyncedObject(component: WorkshopComponent): SiblingChildComponentsAutoSynced {
     return component.parentLayer?.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
+  }
+
+  public static getOverwriteCssForSyncedComponentObj(component: WorkshopComponent): CustomCss {
+    const { overwriteCssForSyncedComponent, tempOverwriteCssForSyncedComponent } = AutoSyncedSiblingComponentUtils
+      .getParentLayerSiblingChildComponentsAutoSyncedObject(component);
+    return tempOverwriteCssForSyncedComponent || overwriteCssForSyncedComponent;
+  }
+
+  private static deleteTempOverwriteCssForSyncedComponnet(component: WorkshopComponent, siblingChildComponentsAutoSyncedObj: SiblingChildComponentsAutoSynced): void {
+    const siblingChildComponentsAutoSynced = siblingChildComponentsAutoSyncedObj || AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
+    delete siblingChildComponentsAutoSynced.tempOverwriteCssForSyncedComponent;
+  }
+
+  public static moveTempOverwriteCssForSyncedComponentToPerm(component: WorkshopComponent): void {
+    const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
+    siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent = siblingChildComponentsAutoSynced.tempOverwriteCssForSyncedComponent;
+    AutoSyncedSiblingComponentUtils.deleteTempOverwriteCssForSyncedComponnet(component, siblingChildComponentsAutoSynced);
   }
 
   private static traverseAllSiblingComponents(callback: TraverseAllSiblingComponentsCallback, inSyncComponent: WorkshopComponent,

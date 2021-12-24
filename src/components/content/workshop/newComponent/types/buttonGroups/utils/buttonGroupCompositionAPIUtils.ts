@@ -1,8 +1,8 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
+import { OverwriteCssForSyncedComponent, SiblingChildComponentsAutoSynced } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { SiblingChildComponentsAutoSynced } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
@@ -75,10 +75,10 @@ export class ButtonGroupCompositionAPIUtils {
   public static getButtonGroupButtonCss(component: WorkshopComponent): WorkshopComponentCss {
     let cssToOverwrite: WorkshopComponentCss = {};
     if (ButtonGroupCompositionAPIUtils.canPropertiesBeOverwritten(component)) {
-      const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
-      if (overwriteCssForSyncedComponent) {
+      const overwriteCssForSyncedComponentObj = AutoSyncedSiblingComponentUtils.getOverwriteCssForSyncedComponentObj(component);
+      if (overwriteCssForSyncedComponentObj) {
         // used to prevent calculations from being executed for each button and when the user changes the button css pseudo class
-        cssToOverwrite = { ...ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponent) };
+        cssToOverwrite = { ...ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponentObj) };
       } else {
         ButtonGroupCompositionAPIUtils.setBorderAndMarginCss(component, cssToOverwrite);
       }
@@ -102,10 +102,10 @@ export class ButtonGroupCompositionAPIUtils {
     buttonGroupButtonContainerCss.boxShadow = inheritedCssFromCustomCss.boxShadow;
   }
 
-  private static setOverwrittenBoundingBox(component: WorkshopComponent, buttonGroupButtonContainerCss: WorkshopComponentCss): void {
-    const { overwriteCssForSyncedComponent } = component.parentLayer.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
-    buttonGroupButtonContainerCss.boxShadow = overwriteCssForSyncedComponent
-      ? ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponent).boxShadow
+  private static setOverwrittenBoundingBox(component: WorkshopComponent, buttonGroupButtonContainerCss: WorkshopComponentCss): void {    
+    const overwriteCssForSyncedComponentObj = AutoSyncedSiblingComponentUtils.getOverwriteCssForSyncedComponentObj(component);
+    buttonGroupButtonContainerCss.boxShadow = overwriteCssForSyncedComponentObj
+      ? ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponentObj).boxShadow
       : '';
   }
 
@@ -155,12 +155,12 @@ export class ButtonGroupCompositionAPIUtils {
   }
 
   // used to prevent calculations from being executed for each button and when the user changes the button css pseudo class
-  public static setOverwriteCssForSyncedComponent(component: WorkshopComponent): void {
+  public static setOverwriteCssForSyncedComponent(component: WorkshopComponent, overwriteCssObjKey: keyof OverwriteCssForSyncedComponent): void {
     const overwriteCssForSyncedComponent = CustomCssUtils.createNewCustomCssObj();
     ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponentBorder(component, overwriteCssForSyncedComponent);
     ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponentShadow(component, overwriteCssForSyncedComponent);
     const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
-    siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent = overwriteCssForSyncedComponent;
+    siblingChildComponentsAutoSynced[overwriteCssObjKey] = overwriteCssForSyncedComponent;
   }
 
   private static assignOverwriteCssForSyncedComponentToCustomCss(component: WorkshopComponent,

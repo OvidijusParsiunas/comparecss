@@ -46,13 +46,12 @@ export class ButtonGroupButtonDisplayInFrontOfSiblings {
   // as it would be pointless to do it otherwise.
   public static shouldComponentBeMovedToFront(subcomponent: Subcomponent, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     // when button components are in sync with another button component
-    const { overwriteCssForSyncedComponent } = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(
-      subcomponent.seedComponent);
+    const overwriteCssForSyncedComponentObj = AutoSyncedSiblingComponentUtils.getOverwriteCssForSyncedComponentObj(subcomponent.seedComponent);
     if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
-      return ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeInFront(subcomponent, overwriteCssForSyncedComponent,
+      return ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeInFront(subcomponent, overwriteCssForSyncedComponentObj,
         CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
     } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-      return ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeInFront(subcomponent, overwriteCssForSyncedComponent,
+      return ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeInFront(subcomponent, overwriteCssForSyncedComponentObj,
         CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
     }
     return false;
