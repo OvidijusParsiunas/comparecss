@@ -29,8 +29,8 @@ export class AddTextComponentToButton extends ComponentBuilder {
   }
 
   private static overwriteCustomFeatures(textBaseSubcomponent: Subcomponent): void {
-    textBaseSubcomponent.customFeatures = { animations: ComponentBuilder.createStationaryAnimations({}) };
-    textBaseSubcomponent.defaultCustomFeatures = { animations: ComponentBuilder.createStationaryAnimations({}) };
+    textBaseSubcomponent.customFeatures.animations = ComponentBuilder.createStationaryAnimations({});
+    textBaseSubcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
   }
 
   private static overwriteCustomCss(buttonComponent: WorkshopComponent, textComponent: WorkshopComponent,

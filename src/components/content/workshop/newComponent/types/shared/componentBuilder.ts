@@ -282,10 +282,18 @@ export class ComponentBuilder {
     }
   }
 
+  private static fillMissingBaseSubcomponentProperties(baseSubcomponent: Subcomponent): void {
+    if (!baseSubcomponent.customFeatures) {
+      baseSubcomponent.customFeatures = {};
+      baseSubcomponent.defaultCustomFeatures = {};
+    }
+  }
+
   public static createBaseComponent(presetProperties: PresetProperties,
       createBaseSubcomponent: (name: string) => Subcomponent, isBaseOptional = true): WorkshopComponent {
     const baseName = presetProperties.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
+    ComponentBuilder.fillMissingBaseSubcomponentProperties(baseSubcomponent);
     if (presetProperties.horizontalSection) ComponentBuilder.setAlignmentInParent(baseSubcomponent, presetProperties.horizontalSection);
     const baseComponent = ComponentBuilder.createComponent(presetProperties, baseSubcomponent, isBaseOptional);
     baseSubcomponent.seedComponent = baseComponent;

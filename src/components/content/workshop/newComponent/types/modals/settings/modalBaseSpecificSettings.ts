@@ -8,7 +8,7 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 export class ModalBaseSpecificSettings {
 
   private static MODAL_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
-    ...CardBaseSpecificSettings.CARD_BASE_GENERIC_COMPONENTS,
+    ...CardBaseSpecificSettings.generateCardBaseSpecificSettings(),
     [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: {
       [SETTING_NAMES.ENTRANCE]: {
         actionsDropdownMouseEvents: AnimationPreviewActionsDropdownMouseEvents.ENTRANCE_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,

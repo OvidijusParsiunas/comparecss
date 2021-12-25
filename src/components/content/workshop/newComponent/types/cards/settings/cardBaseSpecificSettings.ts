@@ -8,14 +8,6 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class CardBaseSpecificSettings {
 
-  public static readonly CARD_BASE_GENERIC_COMPONENTS: SubcomponentSpecificSettings = {
-    [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
-      [SETTING_NAMES.WIDTH]: {
-        scale: [170, 700],
-        updateOtherCssProperties: [],
-      },
-    },
-  };
   private static readonly CARD_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
     [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: {
       [SETTING_NAMES.DISMISS]: {
@@ -24,9 +16,20 @@ export class CardBaseSpecificSettings {
     },
   };
 
+  public static generateCardBaseSpecificSettings(): SubcomponentSpecificSettings {
+    return {
+      [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
+        [SETTING_NAMES.WIDTH]: {
+          scale: [170, 700],
+          updateOtherCssProperties: [],
+        },
+      },
+    };
+  }
+
   private static setSettingsOnBaseSubcomponent(component: WorkshopComponent): void {
     component.baseSubcomponent.subcomponentSpecificSettings = {
-      ...CardBaseSpecificSettings.CARD_BASE_GENERIC_COMPONENTS, ...CardBaseSpecificSettings.CARD_BASE_SPECIFIC_COMPONENTS };
+      ...CardBaseSpecificSettings.generateCardBaseSpecificSettings(), ...CardBaseSpecificSettings.CARD_BASE_SPECIFIC_COMPONENTS };
   }
 
   // this is no longer used, but is kept as an exemplar for future cssProperty interconnected settings

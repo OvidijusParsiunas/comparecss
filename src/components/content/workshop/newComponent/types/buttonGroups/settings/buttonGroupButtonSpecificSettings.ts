@@ -14,6 +14,9 @@ export class ButtonGroupButtonSpecificSettings {
   };
 
   public static set(buttonComponent: WorkshopComponent): void {
-    buttonComponent.baseSubcomponent.subcomponentSpecificSettings = ButtonGroupButtonSpecificSettings.BUTTON_GROUP_BASE_GENERIC_COMPONENTS;
+    buttonComponent.baseSubcomponent.subcomponentSpecificSettings = {
+      ...buttonComponent.baseSubcomponent.subcomponentSpecificSettings,
+      ...ButtonGroupButtonSpecificSettings.BUTTON_GROUP_BASE_GENERIC_COMPONENTS,
+    };
   }
 }

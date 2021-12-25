@@ -75,7 +75,6 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
-  // identify if need to call it for all components all the time
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
     if (isPermanentSync) {
       const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonComponent.containerComponent);

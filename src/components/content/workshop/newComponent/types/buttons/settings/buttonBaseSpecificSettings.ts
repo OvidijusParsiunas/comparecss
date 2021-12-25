@@ -6,24 +6,26 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class ButtonBaseSpecificSettings {
 
-  private static readonly MENU_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
-    [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: {
-      [SETTING_NAMES.WIDTH]: { scale: [0, 250] },
-      [SETTING_NAMES.HEIGHT]: { scale: [0, 250] },
-    },
-    [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: {
-      [SETTING_NAMES.FADE]: {
-        updateOtherCssProperties: [],
+  private static generateButtonBaseSpecificSettings(): SubcomponentSpecificSettings {
+    return {
+      [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: {
+        [SETTING_NAMES.WIDTH]: { scale: [0, 250] },
+        [SETTING_NAMES.HEIGHT]: { scale: [0, 250] },
       },
-    },
-  };
-
-  private static setSettingsOnBaseSubcomponent(buttonComponent: WorkshopComponent): void {
-    buttonComponent.baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
+      [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: {
+        [SETTING_NAMES.FADE]: {
+          updateOtherCssProperties: [],
+        },
+      },
+    };
   }
 
-  private static getFadeAnimationDurationProperties(buttonSubcomponent: Subcomponent): UpdateOtherCssProperties {
-    const { customFeatures } = buttonSubcomponent;
+  private static setSettingsOnBaseSubcomponent(buttonComponent: WorkshopComponent): void {
+    buttonComponent.baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.generateButtonBaseSpecificSettings();
+  }
+
+  private static getFadeAnimationDurationProperties(baseSubcomponent: Subcomponent): UpdateOtherCssProperties {
+    const { customFeatures } = baseSubcomponent;
     return {
       customFeatures,
       customFeatureKeys: ['animations', 'stationary', 'fade', 'duration'],

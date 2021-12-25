@@ -1,6 +1,6 @@
 allow any icon to be added to button
 upon selecting a new button and quickly moving mouse up - the animation is cancelled
-add shadow to hover then select the active style to be click
+add shadow to hover then select the active style to be click (border also appears to move after hovering out)
 
 item should not change when copying (image/icon)
 
