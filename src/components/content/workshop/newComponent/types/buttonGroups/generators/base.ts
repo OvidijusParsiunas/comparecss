@@ -2,6 +2,7 @@ import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentMani
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
+import { ButtonGroupOverwriteCssForSyncedComponentUtils } from '../utils/buttonGroupOverwriteCssForSyncedComponentUtils';
 import { DisplayInFrontOfSiblingsContainerState } from '../../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
@@ -14,7 +15,6 @@ import { ButtonGroupButtonSpecificSettings } from '../settings/buttonGroupButton
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ButtonGroupStylePropertiesUtils } from '../utils/buttonGroupStylePropertiesUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { ButtonGroupCompositionAPIUtils } from '../utils/buttonGroupCompositionAPIUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -30,7 +30,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setOverwriteCssForSyncedComponent(buttonComponent: WorkshopComponent): void {
     if (SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
-      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent, 'overwriteCssForSyncedComponent');
+      ButtonGroupOverwriteCssForSyncedComponentUtils.setOverwriteCssForSyncedComponent(buttonComponent, 'overwriteCssForSyncedComponent');
     }
   }
 
@@ -79,7 +79,7 @@ class ButtonGroupBase extends ComponentBuilder {
   private static offSyncExecutableFunc(buttonComponent: WorkshopComponent, isPermanentSync: boolean): void {
     if (isPermanentSync) {
       const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonComponent.containerComponent);
-      if (buttonComponents[0] === buttonComponent) ButtonGroupCompositionAPIUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
+      if (buttonComponents[0] === buttonComponent) ButtonGroupOverwriteCssForSyncedComponentUtils.unsetOverwriteCssForSyncedComponent(buttonComponent);
     } else {
       const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(buttonComponent);
       delete siblingChildComponentsAutoSynced.tempOverwriteCssForSyncedComponent;
@@ -92,7 +92,7 @@ class ButtonGroupBase extends ComponentBuilder {
       ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
       ButtonGroupStylePropertiesUtils.setButtonGroupBorderRadiusViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
     } else {
-      ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponent(buttonComponent, 'tempOverwriteCssForSyncedComponent');
+      ButtonGroupOverwriteCssForSyncedComponentUtils.setOverwriteCssForSyncedComponent(buttonComponent, 'tempOverwriteCssForSyncedComponent');
     }
   }
 

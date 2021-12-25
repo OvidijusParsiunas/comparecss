@@ -1,5 +1,4 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
-import { OverwriteCssForSyncedComponent, SiblingChildComponentsAutoSynced } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -8,15 +7,12 @@ import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../..
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
-import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
 import ComponentPreviewUtils from '../../../../componentPreview/utils/componentPreviewUtils';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
-import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import { ButtonGroupStylePropertiesUtils } from './buttonGroupStylePropertiesUtils';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 
 export class ButtonGroupCompositionAPIUtils {
-
-  private static readonly ZERO_PIXELS = '0px';
 
   private static setButtonBorderProperties(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
     const { componentClasses } = component.cssClasses;
@@ -29,26 +25,6 @@ export class ButtonGroupCompositionAPIUtils {
       cssToOverwrite.borderRightWidth = borderTopWidth;
       cssToOverwrite.borderLeftWidth = borderTopWidth; 
     }
-  }
-
-  private static setMargin(cssToOverwrite: WorkshopComponentCss): void {
-    cssToOverwrite.marginTop = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-    cssToOverwrite.marginBottom = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-    cssToOverwrite.marginRight = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-    cssToOverwrite.marginLeft = ButtonGroupCompositionAPIUtils.ZERO_PIXELS;
-  }
-
-  private static setSideBorders(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    const borderWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
-    const borderWidthNumber = Number.parseFloat(borderWidth);
-    const newSideBorderWidth = borderWidthNumber > 2 ? '2px' : borderWidth;
-    cssToOverwrite.borderLeftWidth = newSideBorderWidth;
-    cssToOverwrite.borderRightWidth = newSideBorderWidth;
-  }
-
-  private static setBorderAndMarginCss(component: WorkshopComponent, cssToOverwrite: WorkshopComponentCss): void {
-    ButtonGroupCompositionAPIUtils.setSideBorders(component, cssToOverwrite);
-    ButtonGroupCompositionAPIUtils.setMargin(cssToOverwrite);
   }
 
   private static canPropertiesBeOverwritten(component: WorkshopComponent): boolean {
@@ -80,7 +56,7 @@ export class ButtonGroupCompositionAPIUtils {
         // used to prevent calculations from being executed for each button and when the user changes the button css pseudo class
         cssToOverwrite = { ...ButtonGroupCompositionAPIUtils.getOverwrittenCss(component.baseSubcomponent, overwriteCssForSyncedComponentObj) };
       } else {
-        ButtonGroupCompositionAPIUtils.setBorderAndMarginCss(component, cssToOverwrite);
+        ButtonGroupStylePropertiesUtils.setBorderAndMarginCss(component, cssToOverwrite);
       }
     }
     ButtonGroupCompositionAPIUtils.setButtonBorderProperties(component, cssToOverwrite);
@@ -121,64 +97,6 @@ export class ButtonGroupCompositionAPIUtils {
     buttonGroupButtonContainerCss.transition = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].transition;
     buttonGroupButtonContainerCss.borderRadius = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
     return buttonGroupButtonContainerCss;
-  }
-
-  private static getBoxShadowValue(subcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): string {
-    return subcomponent.customCss[activeCssPseudoClassesDropdownItem].boxShadow === CSS_PROPERTY_VALUES.INHERIT
-      ? ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, subcomponent.customCss, 'boxShadow')
-      : subcomponent.customCss[activeCssPseudoClassesDropdownItem].boxShadow;
-  }
-
-  private static setBoxShadowWithoutOffsetAndBlur(subcomponent: Subcomponent, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES,
-      newDefaultProperties: WorkshopComponentCss): void {
-    const boxShadowPropertyVal = ButtonGroupCompositionAPIUtils.getBoxShadowValue(subcomponent, activeCssPseudoClassesDropdownItem);
-    if (boxShadowPropertyVal !== CSS_PROPERTY_VALUES.UNSET) {
-      const boxShadowProps = boxShadowPropertyVal.split(' ');
-      const shadowSpread = boxShadowProps[3];
-      const shadowColor = boxShadowProps[4];
-      newDefaultProperties.boxShadow = `0px 0px 0px ${shadowSpread} ${shadowColor}`;
-    }
-  }
-
-  private static setOverwriteCssForSyncedComponentShadow(component: WorkshopComponent, overwriteCssForSyncedComponent: CustomCss): void {
-    overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.DEFAULT].boxShadow = CSS_PROPERTY_VALUES.UNSET;
-    ButtonGroupCompositionAPIUtils.setBoxShadowWithoutOffsetAndBlur(component.baseSubcomponent,
-      CSS_PSEUDO_CLASSES.HOVER, overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.HOVER]);
-    ButtonGroupCompositionAPIUtils.setBoxShadowWithoutOffsetAndBlur(component.baseSubcomponent,
-      CSS_PSEUDO_CLASSES.CLICK, overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.CLICK]);
-  }
-
-  private static setOverwriteCssForSyncedComponentBorder(component: WorkshopComponent, overwriteCssForSyncedComponent: CustomCss): void {
-    ButtonGroupCompositionAPIUtils.setBorderAndMarginCss(component, overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.DEFAULT]);
-    overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.HOVER] = { ...overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.DEFAULT] };
-    overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.CLICK] = { ...overwriteCssForSyncedComponent[CSS_PSEUDO_CLASSES.DEFAULT] };
-  }
-
-  // used to prevent calculations from being executed for each button and when the user changes the button css pseudo class
-  public static setOverwriteCssForSyncedComponent(component: WorkshopComponent, overwriteCssObjKey: keyof OverwriteCssForSyncedComponent): void {
-    const overwriteCssForSyncedComponent = CustomCssUtils.createNewCustomCssObj();
-    ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponentBorder(component, overwriteCssForSyncedComponent);
-    ButtonGroupCompositionAPIUtils.setOverwriteCssForSyncedComponentShadow(component, overwriteCssForSyncedComponent);
-    const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
-    siblingChildComponentsAutoSynced[overwriteCssObjKey] = overwriteCssForSyncedComponent;
-  }
-
-  private static assignOverwriteCssForSyncedComponentToCustomCss(component: WorkshopComponent,
-      siblingChildComponentsAutoSynced: SiblingChildComponentsAutoSynced): void {
-    const { customCss } = component.baseSubcomponent;
-    Object.keys(customCss).forEach((pseudoClass) => {
-      Object.assign(customCss[pseudoClass], {
-        ...customCss[pseudoClass],
-        ...siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent[pseudoClass] });
-    });  
-  }
-
-  public static unsetOverwriteCssForSyncedComponent(component: WorkshopComponent): void {
-    const siblingChildComponentsAutoSynced = AutoSyncedSiblingComponentUtils.getParentLayerSiblingChildComponentsAutoSyncedObject(component);
-    if (siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent) {
-      ButtonGroupCompositionAPIUtils.assignOverwriteCssForSyncedComponentToCustomCss(component, siblingChildComponentsAutoSynced);
-      delete siblingChildComponentsAutoSynced.overwriteCssForSyncedComponent; 
-    }
   }
 
   // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths
