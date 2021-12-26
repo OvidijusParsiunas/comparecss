@@ -4,7 +4,7 @@ import { InterconnectedSetting } from '../../../../../interfaces/subcomponentSpe
 export class InterconnectedSettings {
 
   private static removeUpdateOtherCssProperties(subcomponent: Subcomponent, updateOtherCssProperties: UpdateOtherCssProperties[]): void {
-    const result = updateOtherCssProperties.findIndex((details) => details.customCss === subcomponent.customCss);
+    const result = updateOtherCssProperties.findIndex((details) => details.baseSubcomponent.customCss === subcomponent.customCss);
     if (result > -1) {
       updateOtherCssProperties.splice(result, 1);
     }

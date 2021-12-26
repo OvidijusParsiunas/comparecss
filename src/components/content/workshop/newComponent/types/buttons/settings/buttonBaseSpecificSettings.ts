@@ -25,9 +25,8 @@ export class ButtonBaseSpecificSettings {
   }
 
   private static getFadeAnimationDurationProperties(baseSubcomponent: Subcomponent): UpdateOtherCssProperties {
-    const { customFeatures } = baseSubcomponent;
     return {
-      customFeatures,
+      baseSubcomponent,
       customFeatureKeys: ['animations', 'stationary', 'fade', 'duration'],
       postfix: 's',
     };

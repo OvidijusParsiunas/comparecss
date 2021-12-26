@@ -34,11 +34,9 @@ export class CardBaseSpecificSettings {
 
   // this is no longer used, but is kept as an exemplar for future cssProperty interconnected settings
   private static getLeftPositionProperties(subcomponent: Subcomponent): UpdateOtherCssProperties {
-    const { customCss, customFeatures } = subcomponent;
     return {
+      baseSubcomponent: subcomponent,
       cssProperty: 'left',
-      customCss,
-      customFeatures,
       isScaleNegativeToPositive: true,
       divisor: LAYER_SECTION_DIVISOR,
     };

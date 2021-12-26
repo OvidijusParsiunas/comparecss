@@ -76,7 +76,7 @@ export default class RangeUtils extends UpdateRange {
     } else if (spec.customFeatureObjectKeys) {
       UpdateRange.updateRangeCustomFeature(rangeValue, spec, subcomponent);
       if (spec.updateOtherCssProperties) {
-        realRangeValue = Math.round(rangeValue as unknown as number / spec.smoothingDivisible);
+        realRangeValue = rangeValue as unknown as number / spec.smoothingDivisible;
       }
     } else {
       realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponent);

@@ -18,13 +18,14 @@ export class UpdateOtherRangesUtils extends UpdateRange {
   }
 
   private static updateOtherCustomFeatureValue(rangeValue: number|string, otherCssProperties: UpdateOtherCssProperties): void {
-    const { customFeatures, customFeatureKeys, postfix } = otherCssProperties;
+    const { baseSubcomponent, customFeatureKeys, postfix } = otherCssProperties;
     const resultRangeValue = typeof rangeValue === 'string' ? rangeValue : `${rangeValue.toString()}${postfix}`;
-    CustomFeaturesUtils.setCustomFeatureValue(customFeatureKeys, customFeatures, resultRangeValue);
+    CustomFeaturesUtils.setCustomFeatureValue(customFeatureKeys, baseSubcomponent.customFeatures, resultRangeValue);
   }
 
   private static updateOtherCustomCssProperty(rangeValue: number, otherCssProperties: UpdateOtherCssProperties): void {
-    const { divisor = 1, cssProperty, customCss, customFeatures, isScaleNegativeToPositive } = otherCssProperties;
+    const { divisor = 1, cssProperty, baseSubcomponent, isScaleNegativeToPositive } = otherCssProperties;
+    const { customCss, customFeatures } = baseSubcomponent;
     const currentCssPropertyValue = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string);
     const postDivisionRangeValue = rangeValue / divisor;
     // reduce
@@ -100,7 +101,7 @@ export class UpdateOtherRangesUtils extends UpdateRange {
       // be higher than lastSelectedValue
       const minRangeValue = Math.min(scaleBoundaryValue, lastSelectedValue);
       UpdateRange.updateRangeCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponent);
-      if (refreshSettingsCallback) refreshSettingsCallback();
+      refreshSettingsCallback?.();
     }
   }
 

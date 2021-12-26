@@ -6,8 +6,8 @@ export class UpdateOtherColorsUtils {
   public static updateOtherCssProperties(updateOtherCssProperties: UpdateOtherCssProperties[],
       activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, hexColor: string): void {
     updateOtherCssProperties?.forEach((otherCssProperties) => {
-      const { customCss, cssProperty } = otherCssProperties;
-      (customCss[activeCssPseudoClassesDropdownItem] as any)[cssProperty] = hexColor;
+      const { baseSubcomponent, cssProperty } = otherCssProperties;
+      (baseSubcomponent.customCss[activeCssPseudoClassesDropdownItem] as any)[cssProperty] = hexColor;
     });
   }
 }

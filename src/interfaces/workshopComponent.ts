@@ -44,9 +44,8 @@ export type CustomCss = {
 }
 
 export interface UpdateOtherCssProperties {
-  customCss?: CustomCss;
+  baseSubcomponent?: Subcomponent;
   cssProperty?: keyof WorkshopComponentCss;
-  customFeatures?: CustomFeatures;
   customFeatureKeys?: string[];
   isScaleNegativeToPositive?: boolean;
   divisor?: number;
