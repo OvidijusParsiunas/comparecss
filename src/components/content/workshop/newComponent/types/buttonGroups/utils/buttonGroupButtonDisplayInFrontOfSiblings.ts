@@ -5,37 +5,44 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 
 export class ButtonGroupButtonDisplayInFrontOfSiblings {
   
-  private static areBorderColorsMatching(subcomponent: Subcomponent, newPseudoClass: CSS_PSEUDO_CLASSES,
+  private static areBorderColorsDifferent(subcomponent: Subcomponent, newPseudoClass: CSS_PSEUDO_CLASSES,
       oldPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     const newBorderColor = subcomponent.customCss[newPseudoClass].borderColor;
     const oldBorderColor = subcomponent.customCss[oldPseudoClass].borderColor;
-    return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
+    if (newBorderColor === CSS_PROPERTY_VALUES.INHERIT) {
+      return oldBorderColor !== CSS_PROPERTY_VALUES.INHERIT && oldBorderColor !== subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderColor;
+    }
+    return newBorderColor !== oldBorderColor;
   }
 
   private static areBorderPropertiesDifferent(subcomponent: Subcomponent, newPseudoClass: CSS_PSEUDO_CLASSES,
       oldPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     return subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth !== '0px'
-      && !ButtonGroupButtonDisplayInFrontOfSiblings.areBorderColorsMatching(subcomponent, newPseudoClass, oldPseudoClass);
+      && ButtonGroupButtonDisplayInFrontOfSiblings.areBorderColorsDifferent(subcomponent, newPseudoClass, oldPseudoClass);
   }
 
   private static isShadowSpreadMoreThanZero(subcomponent: Subcomponent, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     const boxShadowProps = subcomponent.customCss[cssPseudoClass].boxShadow.split(' ');
     const shadowSpread = boxShadowProps[3];
-    return shadowSpread !== '0px';
+    return shadowSpread && shadowSpread !== '0px';
   }
 
   private static areShadowPropertiesDifferent(subcomponent: Subcomponent, overwriteCssForSyncedComponent: CustomCss,
-      newPseudoClass: CSS_PSEUDO_CLASSES): boolean {
+      newPseudoClass: CSS_PSEUDO_CLASSES, oldPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     if (overwriteCssForSyncedComponent) {
       return !!overwriteCssForSyncedComponent[newPseudoClass].boxShadow;
     }
-    return subcomponent.customCss[newPseudoClass].boxShadow !== CSS_PROPERTY_VALUES.INHERIT
-      && ButtonGroupButtonDisplayInFrontOfSiblings.isShadowSpreadMoreThanZero(subcomponent, newPseudoClass);
+    if (subcomponent.customCss[newPseudoClass].boxShadow === CSS_PROPERTY_VALUES.INHERIT) {
+      return subcomponent.customCss[oldPseudoClass].boxShadow !== CSS_PROPERTY_VALUES.INHERIT
+        && ButtonGroupButtonDisplayInFrontOfSiblings.isShadowSpreadMoreThanZero(subcomponent, oldPseudoClass);
+    }
+    return ButtonGroupButtonDisplayInFrontOfSiblings.isShadowSpreadMoreThanZero(subcomponent, newPseudoClass);
   }
 
   private static shouldComponentBeInFront(subcomponent: Subcomponent, overwriteCssForSyncedComponent: CustomCss, newPseudoClass: CSS_PSEUDO_CLASSES,
       oldPseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    return ButtonGroupButtonDisplayInFrontOfSiblings.areShadowPropertiesDifferent(subcomponent, overwriteCssForSyncedComponent, newPseudoClass)
+    return ButtonGroupButtonDisplayInFrontOfSiblings.areShadowPropertiesDifferent(subcomponent, overwriteCssForSyncedComponent,
+        newPseudoClass, oldPseudoClass)
       || ButtonGroupButtonDisplayInFrontOfSiblings.areBorderPropertiesDifferent(subcomponent, newPseudoClass, oldPseudoClass);
   }
 
