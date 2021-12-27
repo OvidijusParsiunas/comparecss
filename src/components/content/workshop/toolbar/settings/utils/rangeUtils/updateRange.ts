@@ -1,6 +1,6 @@
 import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CustomCssUtils } from '../../../../utils/componentManipulation/utils/customCssUtils';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import SharedUtils from '../sharedUtils';
 
@@ -28,11 +28,9 @@ export class UpdateRange {
   }
 
   protected static updateOtherBorderProperties(subcomponent: Subcomponent, rangeValue?: string): void {
-    const newRangeValue = rangeValue || subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
-    const { [CSS_PSEUDO_CLASSES.DEFAULT]: defaultCss } = subcomponent.customCss;
-    defaultCss.borderTopWidth = newRangeValue;
-    defaultCss.borderRightWidth = newRangeValue;
-    defaultCss.borderBottomWidth = newRangeValue;
+    const activeCustomCss = subcomponent.customCss[subcomponent.activeCssPseudoClassesDropdownItem];
+    const newRangeValue = rangeValue || activeCustomCss[BORDER_WIDTH_CSS_PROPERTY_ALIAS];
+    CustomCssUtils.setComponentBorderBasedOnAlias(newRangeValue, activeCustomCss);
   }
 
   protected static updateCustomCss(rangeValue: string, spec: any, subcomponent: Subcomponent): number {
