@@ -6,6 +6,8 @@ import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../co
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
+import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../consts/borderWidthAlias';
+import { CustomCssUtils } from '../../utils/componentManipulation/utils/customCssUtils';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { UseBaseComponent } from '../../../../../interfaces/useBaseComponent';
@@ -105,7 +107,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     const buttonPaddingSubstitutedToWidth: WorkshopComponentCss = {};
     if (component.value.type === COMPONENT_TYPES.BUTTON || component.value.type === COMPONENT_TYPES.DROPDOWN) {
       const { paddingLeft, paddingRight, width } = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      const newWidth = `${Number.parseFloat(paddingLeft) + Number.parseFloat(width) + Number.parseFloat(paddingRight)}px`;
+      const newWidth = `${Number.parseFloat(paddingLeft) + Number.parseFloat(paddingRight) + Number.parseFloat(width)}px`;
       buttonPaddingSubstitutedToWidth.paddingLeft = '0px';
       buttonPaddingSubstitutedToWidth.paddingRight = '0px';
       buttonPaddingSubstitutedToWidth.width = newWidth;
@@ -113,9 +115,14 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     return buttonPaddingSubstitutedToWidth;
   }
 
-  function getButtonGroupButtonOverwrittenCss(): WorkshopComponentCss {
-    return ButtonGroupCompositionAPIUtils.isButtonGroupComponentButton(component.value)
-      ? ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component.value) : {};
+  function getOverwrittenBorderAndMarginCss(activeSubcomponentCss: WorkshopComponentCss): WorkshopComponentCss {
+    if (ButtonGroupCompositionAPIUtils.isButtonGroupComponentButton(component.value)) {
+      return ButtonGroupCompositionAPIUtils.getButtonGroupButtonCss(component.value);
+    }
+    if (activeSubcomponentCss[BORDER_WIDTH_CSS_PROPERTY_ALIAS] && activeSubcomponentCss[BORDER_WIDTH_CSS_PROPERTY_ALIAS] !== '0px') {
+      return CustomCssUtils.getComponentBorderBasedOnAlias(activeSubcomponentCss[BORDER_WIDTH_CSS_PROPERTY_ALIAS]);
+    }
+    return {};
   }
 
   function getInheritedCss(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, subcomponentCss: CustomCss): WorkshopComponentCss {
@@ -139,18 +146,17 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.value.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const cssPseudoClass = getCssPseudoClass(activeCssPseudoClassesDropdownItem);
-    const backgroundImageCss = getImageCss(customStaticFeatures, customCss);
     const inheritedCssFromCustomCss = getInheritedCss(cssPseudoClass, subcomponentCss);
+    const activeSubcomponentCss = { ...subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT], ...subcomponentCss[cssPseudoClass], ...inheritedCssFromCustomCss };
+    const backgroundImageCss = getImageCss(customStaticFeatures, customCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(subcomponentCss);
-    const buttonGroupButtonOverwrittenCss = getButtonGroupButtonOverwrittenCss();
+    const buttonGroupButtonOverwrittenCss = getOverwrittenBorderAndMarginCss(activeSubcomponentCss);
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
       inheritedCss || {},
-      subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
-      subcomponentCss[cssPseudoClass],
+      activeSubcomponentCss,
       backgroundImageCss,
-      inheritedCssFromCustomCss,
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
       buttonGroupButtonOverwrittenCss,
@@ -159,11 +165,12 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   };
 
   const getOverlayStyleProperties = (): WorkshopComponentCss => {
+    const defaultCss = component.value.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const subcomponentCss = {
-      ...component.value.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+      ...defaultCss,
       color: '#ff000000',
       ...getBaseContainerStyleProperties(),
-      ...getButtonGroupButtonOverwrittenCss(),
+      ...getOverwrittenBorderAndMarginCss(defaultCss),
     };
     if (!isChildComponent.value) subcomponentCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
     if (component.value.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 

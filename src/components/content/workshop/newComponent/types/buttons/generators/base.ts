@@ -84,11 +84,13 @@ class ButtonBase extends ComponentBuilder {
         backgroundColor: '#ff0000',
         boxShadow: CSS_PROPERTY_VALUES.INHERIT,
         borderColor: CSS_PROPERTY_VALUES.INHERIT,
+        borderLeftWidth: CSS_PROPERTY_VALUES.INHERIT,
       },
       [CSS_PSEUDO_CLASSES.CLICK]: {
         backgroundColor: '#409441',
         boxShadow: CSS_PROPERTY_VALUES.INHERIT,
         borderColor: CSS_PROPERTY_VALUES.INHERIT,
+        borderLeftWidth: CSS_PROPERTY_VALUES.INHERIT,
       },
     };
   }

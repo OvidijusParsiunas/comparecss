@@ -33,6 +33,12 @@ export class ButtonGroupStylePropertiesUtils {
     const borderWidth = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][BORDER_WIDTH_CSS_PROPERTY_ALIAS];
     const borderWidthNumber = Number.parseFloat(borderWidth);
     const newSideBorderWidth = borderWidthNumber > 2 ? '2px' : borderWidth;
+    // this enforces a rule that for what the border width is in the default mode, the same will be for hover and click mode (consistent with the option settings)
+    // additionally, if the synced button has no default mode border and a hover border instead, upon selecting a button (where mode is hover)
+    // and then clicking it - the border would disappear and not display in the click mode due to inherited border width not set up for
+    // button group buttons, however a changing button border within a button group results in bad UX.
+    cssToOverwrite.borderTopWidth = borderWidth;
+    cssToOverwrite.borderBottomWidth = borderWidth;
     cssToOverwrite.borderLeftWidth = newSideBorderWidth;
     cssToOverwrite.borderRightWidth = newSideBorderWidth;
   }
