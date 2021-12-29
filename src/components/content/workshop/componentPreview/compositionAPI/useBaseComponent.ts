@@ -134,6 +134,11 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     return SelectDropdownUtils.isTextSelected(component.value) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
+  function getActiveSubcomponentCss(customCss: CustomCss, cssPseudoClass: CSS_PSEUDO_CLASSES): WorkshopComponentCss {
+    const inheritedCssFromCustomCss = getInheritedCss(cssPseudoClass, customCss);
+    return { ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[cssPseudoClass], ...inheritedCssFromCustomCss };
+  }
+
   function getCssPseudoClass(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): CSS_PSEUDO_CLASSES {
     return activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT
         && SelectedChildComponentUtil.isSelectedAndStyleActive(component.value.baseSubcomponent)
@@ -146,8 +151,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.value.baseSubcomponent, activeCssPseudoClassesDropdownItem, otherSubcomponentTriggerState);
     const cssPseudoClass = getCssPseudoClass(activeCssPseudoClassesDropdownItem);
-    const inheritedCssFromCustomCss = getInheritedCss(cssPseudoClass, subcomponentCss);
-    const activeSubcomponentCss = { ...subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT], ...subcomponentCss[cssPseudoClass], ...inheritedCssFromCustomCss };
+    const activeSubcomponentCss = getActiveSubcomponentCss(subcomponentCss, cssPseudoClass);
     const backgroundImageCss = getImageCss(customStaticFeatures, customCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(subcomponentCss);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(subcomponentCss);
@@ -165,19 +169,21 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
   };
 
   const getOverlayStyleProperties = (): WorkshopComponentCss => {
-    const defaultCss = component.value.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-    const subcomponentCss = {
-      ...defaultCss,
+    const { customCss } = component.value.baseSubcomponent;
+    const { activeCssPseudoClassesDropdownItem } = component.value.baseSubcomponent;
+    const activeSubcomponentCss = getActiveSubcomponentCss(customCss, activeCssPseudoClassesDropdownItem);
+    const overlayCss = {
+      ...activeSubcomponentCss,
       color: '#ff000000',
       ...getBaseContainerStyleProperties(),
-      ...getOverwrittenBorderAndMarginCss(defaultCss),
+      ...getOverwrittenBorderAndMarginCss(activeSubcomponentCss),
     };
-    if (!isChildComponent.value) subcomponentCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
-    if (component.value.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-    if (!component.value.linkedComponents?.base && !isChildComponent.value) subcomponentCss.marginTop = '0px';
-    if (component.value.type === COMPONENT_TYPES.BUTTON_GROUP) subcomponentCss.marginLeft = ButtonGroupCompositionAPIUtils.getOverlayMarginLeftCss(component.value);
-    if (useIconComponent.isSVGIcon()) subcomponentCss.height = subcomponentCss.width;
-    return subcomponentCss;
+    if (!isChildComponent.value) overlayCss.height = component.value.linkedComponents?.base ? 'unset' : '100% !important';
+    if (component.value.baseSubcomponent.isTemporaryAddPreview) overlayCss.display = 'block'; 
+    if (!component.value.linkedComponents?.base && !isChildComponent.value) overlayCss.marginTop = '0px';
+    if (component.value.type === COMPONENT_TYPES.BUTTON_GROUP) overlayCss.marginLeft = ButtonGroupCompositionAPIUtils.getOverlayMarginLeftCss(component.value);
+    if (useIconComponent.isSVGIcon()) overlayCss.height = overlayCss.width;
+    return overlayCss;
   }
 
   const getSubcomponentText = (): string => {

@@ -1,6 +1,6 @@
 allow any icon to be added to button
 upon selecting a new button and quickly moving mouse up - the animation is cancelled
-set button boder click mode with to high px, go to default and then go to click
+set button border click mode with to high px, go to default and then go to click
 
 item should not change when copying (image/icon)
 
@@ -15,6 +15,9 @@ check to see if text can be placed into another div
 the dropdown button bottom border issue fixed via auxiliary overlay with no pointer events
 
 npm update and fix all of the types
+when a range in hover/click is inherited and the user moves it to a certain value and then back to 0, they might anticipate that the value would be inherited again,
+but it won't be as it will be set to 0 and instead they need to click undo for it to be inherited - may need a button or some other UX approach to highlight when a value
+is inherited and how to set it to inherited
 lock button for dropdown menu (additionally could do the same for modal component)
 dropdown menu should switch upwards when there is not enough screen space
 for sync to be effective (especially buttons) need to have width property as staticCss - probably need other properties as well
