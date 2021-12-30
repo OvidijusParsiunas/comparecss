@@ -52,7 +52,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const { baseSubcomponent, parentLayer } = newComponent;
-    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onSyncComponents?.uniqueComponents, newComponent.type, newComponent);
+    SyncChildComponentUtils.addComponentToUniqueComponentsInContainer(newComponent, containerComponent);
     SubcomponentTriggers.set(containerComponent, parentLayer.subcomponent, baseSubcomponent, baseSubcomponent.subcomponentType);
   }
 
@@ -154,8 +154,7 @@ export class AddContainerComponent extends AddComponentShared {
       parentLayerName: string): WorkshopComponent {
     const parentLayer = AddComponentShared.getContainerComponentLayer(containerComponent, parentLayerName);
     const result = TraverseComponentViaDropdownStructure.traverseUsingComponent(
-      containerComponent, AddContainerComponent.addUsingParentDropdownStructure,
-      componentType, componentStyle, parentLayer);
+      containerComponent, AddContainerComponent.addUsingParentDropdownStructure, componentType, componentStyle, parentLayer);
     return result.result;
   }
 }

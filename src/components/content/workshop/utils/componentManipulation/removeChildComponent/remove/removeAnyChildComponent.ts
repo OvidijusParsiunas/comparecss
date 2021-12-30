@@ -5,6 +5,7 @@ import { DecrementChildComponentCountLimitsState } from '../../childComponentCou
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
+import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { AlignmentSectionToComponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
@@ -20,18 +21,11 @@ type TargetRemovalDetails = TargetDetails & { isRemovingActiveComponent?: boolea
 
 export class RemoveAnyChildComponent {
 
-  private static asyncUpdateComponentThatTriggerThis(removedComponent: WorkshopComponent): void {
+  private static asyncRemove(removedComponent: WorkshopComponent): void {
     setTimeout(() => {
+      SyncChildComponentUtils.removeOnSyncComponentFromItsContainer(removedComponent);
       SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(removedComponent.baseSubcomponent);
     });
-  }
-
-  private static removeSyncableComponent(parentComponent: WorkshopComponent, removedComponent: WorkshopComponent): void {
-    const { onSyncComponents } = parentComponent.sync.syncables;
-    if (onSyncComponents) {
-      const { type } = removedComponent;
-      if (onSyncComponents.uniqueComponents[type]) onSyncComponents.uniqueComponents[type] = null;
-    }
   }
 
   private static updateDropdownItemNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
@@ -177,7 +171,6 @@ export class RemoveAnyChildComponent {
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
-    RemoveAnyChildComponent.removeSyncableComponent(parentComponent, targetDetails.targetComponent);
-    RemoveAnyChildComponent.asyncUpdateComponentThatTriggerThis(targetDetails.targetComponent);
+    RemoveAnyChildComponent.asyncRemove(targetDetails.targetComponent);
   }
 }

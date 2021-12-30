@@ -157,7 +157,7 @@ export class ComponentBuilder {
     const syncables: Syncables = {
       onSyncComponents: {
         uniqueComponents,
-        repeatedComponents, 
+        repeatedComponents,
       },
       containerComponents: [],
     };

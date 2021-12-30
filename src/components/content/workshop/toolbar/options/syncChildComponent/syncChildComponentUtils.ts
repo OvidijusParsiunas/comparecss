@@ -1,5 +1,6 @@
 import { CustomDynamicProperties, Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -67,5 +68,27 @@ export class SyncChildComponentUtils {
   public static dereferenceSubcomponent(subcomponent: CustomDynamicProperties): void {
     subcomponent.customCss = JSONUtils.deepCopy(subcomponent.customCss);
     subcomponent.customFeatures = JSONUtils.deepCopy(subcomponent.customFeatures);
+  }
+
+  public static addComponentToUniqueComponentsInContainer(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onSyncComponents?.uniqueComponents, newComponent.type, newComponent);
+  }
+
+  public static addComponentToRepeatedComponentsInContainer(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    if (newComponent.activeSubcomponentName !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
+      containerComponent.sync.syncables.onSyncComponents.repeatedComponents.push(newComponent);
+    }
+  }
+
+  public static removeOnSyncComponentFromItsContainer(removedComponent: WorkshopComponent): void {
+    const { onSyncComponents } = removedComponent.containerComponent.sync.syncables;
+    if (onSyncComponents) {
+      const { type } = removedComponent;
+      if (onSyncComponents.uniqueComponents[type]) onSyncComponents.uniqueComponents[type] = null;
+      if (onSyncComponents.repeatedComponents[0]?.type === removedComponent.type) {
+        const index = onSyncComponents.repeatedComponents.indexOf(removedComponent);
+        onSyncComponents.repeatedComponents.splice(index, 1);
+      }
+    }
   }
 }

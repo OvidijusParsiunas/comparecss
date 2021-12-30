@@ -20,7 +20,7 @@ interface OnSyncComponents {
   // this includes the component itself - so for button it would be:
   // { button: ..., text: ..., icon... }
   uniqueComponents: ComponentTypeToProperties;
-  // used to store syncable components that are repeated (e.g. layers)
+  // used to store syncable components that have types which are repeated (e.g. layers)
   repeatedComponents: WorkshopComponent[];
 }
 
