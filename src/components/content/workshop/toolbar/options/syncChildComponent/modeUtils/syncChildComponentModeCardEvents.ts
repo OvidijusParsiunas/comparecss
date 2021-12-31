@@ -6,7 +6,7 @@ import { ComponentOptions } from 'vue';
 
 export class SyncChildComponentModeCardEvents {
 
-  public static mouseClick(workshopComponent: ComponentOptions, componentToBeSyncedTo: WorkshopComponent): void {
+  public static mouseClickSyncConfirmButton(workshopComponent: ComponentOptions, componentToBeSyncedTo: WorkshopComponent): void {
     SyncChildComponent.syncComponentToTargetTemporarily(workshopComponent.currentlySelectedComponent, componentToBeSyncedTo);
     SyncChildComponent.syncLastSelectectedComponentToTarget(workshopComponent.currentlySelectedComponent, componentToBeSyncedTo);
     workshopComponent.currentlySelectedComponentForSync = componentToBeSyncedTo;

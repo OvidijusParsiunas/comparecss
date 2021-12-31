@@ -44,7 +44,7 @@ export class SetActiveComponentUtils {
     }
     if (!component) return;
     if (workshopComponent.isSyncChildComponentModeActive) {
-      SyncChildComponentModeCardEvents.mouseClick(workshopComponent, component);
+      SyncChildComponentModeCardEvents.mouseClickSyncConfirmButton(workshopComponent, component);
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       SetActiveComponentUtils.switchActiveComponent(workshopComponent, component);
     }

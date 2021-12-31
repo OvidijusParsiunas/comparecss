@@ -12,15 +12,16 @@ interface CleanPropertiesContext {
 
 export class CleanSyncChildComponentMode {
 
-  private static unsetSiblingComponentPropertiesThatWereMissing(activeComponent: WorkshopComponent): void {
+  private static unsetSiblingComponentPropertiesThatWereMissing(activeComponent: WorkshopComponent, resetCustomProperties: boolean): void {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
     if (!siblingComponentTypes) return;
     Object.keys(siblingComponentTypes).forEach((componentType: COMPONENT_TYPES) => {
       const subcomponent = (siblingComponentTypes[componentType] as SiblingComponentState).customDynamicProperties;
-      if (subcomponent?.tempOriginalCustomProperties) {
+      if (resetCustomProperties && subcomponent?.tempOriginalCustomProperties) {
         Object.assign(subcomponent.customCss, subcomponent.tempOriginalCustomProperties.customCss);
         Object.assign(subcomponent.customFeatures, subcomponent.tempOriginalCustomProperties.customFeatures);
       }
+      delete subcomponent.tempOriginalCustomProperties;
     });
   }
 
@@ -63,7 +64,7 @@ export class CleanSyncChildComponentMode {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
     TraverseComponentViaPreviewStructureParentFirst.traverse(
       CleanSyncChildComponentMode.cleanProperties.bind({resetCustomProperties, siblingComponentTypes} as CleanPropertiesContext), activeComponent);
-    CleanSyncChildComponentMode.unsetSiblingComponentPropertiesThatWereMissing(activeComponent);
+    CleanSyncChildComponentMode.unsetSiblingComponentPropertiesThatWereMissing(activeComponent, resetCustomProperties);
   }
   
   public static deleteLastSelectedComponentToSync(activeComponent: WorkshopComponent): void {
