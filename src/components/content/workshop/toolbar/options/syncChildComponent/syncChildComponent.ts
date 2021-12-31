@@ -93,7 +93,7 @@ export class SyncChildComponent {
   private static syncUniqueComponents(syncableComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
       siblingComponentTypes?: SiblingComponentTypes): boolean {
     let wasAComponentToBeSyncedToMissing = false;
-    const { uniqueComponents } = syncableComponent.sync.syncables.onSyncComponents
+    const { uniqueComponents } = syncableComponent.sync.syncables.onSyncComponents;
     Object.keys(uniqueComponents).forEach((componentType: COMPONENT_TYPES) => {
       const targetSubcomponent = uniqueComponents[componentType]?.baseSubcomponent;
       if (!targetSubcomponent) {
@@ -146,15 +146,28 @@ export class SyncChildComponent {
     return { wasTargetComponentFound: areTargetSubcomponentsSynced || wasTargetComponentFound, wasAComponentToBeSyncedToMissing };
   }
 
+  private static resyncComponentSyncedToThisComponent(componentSyncedToThis: WorkshopComponent, parentComponent: WorkshopComponent,
+      targetChildComponentType: COMPONENT_TYPES, traversedSiblingComponentTypes: Set<SiblingComponentTypes>): void {
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(componentSyncedToThis);
+    if (siblingComponentTypes) {
+      if (traversedSiblingComponentTypes.has(siblingComponentTypes)) return;
+      traversedSiblingComponentTypes.add(siblingComponentTypes);
+    }
+    SyncChildComponent.syncSyncables(componentSyncedToThis, parentComponent, targetChildComponentType, false, false, siblingComponentTypes);
+    SyncChildComponent.reSyncComponentsSyncedToThisComponent(componentSyncedToThis, targetChildComponentType);
+  }
+
   // if this method does not work properly it could be because it is not traversing everything as traversAll is set to false
   public static reSyncComponentsSyncedToThisComponent(component: WorkshopComponent, targetChildComponentType: COMPONENT_TYPES): void {
     const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
     if (!parentComponent) return;
+    // this is used to optimize the work for updating multiple sibling component types properties as they use the same siblingComponentTypes object,
+    // hence iterating through each component is redundant (e.g. button group button components)
+    const traversedSiblingComponentTypes: Set<SiblingComponentTypes> = new Set();
     const componentsSyncedToThisArr = Array.from(parentComponent.sync.componentsSyncedToThis);
     for (let i = 0; i < componentsSyncedToThisArr.length; i += 1) {
       const componentSyncedToThis = componentsSyncedToThisArr[i];
-      SyncChildComponent.syncSyncables(componentSyncedToThis, parentComponent, targetChildComponentType, false, false);
-      SyncChildComponent.reSyncComponentsSyncedToThisComponent(componentSyncedToThis, targetChildComponentType);
+      SyncChildComponent.resyncComponentSyncedToThisComponent(componentSyncedToThis, parentComponent, targetChildComponentType, traversedSiblingComponentTypes);
     }
   }
 
