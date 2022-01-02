@@ -7,7 +7,6 @@ import dropdownButtonPosition from './dropdownButtonPosition';
 import childComponentPosition from './childComponentPosition';
 import selectDropdownButtonSize from './dropdownButtonSize';
 import selectChildComponents from './selectChildComponents';
-import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownMenuPosition';
 import childComponentOrder from './childComponentOrder';
 import dropdownButtonText from './dropdownButtonText';
@@ -28,6 +27,7 @@ import borderBottom from './borderBottom';
 import circleBorder from './circleBorder';
 import modalActions from './modalActions';
 import borderColor from './borderColor';
+import background from './background';
 import sizeHeight from './sizeHeight';
 import sizeWidth from './sizeWidth';
 import minWidth from './minWidth';
@@ -68,8 +68,8 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR]: backgroundColor,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE]: backgroundColorImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_ORDER]: childComponentOrder,
