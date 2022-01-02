@@ -66,4 +66,10 @@ export default class JSONUtils {
     });
     return newObject;
   }
+
+  public static removePropertiesWithUndefinedValues(object: unknown): void {
+    Object.keys(object).forEach((key) => {
+      if (object[key] === undefined) delete object[key];
+    });
+  }
 }

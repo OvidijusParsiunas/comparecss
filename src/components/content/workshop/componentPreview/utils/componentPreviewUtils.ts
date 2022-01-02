@@ -11,6 +11,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
+import JSONUtils from '../../utils/generic/jsonUtils';
 
 export default class ComponentPreviewUtils {
 
@@ -85,6 +86,7 @@ export default class ComponentPreviewUtils {
     (inheritableCssPropertyKeys.length > 0 ? inheritableCssPropertyKeys : ALL_INHERITABLE_CSS_PROPERTY_KEYS).forEach((cssPropertyKey) => {
       ComponentPreviewUtils.setInheritedCustomCssValue(inheritedValues, activeCssPseudoClassesDropdownItem, customCss, cssPropertyKey);
     });
+    JSONUtils.removePropertiesWithUndefinedValues(inheritedValues);
     return inheritedValues;
   }
 }
