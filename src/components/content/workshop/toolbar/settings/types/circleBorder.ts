@@ -93,7 +93,7 @@ export default {
         name: 'Color',
         default: '#000000',
         cssProperty: 'borderColor',
-        unsetColorButtonAvailable: false,
+        isUnsetButtonAvailable: false,
       },
     }
   ]

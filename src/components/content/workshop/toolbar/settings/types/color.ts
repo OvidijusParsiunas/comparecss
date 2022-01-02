@@ -9,7 +9,7 @@ export default {
         name: 'Color',
         default: '#000000',
         cssProperty: 'color',
-        unsetColorButtonAvailable: true,
+        isUnsetButtonAvailable: true,
       },
     },
   ]

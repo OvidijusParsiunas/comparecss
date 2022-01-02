@@ -1,8 +1,6 @@
 allow any icon to be added to button
 
-layer background throws an error
 copying card component throws an error
-padding on the left of dropdown menu items
 
 item should not change when copying (image/icon)
 

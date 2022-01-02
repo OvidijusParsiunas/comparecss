@@ -86,6 +86,8 @@ export default class ComponentPreviewUtils {
     (inheritableCssPropertyKeys.length > 0 ? inheritableCssPropertyKeys : ALL_INHERITABLE_CSS_PROPERTY_KEYS).forEach((cssPropertyKey) => {
       ComponentPreviewUtils.setInheritedCustomCssValue(inheritedValues, activeCssPseudoClassesDropdownItem, customCss, cssPropertyKey);
     });
+    // prevents a bug where property values that are undefined cause the css to be inheirited from the parent dom element,
+    // e.g. dropdown menu item text element would have borderLeftWidth inherited from the menu componennt itself
     JSONUtils.removePropertiesWithUndefinedValues(inheritedValues);
     return inheritedValues;
   }

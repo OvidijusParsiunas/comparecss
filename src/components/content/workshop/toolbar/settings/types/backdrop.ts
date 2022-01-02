@@ -35,7 +35,7 @@ export default {
         default: '#000000',
         alphaValueCustomFeatureObjectKeys: ['customFeatures', 'backdrop', 'alpha'],
         customFeatureObjectKeys: ['customFeatures', 'backdrop', 'color'],
-        unsetColorButtonAvailable: true,
+        isUnsetButtonAvailable: true,
       },
       removeColorTriggers: [
         {

@@ -64,7 +64,7 @@ export default {
         name: SETTING_NAMES.COLOR,
         default: '#000000',
         cssProperty: 'borderColor',
-        unsetColorButtonAvailable: false,
+        isUnsetButtonAvailable: false,
       },
     }
   ]

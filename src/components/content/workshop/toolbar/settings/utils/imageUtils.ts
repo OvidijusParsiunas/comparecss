@@ -32,4 +32,10 @@ export default class ImageUtils {
     reader.onload = ImageUtils.fileLoaded.bind(settingsComponent, file, spec);
     reader.readAsDataURL(file);
   }
+
+  public static removeImage(settingsComponent: ComponentOptions, spec: any): void {
+    CustomFeaturesUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, null);
+    CustomFeaturesUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, null);
+    delete settingsComponent.imageNames[spec.name];
+  }
 }

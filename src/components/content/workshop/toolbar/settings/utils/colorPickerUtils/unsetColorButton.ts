@@ -50,7 +50,7 @@ export class UnsetColorButton {
   }
 
   public static isUnsetColorButtonDisplayed(settingSpec: any, subcomponent: Subcomponent): boolean {
-    return settingSpec.unsetColorButtonAvailable && 
+    return settingSpec.isUnsetButtonAvailable && 
       (UnsetColorButton.isUnsetColorButtonStateTrue(settingSpec.cssProperty, subcomponent)
       || (UnsetColorButton.isHoverColorInherited(settingSpec.cssProperty, subcomponent)
         || UnsetColorButton.isClickColorInherited(settingSpec.cssProperty, subcomponent))
