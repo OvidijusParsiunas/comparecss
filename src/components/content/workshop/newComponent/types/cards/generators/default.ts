@@ -18,24 +18,22 @@ class DefaultCard extends ComponentBuilder {
     component.baseSubcomponent.isRemovable = true;
   }
 
-  private static createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {
-    return {
-      subcomponentText: ComponentBuilder.createText(text || 'text'),
-      alignment: ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.LEFT),
-    };
+  private static overwriteTextCustomStaticFeatures(customStaticFeatures: CustomStaticFeatures, text?: string) {
+    customStaticFeatures.subcomponentText = ComponentBuilder.createText(text || 'text');
+    customStaticFeatures.alignment = ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.LEFT);
   }
 
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
     const { baseSubcomponent } = cancelButton.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
-    baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
-    baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
+    DefaultCard.overwriteTextCustomStaticFeatures(baseSubcomponent.customStaticFeatures, 'Cancel');
+    DefaultCard.overwriteTextCustomStaticFeatures(baseSubcomponent.defaultCustomStaticFeatures, 'Cancel');
     DefaultCard.setComponentToRemovable(cancelButton);
   }
 
   private static overwriteSubmitButtonProperties(submitButtonComponent: WorkshopComponent): void {
     const { baseSubcomponent } = submitButtonComponent.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
-    baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
-    baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
+    DefaultCard.overwriteTextCustomStaticFeatures(baseSubcomponent.customStaticFeatures, 'Submit');
+    DefaultCard.overwriteTextCustomStaticFeatures(baseSubcomponent.defaultCustomStaticFeatures, 'Submit');
     DefaultCard.setComponentToRemovable(submitButtonComponent);
   }
 
@@ -56,8 +54,8 @@ class DefaultCard extends ComponentBuilder {
   private static overwriteDescriptionProperties(textComponent: WorkshopComponent): void {
     textComponent.baseSubcomponent.customFeatures = DefaultCard.createDefaultTextCustomFeatures();
     textComponent.baseSubcomponent.defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
-    textComponent.baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
-    textComponent.baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
+    DefaultCard.overwriteTextCustomStaticFeatures(textComponent.baseSubcomponent.customStaticFeatures, 'Description');
+    DefaultCard.overwriteTextCustomStaticFeatures(textComponent.baseSubcomponent.defaultCustomStaticFeatures, 'Description');
     DefaultCard.setComponentToRemovable(textComponent);
   }
 
@@ -93,8 +91,8 @@ class DefaultCard extends ComponentBuilder {
     textComponent.baseSubcomponent.defaultCss = DefaultCard.createDefaultTitleCss();
     textComponent.baseSubcomponent.customFeatures = DefaultCard.createDefaultTextCustomFeatures();
     textComponent.baseSubcomponent.defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
-    textComponent.baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
-    textComponent.baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
+    DefaultCard.overwriteTextCustomStaticFeatures(textComponent.baseSubcomponent.customStaticFeatures, 'Card title');
+    DefaultCard.overwriteTextCustomStaticFeatures(textComponent.baseSubcomponent.defaultCustomStaticFeatures, 'Card title');
     DefaultCard.setComponentToRemovable(textComponent);
   }
 

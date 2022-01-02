@@ -30,6 +30,7 @@ export class CopySubcomponents {
   private static copyProperties(targetCopyableProperties: CopyableSubcomponentProperties = {},
       copyablePropertiesBeingCopied: CopyableSubcomponentProperties = {}): void {
     Object.keys(targetCopyableProperties).forEach((objectKey) => {
+      if (!copyablePropertiesBeingCopied[objectKey]) return;
       if ((copyablePropertiesBeingCopied[objectKey] as PreventDeepCopy).preventDeepCopy) {
         CopySubcomponents.copyExclusiveProperty(targetCopyableProperties, copyablePropertiesBeingCopied, objectKey);
       } else {

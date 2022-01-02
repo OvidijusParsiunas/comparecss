@@ -1,7 +1,5 @@
 allow any icon to be added to button
 
-copying card component throws an error
-
 item should not change when copying (image/icon)
 
 night diving
