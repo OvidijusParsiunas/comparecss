@@ -64,6 +64,7 @@ export type WorkshopComponentCss = {
   wordBreak?: string;
   backgroundImage?: string;
   order?: string;
+  filter?: string;
 } & BorderRadiusCss;
 
 // WORK 2 - remove this file and use CSSProperties

@@ -1,7 +1,5 @@
 allow any icon to be added to button
 
-item should not change when copying (image/icon)
-
 night diving
 
 ripple animation bug fix options:
