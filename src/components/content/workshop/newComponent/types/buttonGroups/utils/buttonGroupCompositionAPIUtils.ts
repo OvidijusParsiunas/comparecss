@@ -1,6 +1,6 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
-import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
+import { SelectedChildComponentUtils } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtils';
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -36,8 +36,8 @@ export class ButtonGroupCompositionAPIUtils {
 
   private static getOverwrittenCss(subcomponent: Subcomponent, overwrittenCss: CustomCss): WorkshopComponentCss {
     if (!overwrittenCss) return;
-    if (SelectedChildComponentUtil.isSelectedAndStyleActive(subcomponent)) {
-      return overwrittenCss[SelectedChildComponentUtil.getStyle(subcomponent)];
+    if (SelectedChildComponentUtils.isSelectedAndStyleActive(subcomponent)) {
+      return overwrittenCss[SelectedChildComponentUtils.getStyle(subcomponent)];
     }
     if (subcomponent.activeCssPseudoClassViaUserAction !== CSS_PSEUDO_CLASSES.DEFAULT) {
       return overwrittenCss[subcomponent.activeCssPseudoClassViaUserAction];
@@ -68,8 +68,8 @@ export class ButtonGroupCompositionAPIUtils {
       buttonGroupButtonContainerCss: WorkshopComponentCss): void {
     let cssPseudoClass = baseSubcomponent.activeCssPseudoClassesDropdownItem;
     let currentSubcomponentCss = subcomponentCss;
-    if (SelectedChildComponentUtil.isSelectedAndStyleActive(baseSubcomponent)) {
-      cssPseudoClass = SelectedChildComponentUtil.getStyle(baseSubcomponent) as ACTIVE_CSS_PSEUDO_CLASSES;
+    if (SelectedChildComponentUtils.isSelectedAndStyleActive(baseSubcomponent)) {
+      cssPseudoClass = SelectedChildComponentUtils.getStyle(baseSubcomponent) as ACTIVE_CSS_PSEUDO_CLASSES;
       currentSubcomponentCss = baseSubcomponent.customCss;
     }
     // important to remember that we are passing subcomponentCss and not customCss

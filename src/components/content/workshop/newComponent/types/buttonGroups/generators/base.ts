@@ -1,7 +1,7 @@
 import { AutoSyncedSiblingComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
-import { SelectedChildComponentUtil } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
+import { SelectedChildComponentUtils } from '../../../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtils';
 import { ButtonGroupOverwriteCssForSyncedComponentUtils } from '../utils/buttonGroupOverwriteCssForSyncedComponentUtils';
 import { DisplayInFrontOfSiblingsContainerState } from '../../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
@@ -45,7 +45,7 @@ class ButtonGroupBase extends ComponentBuilder {
   public static setComponentSwitchFuncs(buttonGroupBaseComponent: WorkshopComponent): void {
     buttonGroupBaseComponent.componentSwitchFuncs = {
       onDisplay: ButtonGroupBase.onComponentDisplayFunc,
-      onLeave: SelectedChildComponentUtil.unselectChildViaContainerIfSelected,
+      onLeave: SelectedChildComponentUtils.unselectChildViaContainerIfSelected,
     };
   }
 
@@ -60,7 +60,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setSelectComponentObj(childComponent: WorkshopComponent, containerArg: WorkshopComponent): void {
     const container = this as any as WorkshopComponent || containerArg;
-    SelectedChildComponentUtil.populateComponentAndChildrenWithSelectComponentObj(childComponent, container);
+    SelectedChildComponentUtils.populateComponentAndChildrenWithSelectComponentObj(childComponent, container);
   }
 
   private static setButtonChildPropertyOverwritables(buttonComponent: WorkshopComponent): void {
@@ -122,7 +122,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setButtonMouseEvents(buttonComponent: WorkshopComponent): void {
     buttonComponent.baseSubcomponent.customFeatures.mouseEventCallbacks = {
-      click: SelectedChildComponentUtil.select,
+      click: SelectedChildComponentUtils.select,
     };
   }
 

@@ -7,8 +7,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClas
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { OnSyncComponents } from '../../../../../../interfaces/sync';
 
-// WORK 2 - rename
-export class SelectedChildComponentUtil {
+export class SelectedChildComponentUtils {
 
   private static childComponentTraversalCallback(traversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
     const isCurrentlySelected = this as any as boolean;
@@ -18,14 +17,14 @@ export class SelectedChildComponentUtil {
   }
 
   private static unselectButton(selectedChildComponentContainer: SelectComponentContainer): void {
-    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtil.childComponentTraversalCallback.bind(false),
+    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtils.childComponentTraversalCallback.bind(false),
       selectedChildComponentContainer.selectedComponent.baseSubcomponent.seedComponent);
     selectedChildComponentContainer.selectedComponent = null;
   }
 
   public static unselectChildViaContainerIfSelected(buttonGroupBaseComponent: WorkshopComponent): void {
     const { container } = buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures.selectComponent;
-    if (container.selectedComponent) SelectedChildComponentUtil.unselectButton(container);
+    if (container.selectedComponent) SelectedChildComponentUtils.unselectButton(container);
   }
 
   public static getChildContainerSelectComponentObj(childComponent: WorkshopComponent): SelectComponentContainer {
@@ -33,15 +32,15 @@ export class SelectedChildComponentUtil {
   }
 
   private static selectNewChild(childComponent: WorkshopComponent, selectedChildComponentContainer: SelectComponentContainer): void {
-    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtil.childComponentTraversalCallback.bind(true), childComponent);
+    TraverseComponentViaPreviewStructureParentFirst.traverse(SelectedChildComponentUtils.childComponentTraversalCallback.bind(true), childComponent);
     selectedChildComponentContainer.selectedComponent = childComponent;
   }
 
   public static select(childSubcomponent: Subcomponent): void {
     const childComponent = childSubcomponent.seedComponent;
-    const selectedChildComponentContainer = SelectedChildComponentUtil.getChildContainerSelectComponentObj(childComponent);
-    if (selectedChildComponentContainer.selectedComponent) SelectedChildComponentUtil.unselectButton(selectedChildComponentContainer);
-    SelectedChildComponentUtil.selectNewChild(childComponent, selectedChildComponentContainer);
+    const selectedChildComponentContainer = SelectedChildComponentUtils.getChildContainerSelectComponentObj(childComponent);
+    if (selectedChildComponentContainer.selectedComponent) SelectedChildComponentUtils.unselectButton(selectedChildComponentContainer);
+    SelectedChildComponentUtils.selectNewChild(childComponent, selectedChildComponentContainer);
   }
 
   public static doesContainerHaveSelectedChildren(containerComponent: WorkshopComponent): boolean {
@@ -57,7 +56,7 @@ export class SelectedChildComponentUtil {
     const { activeCssPseudoClassViaUserAction, activeCssPseudoClassesDropdownItem, seedComponent } = childSubcomponent;
     return (activeCssPseudoClassViaUserAction === CSS_PSEUDO_CLASSES.CLICK || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK)
       ? CSS_PSEUDO_CLASSES.CLICK
-      : SelectedChildComponentUtil.getChildContainerSelectComponentObj(seedComponent).activeStyle;
+      : SelectedChildComponentUtils.getChildContainerSelectComponentObj(seedComponent).activeStyle;
   }
 
   private static setSelectComponentObject(components: WorkshopComponent[], container: WorkshopComponent): void {
@@ -79,15 +78,15 @@ export class SelectedChildComponentUtil {
       const component = uniqueComponents[key];
       if (component) components.push(component);
     });
-    SelectedChildComponentUtil.setSelectComponentObject(components, container); 
+    SelectedChildComponentUtils.setSelectComponentObject(components, container); 
   }
 
   public static populateComponentAndChildrenWithSelectComponentObj(component: WorkshopComponent, container: WorkshopComponent): void {
     const { onSyncComponents } = component.sync.syncables;
     if (onSyncComponents) {
-      SelectedChildComponentUtil.setSelectComponentObjsViaOnSyncComponents(onSyncComponents, container);
+      SelectedChildComponentUtils.setSelectComponentObjsViaOnSyncComponents(onSyncComponents, container);
     } else {
-      SelectedChildComponentUtil.setSelectComponentObject([component], container);
+      SelectedChildComponentUtils.setSelectComponentObject([component], container);
     }
   }
 }

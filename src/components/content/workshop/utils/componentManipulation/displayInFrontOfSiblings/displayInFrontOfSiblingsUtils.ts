@@ -1,6 +1,6 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from '../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { ACTIVE_CSS_PSEUDO_CLASSES, CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
-import { SelectedChildComponentUtil } from '../selectedChildComponent/selectedChildComponentUtil';
+import { SelectedChildComponentUtils } from '../selectedChildComponent/selectedChildComponentUtils';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 
 export class DisplayInFrontOfSiblings {
@@ -86,7 +86,7 @@ export class DisplayInFrontOfSiblings {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX;
         }
       }
-      if (SelectedChildComponentUtil.isSelectedAndStyleActive(baseSubcomponent)) {
+      if (SelectedChildComponentUtils.isSelectedAndStyleActive(baseSubcomponent)) {
         if (DisplayInFrontOfSiblings.shouldComponentBeInFront(displayInFrontOfSiblingsContainerState, baseSubcomponent,
             customStaticFeatures.selectComponent.child.containerSelectComponentObj.activeStyle as ACTIVE_CSS_PSEUDO_CLASSES)) {
           return DisplayInFrontOfSiblings.MAX_Z_INDEX - 1;

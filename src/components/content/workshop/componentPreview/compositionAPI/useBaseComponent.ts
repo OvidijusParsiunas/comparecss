@@ -1,4 +1,4 @@
-import { SelectedChildComponentUtil } from '../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtil';
+import { SelectedChildComponentUtils } from '../../utils/componentManipulation/selectedChildComponent/selectedChildComponentUtils';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ButtonGroupCompositionAPIUtils } from '../../newComponent/types/buttonGroups/utils/buttonGroupCompositionAPIUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
@@ -141,8 +141,8 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
 
   function getCssPseudoClass(activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): CSS_PSEUDO_CLASSES {
     return activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.DEFAULT
-        && SelectedChildComponentUtil.isSelectedAndStyleActive(component.value.baseSubcomponent)
-      ? SelectedChildComponentUtil.getChildContainerSelectComponentObj(component.value).activeStyle as ACTIVE_CSS_PSEUDO_CLASSES
+        && SelectedChildComponentUtils.isSelectedAndStyleActive(component.value.baseSubcomponent)
+      ? SelectedChildComponentUtils.getChildContainerSelectComponentObj(component.value).activeStyle as ACTIVE_CSS_PSEUDO_CLASSES
       : activeCssPseudoClassesDropdownItem;
   }
 
