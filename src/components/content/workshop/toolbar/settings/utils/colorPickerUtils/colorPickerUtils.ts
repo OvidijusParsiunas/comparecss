@@ -2,21 +2,12 @@ import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/uti
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
-import { ICON_TYPES } from '../../../../../../../consts/iconTypes.enum';
 import { UpdateOtherColorsUtils } from './updateOtherColorsUtils';
-import { compute } from './filterColorGenerator';
 import BoxShadowUtils from '../boxShadowUtils';
 import SharedUtils from '../sharedUtils';
+import { FilterCss } from './filterCss';
 
 export class ColorPickerUtils {
-
-  private static setFilterCss(hexColor: string, subcomponent: Subcomponent): void {
-    const { customCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = subcomponent;
-    if (customStaticFeatures.icon.type === ICON_TYPES.CUSTOM) {
-      const filter = compute(hexColor);
-      customCss[activeCssPseudoClassesDropdownItem].filter = filter;
-    }
-  }
 
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponent: Subcomponent): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
@@ -26,7 +17,7 @@ export class ColorPickerUtils {
     } else {
       customCss[activeCssPseudoClassesDropdownItem][cssProperty] = hexColor;
       UpdateOtherColorsUtils.updateOtherCssProperties(updatedSettingSpec.updateOtherCssProperties, activeCssPseudoClassesDropdownItem, hexColor);
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON) ColorPickerUtils.setFilterCss(hexColor, subcomponent);
+      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON) FilterCss.set(hexColor, subcomponent);
     }
   }
 

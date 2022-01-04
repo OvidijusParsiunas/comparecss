@@ -7,6 +7,7 @@ import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import { optionToSettings } from '../types/optionToSettings';
 import { SetUtils } from '../../../utils/generic/setUtils';
 import { UpdateRange } from './rangeUtils/updateRange';
+import { FilterCss } from './colorPickerUtils/filterCss';
 
 export default class SettingsUtils {
 
@@ -122,6 +123,7 @@ export default class SettingsUtils {
         SettingsUtils.resetCustomCss(subcomponent, cssProperty);
         SettingsUtils.removeAuxiliaryPartialCss(subcomponent, cssProperty);
         if (lastSelectedValueObjectKeys) SettingsUtils.resetCustomFeatures(option, subcomponent, lastSelectedValueObjectKeys);
+        if (FilterCss.shouldReset(cssProperty, subcomponent)) SettingsUtils.resetCustomCss(subcomponent, 'filter');
       }
     });
   }
