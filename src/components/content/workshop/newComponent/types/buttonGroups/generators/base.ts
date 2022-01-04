@@ -58,17 +58,31 @@ class ButtonGroupBase extends ComponentBuilder {
     layerComponent.sync.siblingChildComponentsAutoSynced = { siblingComponentTypes: {} };
   }
 
+  private static setSelectComponentObj(childComponent: WorkshopComponent, containerArg: WorkshopComponent): void {
+    const container = this as any as WorkshopComponent || containerArg;
+    SelectedChildComponentUtil.populateComponentAndChildrenWithSelectComponentObj(childComponent, container);
+  }
+
+  private static setButtonChildPropertyOverwritables(buttonComponent: WorkshopComponent): void {
+    const buttonGroupComponent = this as any as WorkshopComponent;
+    buttonComponent.childComponentHandlers.onAddOverwritables = {
+      postBuildFuncs: {
+        [COMPONENT_TYPES.TEXT]: [
+          ButtonGroupBase.setSelectComponentObj.bind(buttonGroupComponent),
+        ],
+        [COMPONENT_TYPES.ICON]: [
+          ButtonGroupBase.setSelectComponentObj.bind(buttonGroupComponent),
+        ]
+      },
+    };
+  }
+
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
     if (buttonGroupComponent.componentPreviewStructure.layers[0]
         .alignmentSectionToComponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION].length === 1) {
       ButtonGroupStylePropertiesUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonGroupComponent);
       ButtonGroupStylePropertiesUtils.setButtonGroupBorderRadiusViaButtonProperties(buttonComponent, buttonGroupComponent);
     }
-  }
-
-  private static setSelectComponentOnChildComponents(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
-    const textComponent = buttonComponent.sync.syncables.onSyncComponents.uniqueComponents[COMPONENT_TYPES.TEXT];
-    ComponentBuilder.createSelectComponentChild([buttonComponent, textComponent], buttonGroupComponent);
   }
 
   private static setDisplayInFrontOfSiblingsState(buttonComponent: WorkshopComponent): void {
@@ -122,7 +136,8 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
-          ButtonGroupBase.setSelectComponentOnChildComponents,
+          ButtonGroupBase.setButtonChildPropertyOverwritables.bind(buttonGroupComponent),
+          ButtonGroupBase.setSelectComponentObj,
           TriggerFuncs.setTriggerFuncOnButtonSettingChange,
           ButtonGroupBorderUtils.setBorderProperties,
           ButtonGroupButtonSpecificSettings.set,

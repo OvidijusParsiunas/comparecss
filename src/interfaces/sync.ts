@@ -11,7 +11,7 @@ interface SyncExecutables {
   off?: (componentToBeSynced: WorkshopComponent, isPermanentSync: boolean) => void;
 }
 
-interface OnSyncComponents {
+export interface OnSyncComponents {
   // this stores syncable components that are unique and not repeated - e.g button text and icon
   // the map structure is used to overcome the problem of differently aligned components with
   // different orders - as we would originally run into problems on copying a button that has

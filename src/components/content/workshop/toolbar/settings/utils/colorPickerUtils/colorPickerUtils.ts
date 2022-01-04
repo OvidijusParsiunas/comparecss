@@ -1,8 +1,8 @@
 import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { CustomCss, Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
+import { ICON_TYPES } from '../../../../../../../consts/iconTypes.enum';
 import { UpdateOtherColorsUtils } from './updateOtherColorsUtils';
 import { compute } from './filterColorGenerator';
 import BoxShadowUtils from '../boxShadowUtils';
@@ -10,9 +10,12 @@ import SharedUtils from '../sharedUtils';
 
 export class ColorPickerUtils {
 
-  private static setFilterCss(hexColor: string, customCss: CustomCss, activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES): void {
-    const filter = compute(hexColor);
-    customCss[activeCssPseudoClassesDropdownItem].filter = filter;
+  private static setFilterCss(hexColor: string, subcomponent: Subcomponent): void {
+    const { customCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = subcomponent;
+    if (customStaticFeatures.icon.type === ICON_TYPES.CUSTOM) {
+      const filter = compute(hexColor);
+      customCss[activeCssPseudoClassesDropdownItem].filter = filter;
+    }
   }
 
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponent: Subcomponent): void {
@@ -23,7 +26,7 @@ export class ColorPickerUtils {
     } else {
       customCss[activeCssPseudoClassesDropdownItem][cssProperty] = hexColor;
       UpdateOtherColorsUtils.updateOtherCssProperties(updatedSettingSpec.updateOtherCssProperties, activeCssPseudoClassesDropdownItem, hexColor);
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON) ColorPickerUtils.setFilterCss(hexColor, customCss, activeCssPseudoClassesDropdownItem);
+      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON) ColorPickerUtils.setFilterCss(hexColor, subcomponent);
     }
   }
 

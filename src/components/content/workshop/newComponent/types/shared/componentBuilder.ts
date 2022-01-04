@@ -20,10 +20,10 @@ import { PresetProperties } from '../../../../../../interfaces/componentGenerato
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
-import { Animations } from '../../../../../../interfaces/animations';
 import { ICON_TYPES } from '../../../../../../consts/iconTypes.enum';
-import { Sync, Syncables } from '../../../../../../interfaces/sync';
+import { Animations } from '../../../../../../interfaces/animations';
 import { DEFAULT_TEXT } from '../../../../../../consts/defaultText';
+import { Sync, Syncables } from '../../../../../../interfaces/sync';
 import { Image } from '../../../../../../interfaces/image';
 import { Icon } from '../../../../../../interfaces/icon';
 import { defaultImage } from './images/default';
@@ -186,24 +186,12 @@ export class ComponentBuilder {
     subcomponent.defaultCss[cssPseudoClass][cssProperty] = value;
   }
 
-  private static createPreventDeepCopy(copyableKeys?: CopyableKeys[]): PreventDeepCopy {
+  public static createPreventDeepCopy(copyableKeys?: CopyableKeys[]): PreventDeepCopy {
     const preventDeepCopy: PreventDeepCopy = { preventDeepCopy: {} };
     if (copyableKeys) {
       preventDeepCopy.preventDeepCopy.copyableKeys = copyableKeys;
     }
     return preventDeepCopy;
-  }
-
-  protected static createSelectComponentChild(childComponents: WorkshopComponent[], container: WorkshopComponent): void {
-    childComponents.forEach((childComponent) => {
-      childComponent.baseSubcomponent.customStaticFeatures.selectComponent = {
-        child: {
-          isSelected: false,
-          containerSelectComponentObj: container.baseSubcomponent.customStaticFeatures.selectComponent.container,
-        },
-        ...ComponentBuilder.createPreventDeepCopy(),
-      };
-    });
   }
 
   protected static createSelectComponentContainer(activeStyle = SELECT_CHILD_COMPONENT_STYLE_OPTIONS.None): SelectComponent {

@@ -4,7 +4,10 @@ import { ComponentPreviewTraversalState, PreviewTraversalResult } from '../../..
 import { SELECT_CHILD_COMPONENT_STYLE_DISABLED } from '../../../../../../consts/selectedChildComponent';
 import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
+import { OnSyncComponents } from '../../../../../../interfaces/sync';
 
+// WORK 2 - rename
 export class SelectedChildComponentUtil {
 
   private static childComponentTraversalCallback(traversalState: ComponentPreviewTraversalState): PreviewTraversalResult {
@@ -55,5 +58,36 @@ export class SelectedChildComponentUtil {
     return (activeCssPseudoClassViaUserAction === CSS_PSEUDO_CLASSES.CLICK || activeCssPseudoClassesDropdownItem === CSS_PSEUDO_CLASSES.CLICK)
       ? CSS_PSEUDO_CLASSES.CLICK
       : SelectedChildComponentUtil.getChildContainerSelectComponentObj(seedComponent).activeStyle;
+  }
+
+  private static setSelectComponentObject(components: WorkshopComponent[], container: WorkshopComponent): void {
+    components.forEach((component) => {
+      component.baseSubcomponent.customStaticFeatures.selectComponent = {
+        child: {
+          isSelected: false,
+          containerSelectComponentObj: container.baseSubcomponent.customStaticFeatures.selectComponent.container,
+        },
+        ...ComponentBuilder.createPreventDeepCopy(),
+      };
+    });
+  }
+
+  private static setSelectComponentObjsViaOnSyncComponents(onSyncComponents: OnSyncComponents, container: WorkshopComponent): void {
+    const { uniqueComponents, repeatedComponents } = onSyncComponents;
+    const components: WorkshopComponent[] = [...repeatedComponents];
+    Object.keys(uniqueComponents).forEach((key) => {
+      const component = uniqueComponents[key];
+      if (component) components.push(component);
+    });
+    SelectedChildComponentUtil.setSelectComponentObject(components, container); 
+  }
+
+  public static populateComponentAndChildrenWithSelectComponentObj(component: WorkshopComponent, container: WorkshopComponent): void {
+    const { onSyncComponents } = component.sync.syncables;
+    if (onSyncComponents) {
+      SelectedChildComponentUtil.setSelectComponentObjsViaOnSyncComponents(onSyncComponents, container);
+    } else {
+      SelectedChildComponentUtil.setSelectComponentObject([component], container);
+    }
   }
 }
