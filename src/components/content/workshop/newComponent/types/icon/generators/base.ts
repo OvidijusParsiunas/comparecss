@@ -42,6 +42,7 @@ export class IconBase extends ComponentBuilder {
         outline: 'none',
         left: '0px',
         backgroundSize: '100% 100%',
+        filter: '',
       },
     };
   }

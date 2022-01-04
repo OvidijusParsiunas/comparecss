@@ -75,7 +75,7 @@ export default class ComponentPreviewUtils {
 
   private static setInheritedCustomCssValue<T extends WorkshopComponentCss, Y extends keyof WorkshopComponentCss>(inheritedValues: T,
       activeCssPseudoClassesDropdownItem: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssPropertyKey: Y): void {
-    if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssPropertyKey]) {
+    if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssPropertyKey] !== undefined) {
       inheritedValues[cssPropertyKey] = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClassesDropdownItem, customCss, cssPropertyKey) as T[Y];
     }
   }
