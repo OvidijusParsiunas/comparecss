@@ -1,8 +1,16 @@
+import { ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../consts/dropdownArrowIcons';
+import { IconFilterCss } from '../../../newComponent/types/icon/settings/iconFilterCss';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 import { ICON_TYPES } from '../../../../../../consts/iconTypes.enum';
+
+function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
+  return {
+    mouseClickItemCallback: IconFilterCss.unsetFilterCss,
+  };
+}
 
 // create an optional interface
 export default {
@@ -15,6 +23,7 @@ export default {
         activeItemPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'type'],
         refreshSetting: true,
+        ...generateMouseEventCallbacks(),
       },
     },
     {
