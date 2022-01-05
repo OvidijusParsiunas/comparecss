@@ -8,8 +8,8 @@ export class FilterCss {
   public static set(hexColor: string, subcomponent: Subcomponent): void {
     const { customCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = subcomponent;
     if (customStaticFeatures.icon.type === ICON_TYPES.CUSTOM) {
-      const filter = FilterCssGenerator.compute(hexColor);
-      customCss[activeCssPseudoClassesDropdownItem].filter = filter;
+      const filterColor = FilterCssGenerator.generate(hexColor);
+      customCss[activeCssPseudoClassesDropdownItem].filter = filterColor;
     }
   }
 

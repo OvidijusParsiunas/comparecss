@@ -15,16 +15,60 @@ interface Result {
   filter: string;
 }
 
+type ColorStringTypes = 'rgb' | 'hex' | 'default';
+
+class RgbParseUtil {
+  
+  private static regExpMatchArrayToRgbNumArr(rgbArr: string[]): number[] {
+    return [
+      parseInt(rgbArr[1], 16),
+      parseInt(rgbArr[2], 16),
+      parseInt(rgbArr[3], 16),
+    ];
+  }
+
+  private static buildRgbArr(fullHex: string): number[] {
+    // extract individual hex: #c11a1a -> ['#c11a1a', 'c1', '1a', '1a', ...]
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+    if (result) return RgbParseUtil.regExpMatchArrayToRgbNumArr(result);
+    throw new Error(`Colour ${fullHex} could not be parsed. Expected string starting with a # and followed by 3 or 6 hexadecimal characters. E.g. #03F or #0033FF`);
+  }
+
+  private static shorthandHexToFullHex(shorthandHex: string): string {
+    // Expand shorthand form: #03F -> #0033FF
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    return shorthandHex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+  }
+
+  private static hexStringToRgbArr(shorthandHex: string): number[] {
+    const fullHex = RgbParseUtil.shorthandHexToFullHex(shorthandHex);
+    return RgbParseUtil.buildRgbArr(fullHex);
+  }
+
+  private static rgbStringToRgbArr(rgb: string): number[] {
+    const result = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+    if (result) return RgbParseUtil.regExpMatchArrayToRgbNumArr(result);
+    throw new Error(`Colour ${rgb} could not be parsed. Expected the following string format: 'rgb(number,number,number) E.g. rgb(10,122,255)`);
+  }
+
+  public static colorStringToRgbArr(colorString: string, type: ColorStringTypes): number[] {
+    if (type === 'hex') return RgbParseUtil.hexStringToRgbArr(colorString);
+    if (type === 'rgb') return RgbParseUtil.rgbStringToRgbArr(colorString);
+    return [0, 0, 0];
+  }
+}
+
 class Color {
 
   public r: number;
   public g: number;
   public b: number;
 
-  constructor(r: number, g: number, b: number) {
-    this.set(r, g, b);
+  constructor(colorString: string, type: ColorStringTypes) {
+    const rgbArr = RgbParseUtil.colorStringToRgbArr(colorString, type);
+    this.setRgb(rgbArr[0], rgbArr[1], rgbArr[2]);
   }
-
+  
   private clamp(value: number): number {
     if (value > 255) {
       value = 255;
@@ -34,7 +78,7 @@ class Color {
     return value;
   }
 
-  public set(r: number, g: number, b: number): void {
+  public setRgb(r: number, g: number, b: number): void {
     this.r = this.clamp(r);
     this.g = this.clamp(g);
     this.b = this.clamp(b);
@@ -169,7 +213,7 @@ class Color {
   }
 }
 
-class FilterGenerator {
+class CssGenerator {
 
   private targetColor: Color;
   private targetColorHSL: HSL;
@@ -178,7 +222,7 @@ class FilterGenerator {
   constructor(targetColor: Color) {
     this.targetColor = targetColor;
     this.targetColorHSL = targetColor.hsl();
-    this.reusedColor = new Color(0, 0, 0);
+    this.reusedColor = new Color(null, 'default');
   }
 
   private static fmt(filters: number[], idx: number, multiplier = 1): number {
@@ -186,11 +230,11 @@ class FilterGenerator {
   }
 
   private generateCss(filters: number[]): string {
-    return `brightness(0) saturate(100%) invert(${FilterGenerator.fmt(filters, 0)}%) sepia(${FilterGenerator.fmt(filters, 1)}%) saturate(${FilterGenerator.fmt(filters, 2)}%) hue-rotate(${FilterGenerator.fmt(filters, 3, 3.6)}deg) brightness(${FilterGenerator.fmt(filters, 4)}%) contrast(${FilterGenerator.fmt(filters, 5)}%)`;
+    return `brightness(0) saturate(100%) invert(${CssGenerator.fmt(filters, 0)}%) sepia(${CssGenerator.fmt(filters, 1)}%) saturate(${CssGenerator.fmt(filters, 2)}%) hue-rotate(${CssGenerator.fmt(filters, 3, 3.6)}deg) brightness(${CssGenerator.fmt(filters, 4)}%) contrast(${CssGenerator.fmt(filters, 5)}%)`;
   }
 
   private loss(filters: number[]): number {
-    this.reusedColor.set(0, 0, 0);
+    this.reusedColor.setRgb(0, 0, 0);
 
     this.reusedColor.invert(filters[0] / 100);
     this.reusedColor.sepia(filters[1] / 100);
@@ -254,7 +298,7 @@ class FilterGenerator {
       for (let i = 0; i < 6; i++) {
         const g = lossDiff / (2 * ck) * deltas[i];
         const ak = a[i] / Math.pow(A + k + 1, alpha);
-        values[i] = FilterGenerator.fixSpsa(values[i] - ak * g, i);
+        values[i] = CssGenerator.fixSpsa(values[i] - ak * g, i);
       }
 
       const loss = this.loss(values);
@@ -300,63 +344,12 @@ class FilterGenerator {
   }
 }
 
-class ParseRgbUtil {
-  
-  public static regExpMatchArrayToRgbNumArr(rgbArr: string[]): number[] {
-    return [
-      parseInt(rgbArr[1], 16),
-      parseInt(rgbArr[2], 16),
-      parseInt(rgbArr[3], 16),
-    ]
-  }
-}
-
-class RgbColor extends Color {
-  
-  constructor(rgb: string) {
-    const rgbArr = RgbColor.parseRgbArr(rgb);
-    super(rgbArr[0], rgbArr[1], rgbArr[2]);
-  }
-
-  private static parseRgbArr(rgb: string): number[] {
-    const result = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
-    if (result) return ParseRgbUtil.regExpMatchArrayToRgbNumArr(result);
-    throw new Error(`Colour ${rgb} could not be parsed. Expected the following string format: 'rgb(number,number,number) E.g. rgb(10,122,255)`);
-  }
-}
-
-class HexColor extends Color {
-
-  constructor(hex: string) {
-    const rgbArr = HexColor.hexToRgbArr(hex);
-    super(rgbArr[0], rgbArr[1], rgbArr[2]);
-  }
-
-  private static buildRgbArr(fullHex: string): number[] {
-    // extract individual hex: #c11a1a -> ['#c11a1a', 'c1', '1a', '1a', ...]
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
-    if (result) return ParseRgbUtil.regExpMatchArrayToRgbNumArr(result);
-    throw new Error(`Colour ${fullHex} could not be parsed. Expected string starting with a # and followed by 3 or 6 hexadecimal characters. E.g. #03F or #0033FF`);
-  }
-
-  private static shorthandHexToFullHex(shorthandHex: string): string {
-    // Expand shorthand form: #03F -> #0033FF
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    return shorthandHex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
-  }
-
-  private static hexToRgbArr(shorthandHex: string): number[] {
-    const fullHex = HexColor.shorthandHexToFullHex(shorthandHex);
-    return HexColor.buildRgbArr(fullHex);
-  }
-}
-
 export class FilterCssGenerator {
 
-  public static compute(hex: string): string {
-    const color = new HexColor(hex);
-    const solver = new FilterGenerator(color);
-    const result = solver.generate();
+  public static generate(hex: string): string {
+    const color = new Color(hex, 'hex');
+    const cssGenerator = new CssGenerator(color);
+    const result = cssGenerator.generate();
     return result.filter;
   }
 }
