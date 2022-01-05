@@ -1,14 +1,14 @@
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { ICON_TYPES } from '../../../../../../../consts/iconTypes.enum';
-import { compute } from './filterCssGenerator';
+import { FilterCssGenerator } from './filterCssGenerator';
 
 export class FilterCss {
   
   public static set(hexColor: string, subcomponent: Subcomponent): void {
     const { customCss, activeCssPseudoClassesDropdownItem, customStaticFeatures } = subcomponent;
     if (customStaticFeatures.icon.type === ICON_TYPES.CUSTOM) {
-      const filter = compute(hexColor);
+      const filter = FilterCssGenerator.compute(hexColor);
       customCss[activeCssPseudoClassesDropdownItem].filter = filter;
     }
   }

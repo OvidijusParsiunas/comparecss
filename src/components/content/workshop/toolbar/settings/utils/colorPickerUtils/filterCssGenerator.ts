@@ -1,57 +1,55 @@
-function rgbToHex(r, g, b) {
-  function componentToHex(c) {
-    const hex = c.toString(16);
-    return hex.length == 1 ? "0" + hex : hex;
-  }
-
-  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+interface HSL {
+  h: number;
+  s: number;
+  l: number;
 }
 
-function hexToRgb(hex) {
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) => {
-    return r + r + g + g + b + b;
-  });
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? [
-      parseInt(result[1], 16),
-      parseInt(result[2], 16),
-      parseInt(result[3], 16),
-    ]
-    : null;
+interface SPSA {
+  values: number[];
+  loss: number;
+}
+
+interface Result {
+  values: number[];
+  loss: number;
+  filter: string;
 }
 
 class Color {
-  constructor(r, g, b) {
+
+  public r: number;
+  public g: number;
+  public b: number;
+
+  constructor(r: number, g: number, b: number) {
     this.set(r, g, b);
   }
 
-  toRgb() {
-    return `rgb(${Math.round(this.r as any)}, ${Math.round(this.g as any)}, ${Math.round(this.b as any)})`;
-  }
-  r(r: any) {
-    throw new Error("Method not implemented.");
-  }
-  g(g: any) {
-    throw new Error("Method not implemented.");
-  }
-  b(b: any) {
-    throw new Error("Method not implemented.");
+  private clamp(value: number): number {
+    if (value > 255) {
+      value = 255;
+    } else if (value < 0) {
+      value = 0;
+    }
+    return value;
   }
 
-  toHex() {
-    return rgbToHex(Math.round(this.r as any), Math.round(this.g as any), Math.round(this.b as any));
-  }
-
-  set(r, g, b) {
+  public set(r: number, g: number, b: number): void {
     this.r = this.clamp(r);
     this.g = this.clamp(g);
     this.b = this.clamp(b);
   }
 
-  hueRotate(angle = 0) {
+  private multiply(matrix: number[]): void {
+    const newR = this.clamp((this.r) * matrix[0] + (this.g) * matrix[1] + (this.b) * matrix[2]);
+    const newG = this.clamp((this.r) * matrix[3] + (this.g) * matrix[4] + (this.b) * matrix[5]);
+    const newB = this.clamp((this.r) * matrix[6] + (this.g) * matrix[7] + (this.b) * matrix[8]);
+    this.r = newR;
+    this.g = newG;
+    this.b = newB;
+  }
+
+  public hueRotate(angle = 0): void {
     angle = angle / 180 * Math.PI;
     const sin = Math.sin(angle);
     const cos = Math.cos(angle);
@@ -69,21 +67,7 @@ class Color {
     ]);
   }
 
-  grayscale(value = 1) {
-    this.multiply([
-      0.2126 + 0.7874 * (1 - value),
-      0.7152 - 0.7152 * (1 - value),
-      0.0722 - 0.0722 * (1 - value),
-      0.2126 - 0.2126 * (1 - value),
-      0.7152 + 0.2848 * (1 - value),
-      0.0722 - 0.0722 * (1 - value),
-      0.2126 - 0.2126 * (1 - value),
-      0.7152 - 0.7152 * (1 - value),
-      0.0722 + 0.9278 * (1 - value),
-    ]);
-  }
-
-  sepia(value = 1) {
+  public sepia(value = 1): void {
     this.multiply([
       0.393 + 0.607 * (1 - value),
       0.769 - 0.769 * (1 - value),
@@ -97,7 +81,7 @@ class Color {
     ]);
   }
 
-  saturate(value = 1) {
+  public saturate(value = 1): void {
     this.multiply([
       0.213 + 0.787 * value,
       0.715 - 0.715 * value,
@@ -111,43 +95,37 @@ class Color {
     ]);
   }
 
-  multiply(matrix) {
-    const newR = this.clamp((this.r as any) * matrix[0] + (this.g as any) * matrix[1] + (this.b as any) * matrix[2]);
-    const newG = this.clamp((this.r as any) * matrix[3] + (this.g as any) * matrix[4] + (this.b as any) * matrix[5]);
-    const newB = this.clamp((this.r as any) * matrix[6] + (this.g as any) * matrix[7] + (this.b as any) * matrix[8]);
-    this.r = newR;
-    this.g = newG;
-    this.b = newB;
+  private linear(slope = 1, intercept = 0): void {
+    this.r = this.clamp(this.r * slope + intercept * 255);
+    this.g = this.clamp(this.g  * slope + intercept * 255);
+    this.b = this.clamp(this.b  * slope + intercept * 255);
   }
 
-  brightness(value = 1) {
+  public brightness(value = 1): void {
     this.linear(value);
   }
-  contrast(value = 1) {
+
+  public contrast(value = 1): void {
     this.linear(value, -(0.5 * value) + 0.5);
   }
 
-  linear(slope = 1, intercept = 0) {
-    this.r = this.clamp(this.r as any * slope + intercept * 255);
-    this.g = this.clamp(this.g as any  * slope + intercept * 255);
-    this.b = this.clamp(this.b as any  * slope + intercept * 255);
+  public invert(value = 1): void {
+    this.r = this.clamp((value + (this.r) / 255 * (1 - 2 * value)) * 255);
+    this.g = this.clamp((value + (this.g) / 255 * (1 - 2 * value)) * 255);
+    this.b = this.clamp((value + (this.b) / 255 * (1 - 2 * value)) * 255);
   }
 
-  invert(value = 1) {
-    this.r = this.clamp((value + (this.r as any) / 255 * (1 - 2 * value)) * 255);
-    this.g = this.clamp((value + (this.g as any) / 255 * (1 - 2 * value)) * 255);
-    this.b = this.clamp((value + (this.b as any) / 255 * (1 - 2 * value)) * 255);
-  }
-
-  hsl() {
+  public hsl(): HSL {
     // Code taken from https://stackoverflow.com/a/9493060/2688027, licensed under CC BY-SA.
-    const r = this.r as any  / 255;
-    const g = this.g as any  / 255;
-    const b = this.b as any  / 255;
+    const r = this.r / 255;
+    const g = this.g / 255;
+    const b = this.b / 255;
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    // eslint-disable-next-line prefer-const
-    let h, s, l = (max + min) / 2;
+    const average = (max + min) / 2;
+    let h = average;
+    let s = average;
+    const l = average;
 
     if (max === min) {
       h = s = 0;
@@ -177,68 +155,92 @@ class Color {
     };
   }
 
-  clamp(value) {
-    if (value > 255) {
-      value = 255;
-    } else if (value < 0) {
-      value = 0;
-    }
-    return value;
+  public toRgb(): string {
+    return `rgb(${Math.round(this.r)}, ${Math.round(this.g)}, ${Math.round(this.b)})`;
+  }
+
+  private static componentToHex(component: number): string {
+    const hex = Math.round(component).toString(16);
+    return hex.length == 1 ? `0${hex}` : hex;
+  }
+
+  public toHex(): string {
+    return `#${Color.componentToHex(this.r)}${Color.componentToHex(this.g)}${Color.componentToHex(this.b)}`;
   }
 }
 
-class Solver {
-  target: any;
-  targetHSL: any;
-  reusedColor: any;
-  constructor(target) {
-    this.target = target;
-    this.targetHSL = target.hsl();
+class FilterGenerator {
+
+  private targetColor: Color;
+  private targetColorHSL: HSL;
+  private reusedColor: Color;
+
+  constructor(targetColor: Color) {
+    this.targetColor = targetColor;
+    this.targetColorHSL = targetColor.hsl();
     this.reusedColor = new Color(0, 0, 0);
   }
 
-  solve() {
-    const result = this.solveNarrow(this.solveWide());
-    return {
-      values: result.values,
-      loss: result.loss,
-      filter: this.css(result.values),
-    };
+  private static fmt(filters: number[], idx: number, multiplier = 1): number {
+    return Math.round(filters[idx] * multiplier);
   }
 
-  solveWide() {
-    const A = 5;
-    const c = 15;
-    const a = [60, 180, 18000, 600, 1.2, 1.2];
+  private generateCss(filters: number[]): string {
+    return `brightness(0) saturate(100%) invert(${FilterGenerator.fmt(filters, 0)}%) sepia(${FilterGenerator.fmt(filters, 1)}%) saturate(${FilterGenerator.fmt(filters, 2)}%) hue-rotate(${FilterGenerator.fmt(filters, 3, 3.6)}deg) brightness(${FilterGenerator.fmt(filters, 4)}%) contrast(${FilterGenerator.fmt(filters, 5)}%)`;
+  }
 
-    let best = { loss: Infinity };
-    for (let i = 0; best.loss > 25 && i < 3; i++) {
-      const initial = [50, 20, 3750, 50, 100, 100];
-      const result = this.spsa(A, a, c, initial, 1000);
-      if (result.loss < best.loss) {
-        best = result;
-      }
+  private loss(filters: number[]): number {
+    this.reusedColor.set(0, 0, 0);
+
+    this.reusedColor.invert(filters[0] / 100);
+    this.reusedColor.sepia(filters[1] / 100);
+    this.reusedColor.saturate(filters[2] / 100);
+    this.reusedColor.hueRotate(filters[3] * 3.6);
+    this.reusedColor.brightness(filters[4] / 100);
+    this.reusedColor.contrast(filters[5] / 100);
+
+    const colorHSL = this.reusedColor.hsl();
+    return (
+      Math.abs(this.reusedColor.r - this.targetColor.r) +
+      Math.abs(this.reusedColor.g - this.targetColor.g) +
+      Math.abs(this.reusedColor.b - this.targetColor.b) +
+      Math.abs(colorHSL.h - this.targetColorHSL.h) +
+      Math.abs(colorHSL.s - this.targetColorHSL.s) +
+      Math.abs(colorHSL.l - this.targetColorHSL.l)
+    );
+  }
+
+  private static fixSpsa(value: number, idx: number): number {
+    let max = 100;
+    if (idx === 2 /* saturate */) {
+      max = 7500;
+    } else if (idx === 4 /* brightness */ || idx === 5 /* contrast */) {
+      max = 200;
     }
-    return best;
+
+    if (idx === 3 /* hue-rotate */) {
+      if (value > max) {
+        value %= max;
+      } else if (value < 0) {
+        value = max + value % max;
+      }
+    } else if (value < 0) {
+      value = 0;
+    } else if (value > max) {
+      value = max;
+    }
+    return value;
   }
 
-  solveNarrow(wide) {
-    const A = wide.loss;
-    const c = 2;
-    const A1 = A + 1;
-    const a = [0.25 * A1, 0.25 * A1, A1, 0.25 * A1, 0.2 * A1, 0.2 * A1];
-    return this.spsa(A, a, c, wide.values, 500);
-  }
-
-  spsa(A, a, c, values, iters) {
+  private spsa(A: number, a: number[], c: number, values: number[], iters: number): SPSA {
     const alpha = 1;
     const gamma = 0.16666666666666666;
 
     let best = null;
     let bestLoss = Infinity;
-    const deltas = new Array(6);
-    const highArgs = new Array(6);
-    const lowArgs = new Array(6);
+    const deltas: number[] = new Array(6);
+    const highArgs: number[] = new Array(6);
+    const lowArgs: number[] = new Array(6);
 
     for (let k = 0; k < iters; k++) {
       const ck = c / Math.pow(k + 1, gamma);
@@ -252,8 +254,7 @@ class Solver {
       for (let i = 0; i < 6; i++) {
         const g = lossDiff / (2 * ck) * deltas[i];
         const ak = a[i] / Math.pow(A + k + 1, alpha);
-        // eslint-disable-next-line no-use-before-define
-        values[i] = fix(values[i] - ak * g, i);
+        values[i] = FilterGenerator.fixSpsa(values[i] - ak * g, i);
       }
 
       const loss = this.loss(values);
@@ -263,66 +264,99 @@ class Solver {
       }
     }
     return { values: best, loss: bestLoss };
-
-    function fix(value, idx) {
-      let max = 100;
-      if (idx === 2 /* saturate */) {
-        max = 7500;
-      } else if (idx === 4 /* brightness */ || idx === 5 /* contrast */) {
-        max = 200;
-      }
-
-      if (idx === 3 /* hue-rotate */) {
-        if (value > max) {
-          value %= max;
-        } else if (value < 0) {
-          value = max + value % max;
-        }
-      } else if (value < 0) {
-        value = 0;
-      } else if (value > max) {
-        value = max;
-      }
-      return value;
-    }
   }
 
-  loss(filters) {
-    // Argument is array of percentages.
-    const color = this.reusedColor;
-    color.set(0, 0, 0);
-
-    color.invert(filters[0] / 100);
-    color.sepia(filters[1] / 100);
-    color.saturate(filters[2] / 100);
-    color.hueRotate(filters[3] * 3.6);
-    color.brightness(filters[4] / 100);
-    color.contrast(filters[5] / 100);
-
-    const colorHSL = color.hsl();
-    return (
-      Math.abs(color.r - this.target.r) +
-      Math.abs(color.g - this.target.g) +
-      Math.abs(color.b - this.target.b) +
-      Math.abs(colorHSL.h - this.targetHSL.h) +
-      Math.abs(colorHSL.s - this.targetHSL.s) +
-      Math.abs(colorHSL.l - this.targetHSL.l)
-    );
+  private solveNarrow(wide: SPSA) {
+    const A = wide.loss;
+    const c = 2;
+    const A1 = A + 1;
+    const a = [0.25 * A1, 0.25 * A1, A1, 0.25 * A1, 0.2 * A1, 0.2 * A1];
+    return this.spsa(A, a, c, wide.values, 500);
   }
 
-  css(filters) {
-    function fmt(idx, multiplier = 1) {
-      return Math.round(filters[idx] * multiplier);
+  private solveWide(): SPSA {
+    const A = 5;
+    const c = 15;
+    const a = [60, 180, 18000, 600, 1.2, 1.2];
+
+    let best: SPSA = { values: [], loss: Infinity };
+    for (let i = 0; best.loss > 25 && i < 3; i++) {
+      const initial = [50, 20, 3750, 50, 100, 100];
+      const result = this.spsa(A, a, c, initial, 1000);
+      if (result.loss < best.loss) {
+        best = result;
+      }
     }
-    return `brightness(0) saturate(100%) invert(${fmt(0)}%) sepia(${fmt(1)}%) saturate(${fmt(2)}%) hue-rotate(${fmt(3, 3.6)}deg) brightness(${fmt(4)}%) contrast(${fmt(5)}%)`;
+    return best;
+  }
+
+  public generate(): Result {
+    const result = this.solveNarrow(this.solveWide());
+    return {
+      values: result.values,
+      loss: result.loss,
+      filter: this.generateCss(result.values),
+    };
   }
 }
 
-export function compute(input): string {
-  const rgb = hexToRgb(input);
-  const color = new Color(rgb[0], rgb[1], rgb[2]);
-  const solver =  new Solver(color);
-  const result = solver.solve();
+class ParseRgbUtil {
+  
+  public static regExpMatchArrayToRgbNumArr(rgbArr: string[]): number[] {
+    return [
+      parseInt(rgbArr[1], 16),
+      parseInt(rgbArr[2], 16),
+      parseInt(rgbArr[3], 16),
+    ]
+  }
+}
 
-  return result.filter;
+class RgbColor extends Color {
+  
+  constructor(rgb: string) {
+    const rgbArr = RgbColor.parseRgbArr(rgb);
+    super(rgbArr[0], rgbArr[1], rgbArr[2]);
+  }
+
+  private static parseRgbArr(rgb: string): number[] {
+    const result = rgb.match(/^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i);
+    if (result) return ParseRgbUtil.regExpMatchArrayToRgbNumArr(result);
+    throw new Error(`Colour ${rgb} could not be parsed. Expected the following string format: 'rgb(number,number,number) E.g. rgb(10,122,255)`);
+  }
+}
+
+class HexColor extends Color {
+
+  constructor(hex: string) {
+    const rgbArr = HexColor.hexToRgbArr(hex);
+    super(rgbArr[0], rgbArr[1], rgbArr[2]);
+  }
+
+  private static buildRgbArr(fullHex: string): number[] {
+    // extract individual hex: #c11a1a -> ['#c11a1a', 'c1', '1a', '1a', ...]
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(fullHex);
+    if (result) return ParseRgbUtil.regExpMatchArrayToRgbNumArr(result);
+    throw new Error(`Colour ${fullHex} could not be parsed. Expected string starting with a # and followed by 3 or 6 hexadecimal characters. E.g. #03F or #0033FF`);
+  }
+
+  private static shorthandHexToFullHex(shorthandHex: string): string {
+    // Expand shorthand form: #03F -> #0033FF
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    return shorthandHex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+  }
+
+  private static hexToRgbArr(shorthandHex: string): number[] {
+    const fullHex = HexColor.shorthandHexToFullHex(shorthandHex);
+    return HexColor.buildRgbArr(fullHex);
+  }
+}
+
+export class FilterCssGenerator {
+
+  public static compute(hex: string): string {
+    const color = new HexColor(hex);
+    const solver = new FilterGenerator(color);
+    const result = solver.generate();
+    return result.filter;
+  }
 }
