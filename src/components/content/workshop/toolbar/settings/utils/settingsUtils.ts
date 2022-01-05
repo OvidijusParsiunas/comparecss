@@ -1,13 +1,13 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CustomFeaturesUtils } from '../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { COMPUTED_CSS_PROPERTIES } from '../../../../../../consts/computedCss.enum';
 import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import { optionToSettings } from '../types/optionToSettings';
 import { SetUtils } from '../../../utils/generic/setUtils';
 import { UpdateRange } from './rangeUtils/updateRange';
-import { FilterCss } from './colorPickerUtils/filterCss';
 
 export default class SettingsUtils {
 
@@ -123,7 +123,7 @@ export default class SettingsUtils {
         SettingsUtils.resetCustomCss(subcomponent, cssProperty);
         SettingsUtils.removeAuxiliaryPartialCss(subcomponent, cssProperty);
         if (lastSelectedValueObjectKeys) SettingsUtils.resetCustomFeatures(option, subcomponent, lastSelectedValueObjectKeys);
-        if (FilterCss.shouldReset(cssProperty, subcomponent)) SettingsUtils.resetCustomCss(subcomponent, 'filter');
+        if (cssProperty === COMPUTED_CSS_PROPERTIES.FILTER) SettingsUtils.resetCustomCss(subcomponent, COMPUTED_CSS_PROPERTIES.FILTER);
       }
     });
   }

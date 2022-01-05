@@ -1,11 +1,11 @@
 import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { COMPUTED_CSS_PROPERTIES } from '../../../../../../../consts/computedCss.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateOtherColorsUtils } from './updateOtherColorsUtils';
+import { FilterColorGenerator } from './filterColorGenerator';
 import BoxShadowUtils from '../boxShadowUtils';
 import SharedUtils from '../sharedUtils';
-import { FilterCss } from './filterCss';
 
 export class ColorPickerUtils {
 
@@ -13,11 +13,10 @@ export class ColorPickerUtils {
     const { cssProperty, partialCss } = updatedSettingSpec;
     const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     if (partialCss !== undefined) {
-      if (cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowColorValue(hexColor, updatedSettingSpec, subcomponent);
+      if (cssProperty === COMPUTED_CSS_PROPERTIES.BOX_SHADOW) BoxShadowUtils.updateBoxShadowColorValue(hexColor, updatedSettingSpec, subcomponent);
     } else {
-      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = hexColor;
+      customCss[activeCssPseudoClassesDropdownItem][cssProperty] = cssProperty === COMPUTED_CSS_PROPERTIES.FILTER ? FilterColorGenerator.generate(hexColor) : hexColor;
       UpdateOtherColorsUtils.updateOtherCssProperties(updatedSettingSpec.updateOtherCssProperties, activeCssPseudoClassesDropdownItem, hexColor);
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON) FilterCss.set(hexColor, subcomponent);
     }
   }
 
@@ -51,7 +50,7 @@ export class ColorPickerUtils {
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
     const { customCss, activeCssPseudoClassesDropdownItem } = subcomponent;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClassesDropdownItem, settingToBeUpdatedSpec.cssProperty);
-    if (settingToBeUpdatedSpec.cssProperty === 'boxShadow') {
+    if (settingToBeUpdatedSpec.cssProperty === COMPUTED_CSS_PROPERTIES.BOX_SHADOW) {
       BoxShadowUtils.setBoxShadowSettingsColorValue(cssPropertyValue, settingToBeUpdatedSpec, subcomponent);
     } else {
       settingToBeUpdatedSpec.default = cssPropertyValue;

@@ -1,6 +1,7 @@
 import { CustomFeaturesUtils } from '../../../../utils/componentManipulation/utils/customFeaturesUtils';
 import { BORDER_WIDTH_CSS_PROPERTY_ALIAS } from '../../../../../../../consts/borderWidthAlias';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { COMPUTED_CSS_PROPERTIES } from '../../../../../../../consts/computedCss.enum';
 import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
@@ -72,7 +73,7 @@ export default class RangeUtils extends UpdateRange {
     let realRangeValue = null;
     RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponent, allSettings, actionsDropdownsObjects, refreshSettingsCallback);
     if (spec.partialCss !== undefined) {
-      if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponent);
+      if (spec.cssProperty === COMPUTED_CSS_PROPERTIES.BOX_SHADOW) BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponent);
     } else if (spec.customFeatureObjectKeys) {
       UpdateRange.updateRangeCustomFeature(rangeValue, spec, subcomponent);
       if (spec.updateOtherCssProperties) {
@@ -108,7 +109,7 @@ export default class RangeUtils extends UpdateRange {
   }
 
   private static updateCssPropertySetting(settingToBeUpdated: any, cssPropertyValue: string, subcomponent: Subcomponent): void {
-    const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue,
+    const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === COMPUTED_CSS_PROPERTIES.BOX_SHADOW && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue,
       settingToBeUpdated.spec);
     if (!hasBoxShadowBeenSet) {
       RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue);

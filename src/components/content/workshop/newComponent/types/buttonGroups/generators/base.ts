@@ -126,7 +126,7 @@ class ButtonGroupBase extends ComponentBuilder {
     };
   }
 
-  // WOKR 2 - should have an if statement to call particular ones for temp and non temp
+  // WORK 2 - should have an if statement to call particular ones for temp and non temp
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {

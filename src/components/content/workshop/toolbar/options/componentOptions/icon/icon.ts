@@ -17,7 +17,7 @@ export const iconOptions: SubcomponentOptions<IconOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.FILTER_COLOR,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,

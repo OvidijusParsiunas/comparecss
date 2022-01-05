@@ -182,7 +182,7 @@ export default function useBaseComponent(component: Ref<WorkshopComponent>, isCh
     if (component.value.baseSubcomponent.isTemporaryAddPreview) overlayCss.display = 'block'; 
     if (!component.value.linkedComponents?.base && !isChildComponent.value) overlayCss.marginTop = '0px';
     if (component.value.type === COMPONENT_TYPES.BUTTON_GROUP) overlayCss.marginLeft = ButtonGroupCompositionAPIUtils.getOverlayMarginLeftCss(component.value);
-    if (useIconComponent.isSVGIcon()) overlayCss.height = overlayCss.width;
+    if (useIconComponent.isSVGIcon()) useIconComponent.setOverlayCustomCss(overlayCss);
     return overlayCss;
   }
 

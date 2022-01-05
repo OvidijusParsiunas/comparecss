@@ -27,6 +27,7 @@ import borderBottom from './borderBottom';
 import circleBorder from './circleBorder';
 import modalActions from './modalActions';
 import borderColor from './borderColor';
+import filterColor from './filterColor';
 import background from './background';
 import sizeHeight from './sizeHeight';
 import sizeWidth from './sizeWidth';
@@ -68,6 +69,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.FILTER_COLOR]: filterColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR]: backgroundColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,

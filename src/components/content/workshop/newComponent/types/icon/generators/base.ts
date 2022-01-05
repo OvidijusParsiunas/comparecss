@@ -20,7 +20,6 @@ export class IconBase extends ComponentBuilder {
         fontWeight: '400',
         fontFamily: '"Poppins", sans-serif',
         fontSize: '16px',
-        color: '#ffffff',
         textAlign: 'left',
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         paddingTop: '0px',
@@ -42,7 +41,7 @@ export class IconBase extends ComponentBuilder {
         outline: 'none',
         left: '0px',
         backgroundSize: '100% 100%',
-        filter: '',
+        filter: 'brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(24%) hue-rotate(114deg) brightness(108%) contrast(108%)',
       },
     };
   }

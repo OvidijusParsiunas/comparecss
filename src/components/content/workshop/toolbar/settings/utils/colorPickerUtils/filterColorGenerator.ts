@@ -344,7 +344,7 @@ class CssGenerator {
   }
 }
 
-export class FilterCssGenerator {
+export class FilterColorGenerator {
 
   public static generate(hex: string): string {
     const color = new Color(hex, 'hex');

@@ -1,4 +1,5 @@
 import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../../consts/dropdownArrowIcons';
+import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { UseIconComponent } from '../../../../../interfaces/useIconComponent';
@@ -25,9 +26,15 @@ export default function useIconComponent(component?: Ref<WorkshopComponent>): Us
     return null;
   }
 
+  const setOverlayCustomCss = (overlayCss: WorkshopComponentCss): void => {
+    overlayCss.height = overlayCss.width;
+    delete overlayCss.filter;
+  }
+
   return {
     isIcon,
     isSVGIcon,
     getSVGIconName,
+    setOverlayCustomCss,
   };
 }
