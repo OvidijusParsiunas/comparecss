@@ -72,15 +72,16 @@ export class AddComponentShared {
   }
 
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
-      sharingFuncType: keyof ReferenceSharingFuncType): void {
-    const overwritables = containerComponent.childComponentHandlers.onAddOverwritables?.postBuildFuncs?.[newComponent.type];
-    (overwritables || []).forEach((overwritable) => overwritable(newComponent, containerComponent));
+      sharingFuncType: keyof ReferenceSharingFuncType, isTemp: boolean): void {
+    const { tempAndComplete, completeOnly } = containerComponent.childComponentHandlers.onAddOverwritables?.postBuildFuncs?.[newComponent.type] || {};
+    (tempAndComplete || []).forEach((overwritable) => overwritable(newComponent, containerComponent));
+    if (!isTemp) (completeOnly || []).forEach((overwritable) => overwritable(newComponent, containerComponent));
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(true, sharingFuncType, containerComponent);
   }
 
   protected static executeOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
-      sharingFuncType: keyof ReferenceSharingFuncType): void {
-    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, sharingFuncType);
+      sharingFuncType: keyof ReferenceSharingFuncType, isTemp: boolean): void {
+    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, sharingFuncType, isTemp);
     AutoSyncedSiblingContainerComponentUtils.copySiblingIfAutoSynced(newComponent, containerComponent);
   }
 }

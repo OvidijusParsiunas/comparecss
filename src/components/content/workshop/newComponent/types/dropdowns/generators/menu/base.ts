@@ -57,7 +57,7 @@ export class DropdownMenuBase extends ComponentBuilder {
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
     menuComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.LAYER]: [DropdownMenuBase.overwriteItemProperties],
+        [COMPONENT_TYPES.LAYER]: { tempAndComplete: [DropdownMenuBase.overwriteItemProperties] },
       },
     };
   }

@@ -146,7 +146,7 @@ export class AddContainerComponent extends AddComponentShared {
     AutoSyncedSiblingContainerComponentUtils.setComponentToBeInSyncIfSiblingsSynced(parentLayer, newComponent);
     AddContainerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;
-    AddComponentShared.executeOverwritables(newComponent, containerComponent, 'container');
+    AddComponentShared.executeOverwritables(newComponent, containerComponent, 'container', false);
     return newComponent;
   }
 

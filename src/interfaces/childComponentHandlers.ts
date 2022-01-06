@@ -30,9 +30,13 @@ export type PropertiesAddedOnBuild = {
   [key in COMPONENT_TYPES]?: ParentBasedPresetProperties;
 }
 
-// each property has an array of PropertyOverwritableFunc in order to allow further addition of functions after the base - e.g. default style
 export type PostBuildPropertyOverwritableFuncs = {
-  [key in COMPONENT_TYPES]?: PropertyOverwritableFunc[];
+  [key in COMPONENT_TYPES]?: {
+    // array of funcs that get executed for temp and complete components
+    tempAndComplete?: PropertyOverwritableFunc[];
+    // array of funcs that get executed for complete components only
+    completeOnly?: PropertyOverwritableFunc[];
+  };
 }
 
 export interface PropertyOverwritables {

@@ -19,7 +19,9 @@ class ButtonWithIcon {
   }
 
   public static setPropertyOverwritables(buttonComponent: WorkshopComponent): void {
-    buttonComponent.childComponentHandlers.onAddOverwritables.postBuildFuncs[COMPONENT_TYPES.ICON] = [ButtonWithIcon.setComponentToRemovable];
+    buttonComponent.childComponentHandlers.onAddOverwritables.postBuildFuncs[COMPONENT_TYPES.ICON] = {
+      completeOnly: [ButtonWithIcon.setComponentToRemovable],
+    }
   }
 }
 

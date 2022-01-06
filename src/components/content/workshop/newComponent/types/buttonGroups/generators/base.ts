@@ -67,12 +67,16 @@ class ButtonGroupBase extends ComponentBuilder {
     const buttonGroupComponent = this as any as WorkshopComponent;
     buttonComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.TEXT]: [
-          ButtonGroupBase.setSelectComponentObj.bind(buttonGroupComponent),
-        ],
-        [COMPONENT_TYPES.ICON]: [
-          ButtonGroupBase.setSelectComponentObj.bind(buttonGroupComponent),
-        ]
+        [COMPONENT_TYPES.TEXT]: {
+          completeOnly: [
+            ButtonGroupBase.setSelectComponentObj.bind(buttonGroupComponent),
+          ],
+        },
+        [COMPONENT_TYPES.ICON]: {
+          completeOnly: [
+            ButtonGroupBase.setSelectComponentObj.bind(buttonGroupComponent),
+          ],
+        },
       },
     };
   }
@@ -126,22 +130,25 @@ class ButtonGroupBase extends ComponentBuilder {
     };
   }
 
-  // WORK 2 - should have an if statement to call particular ones for temp and non temp
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.BUTTON]: [
-          ButtonGroupBase.setButtonMouseEvents,
-          ButtonGroupBase.setComponentToRemovable,
-          ButtonGroupBase.setTemporarySyncExecutables,
-          ButtonGroupBase.setDisplayInFrontOfSiblingsState,
-          ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
-          ButtonGroupBase.setButtonChildPropertyOverwritables.bind(buttonGroupComponent),
-          ButtonGroupBase.setSelectComponentObj,
-          TriggerFuncs.setTriggerFuncOnButtonSettingChange,
-          ButtonGroupBorderUtils.setBorderProperties,
-          ButtonGroupButtonSpecificSettings.set,
-        ],
+        [COMPONENT_TYPES.BUTTON]: {
+          tempAndComplete: [
+            ButtonGroupBase.setDisplayInFrontOfSiblingsState,
+            ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
+            ButtonGroupBorderUtils.setBorderProperties,
+          ],
+          completeOnly: [
+            ButtonGroupBase.setButtonMouseEvents,
+            ButtonGroupBase.setComponentToRemovable,
+            ButtonGroupBase.setTemporarySyncExecutables,
+            ButtonGroupBase.setButtonChildPropertyOverwritables.bind(buttonGroupComponent),
+            ButtonGroupBase.setSelectComponentObj,
+            TriggerFuncs.setTriggerFuncOnButtonSettingChange,
+            ButtonGroupButtonSpecificSettings.set,
+          ],
+        },
       },
       onBuildProperties: {
         [COMPONENT_TYPES.BUTTON]: { horizontalSection: ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION },

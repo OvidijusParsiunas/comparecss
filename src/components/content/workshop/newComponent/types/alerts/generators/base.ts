@@ -22,8 +22,8 @@ class AlertBase extends ComponentBuilder {
   public static setPropertyOverwritables(alertComponent: WorkshopComponent): void {
     alertComponent.childComponentHandlers.onAddOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.TEXT]: [AlertBase.setComponentToRemovable],
-        [COMPONENT_TYPES.BUTTON]: [AlertBase.setComponentToRemovable],
+        [COMPONENT_TYPES.TEXT]: { completeOnly: [AlertBase.setComponentToRemovable] },
+        [COMPONENT_TYPES.BUTTON]: { completeOnly: [AlertBase.setComponentToRemovable] },
       },
       onBuildProperties: {
         [COMPONENT_TYPES.TEXT]: { horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS.CENTER },
