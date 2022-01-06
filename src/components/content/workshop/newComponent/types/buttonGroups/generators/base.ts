@@ -60,7 +60,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setSelectComponentObj(childComponent: WorkshopComponent, containerArg: WorkshopComponent): void {
     const container = this as any as WorkshopComponent || containerArg;
-    SelectedChildComponentUtils.populateComponentAndChildrenWithSelectComponentObj(childComponent, container);
+    ComponentBuilder.populateComponentAndChildrenWithSelectComponentObj(childComponent, container);
   }
 
   private static setButtonChildPropertyOverwritables(buttonComponent: WorkshopComponent): void {

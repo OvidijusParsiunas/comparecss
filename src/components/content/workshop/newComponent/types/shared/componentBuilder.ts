@@ -15,6 +15,7 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../consts/dropdownArrowIcons';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
+import { OnSyncComponents, Sync, Syncables } from '../../../../../../interfaces/sync';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { PresetProperties } from '../../../../../../interfaces/componentGenerator';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
@@ -23,7 +24,6 @@ import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { ICON_TYPES } from '../../../../../../consts/iconTypes.enum';
 import { Animations } from '../../../../../../interfaces/animations';
 import { DEFAULT_TEXT } from '../../../../../../consts/defaultText';
-import { Sync, Syncables } from '../../../../../../interfaces/sync';
 import { Image } from '../../../../../../interfaces/image';
 import { Icon } from '../../../../../../interfaces/icon';
 import { defaultImage } from './images/default';
@@ -185,7 +185,7 @@ export class ComponentBuilder {
     subcomponent.defaultCss[cssPseudoClass][cssProperty] = value;
   }
 
-  public static createPreventDeepCopy(copyableKeys?: CopyableKeys[]): PreventDeepCopy {
+  private static createPreventDeepCopy(copyableKeys?: CopyableKeys[]): PreventDeepCopy {
     const preventDeepCopy: PreventDeepCopy = { preventDeepCopy: {} };
     if (copyableKeys) {
       preventDeepCopy.preventDeepCopy.copyableKeys = copyableKeys;
@@ -201,6 +201,37 @@ export class ComponentBuilder {
       },
       ...ComponentBuilder.createPreventDeepCopy([{ value: ['selectComponent', 'container', 'activeStyle'] }]),
     };
+  }
+
+  private static setSelectComponentObject(components: WorkshopComponent[], container: WorkshopComponent): void {
+    components.forEach((component) => {
+      component.baseSubcomponent.customStaticFeatures.selectComponent = {
+        child: {
+          isSelected: false,
+          containerSelectComponentObj: container.baseSubcomponent.customStaticFeatures.selectComponent.container,
+        },
+        ...ComponentBuilder.createPreventDeepCopy(),
+      };
+    });
+  }
+
+  private static setSelectComponentObjsViaOnSyncComponents(onSyncComponents: OnSyncComponents, container: WorkshopComponent): void {
+    const { uniqueComponents, repeatedComponents } = onSyncComponents;
+    const components: WorkshopComponent[] = [...repeatedComponents];
+    Object.keys(uniqueComponents).forEach((key) => {
+      const component = uniqueComponents[key];
+      if (component) components.push(component);
+    });
+    ComponentBuilder.setSelectComponentObject(components, container); 
+  }
+
+  protected static populateComponentAndChildrenWithSelectComponentObj(component: WorkshopComponent, container: WorkshopComponent): void {
+    const { onSyncComponents } = component.sync.syncables;
+    if (onSyncComponents) {
+      ComponentBuilder.setSelectComponentObjsViaOnSyncComponents(onSyncComponents, container);
+    } else {
+      ComponentBuilder.setSelectComponentObject([component], container);
+    }
   }
 
   private static toggleSelectDropdownTypeSetting(subcomponent: Subcomponent): void {
