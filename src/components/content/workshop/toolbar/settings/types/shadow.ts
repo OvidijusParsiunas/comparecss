@@ -11,8 +11,8 @@ export default {
         scale: [-50, 50],
         smoothingDivisible: 1,
         partialCss: {
-            position: 0,
-            fullDefaultValues: ['0px', '0px', '0px', '0px', '#000000'],
+          position: 0,
+          fullDefaultValues: ['0px', '0px', '0px', '0px', '#000000'],
         },
         cssProperty: 'boxShadow',
         postfix: 'px',

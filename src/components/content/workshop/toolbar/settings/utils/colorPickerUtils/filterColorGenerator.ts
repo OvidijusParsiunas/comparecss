@@ -310,7 +310,7 @@ class CssGenerator {
     return { values: best, loss: bestLoss };
   }
 
-  private solveNarrow(wide: SPSA) {
+  private solveNarrow(wide: SPSA): SPSA {
     const A = wide.loss;
     const c = 2;
     const A1 = A + 1;

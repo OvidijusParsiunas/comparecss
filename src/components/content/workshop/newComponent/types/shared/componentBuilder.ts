@@ -75,7 +75,6 @@ export class ComponentBuilder {
     return {
       name: addDefault ? imageName : null,
       data: addDefault ? imageData : null,
-      size: true,
     };
   }
 
